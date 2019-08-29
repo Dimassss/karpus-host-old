@@ -25,3 +25,4 @@ echo node_modules>>.gitignore
 echo bower.json>>.gitignore
 echo package.json>>.gitignore
 echo package-lock.json>>.gitignore
+run.bat
