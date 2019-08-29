@@ -1,0 +1,58 @@
+.kits{
+  display: flex;
+
+  .kit{
+    margin: 30px;
+    width: 330px;
+    line-height: 36px;
+    font-size: 18px;
+
+    .products-container{
+      background-color: rgba(255, 255, 255, 0.1);
+      height: calc(10*36px);
+      overflow-y: auto;
+
+      .product{
+        height: 36px;
+      }
+    }
+
+    .add-kit{
+      text-align: center;
+      width: 100%;
+      color: #bbb;
+      border: 1px solid #333;
+      padding: 5px;
+      border-radius: 3px;
+      user-select: none;
+
+      &:hover{
+          background-color: #111;
+      }
+
+      &:active {
+        background-color: #080808;
+      }
+    }
+  }
+
+  .subsup{
+    position: relative;
+    sub{
+      display:block;
+      position: absolute;
+      left:2px;
+      top: 25px;
+    }
+    sup{
+      display:block;
+      position: absolute;
+      left:2px;
+      top: 8px;
+    }
+  }
+
+  .columns {
+    margin: auto 0;
+  }
+}

@@ -1,0 +1,43 @@
+@import "../variables/form.scss";
+
+.btn {
+  background-color: var(--form-btn-bg-color);
+  color: var(--form-btn-c);
+  border: 0;
+  height: var(--form-btn-height);
+
+  &:focus {
+    background-color: var(--form-btn-focus-bg-color);
+  }
+
+  &:hover{
+    background-color: var(--form-btn-hover-bg-color);
+  }
+
+  &:active{
+    background-color: var(--form-btn-active-bg-color);
+  }
+}
+
+.btn-fit {
+  width: 100%;
+}
+
+.form-input, .form-select{
+  background-color: var(--form-input-bg-color) !important;
+  border-color: var(--form-input-border-color);
+  color: var(--form-input-c) !important;
+  resize: none;
+  vertical-align: baseline;
+}
+
+.chip {
+  background-color: var(--form-chip-bg-color);
+  color: var(--form-chip-c);
+}
+
+hr{
+  border: 0;
+  border-top: 2px dashed #222;
+  margin-bottom: 3rem;
+}

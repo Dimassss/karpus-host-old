@@ -1,0 +1,17 @@
+@import "../variables/utilits.scss";
+
+.unique-scroll{
+  &::-webkit-scrollbar {
+      width: var(--utilits-scroll-width);
+      height: var(--utilits-scroll-height);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--utilits-scroll-bg-color);
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: var(--utilits-scroll-corner-bg-color);
+  }
+}

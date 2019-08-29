@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Customers</title>
+    <link rel="stylesheet" href="../assets/css/all.css"/>
+  </head>
+  <body>
+    <header>
+      <div><a href="" class="path">Customer Profile</a></div>
+      <div><span class="username">%username%</span>: <a class="logout" href="#">Logout</a></div>
+      <div class="drop">
+        <span tabindex="1" class="drop-btn">Menu</span>
+        <div class="dropdown-content">
+          <a href="#">BTN #</a>
+          <a href="#">BTN #</a>
+          <a href="#">BTN #</a>
+          <a href="#">BTN #</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="unique-scroll customerProfile">
+      <div class="container">
+        <div class="columns">
+          <div class="col-4 col-xl-5">
+            <section class="table-container">
+              <input class="search" placeholder="Search" value="" type="text"/>
+              <div class="unique-scroll">
+                <table id="customers">
+                <thead>
+                    <tr>
+                      <th>a</th>
+                      <th>b</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>a</td>
+                    <td>b</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>a</td>
+                    <td>b</td>
+                  </tr>
+                </tfoot>
+              </table>
+              </div>
+            </section>
+          </div>
+          <div class="col-8 col-xl-7">
+            <section class="tabs-container">
+              <div class="tabs">
+                <label class="tab" for="win1">Profile</label>
+                <label class="tab" for="win2">Orders</label>
+              </div>
+              <div class="windows">
+                <input type="radio" name="win" id="win1" checked/>
+                <div class="window unique-scroll">
+                  <form action="#forms" class="form-horizontal content">
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-field-name">Field Name</label>
+                      </div>
+                      <div class="col-4 col-sm-12">
+                        <input class="form-input" type="text" id="js-field-name" placeholder="Field Name">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-fields-name">Field Name</label>
+                      </div>
+                      <div class="col-3 col-sm-12">
+                        <div class="input-group">
+                          <input class="form-input js-isArray" type="text" id="js-fields-name" placeholder="Field Name">
+                          <span class="btn input-group-btn">Add</span>
+                        </div>
+                      </div>
+                      <div class="col-5 col-ml-auto col-sm-12 js-fields-name-container">
+                        <span class="chip js-field-name">
+                          <chip>Field Value</chip>
+                          <a href="#" class="btn btn-clear" id="closeMath.rand()" aria-label="Close" role="button"></a>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-field-name">Field Name</label>
+                      </div>
+                      <div class="col-9 col-sm-12">
+                        <textarea class="form-input" id="js-field-name" placeholder="Field Name" rows="3"></textarea>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                <input type="radio" name="win" id="win2"/>
+                <div class="window unique-scroll">
+                  <label for="open-alert-window" class="btn btn-fit" name="create_order">Create order</label>
+                  <section class="table-container">
+                    <input class="search" placeholder="Search" value="" type="text"/>
+                    <div class="unique-scroll">
+                      <table id="customer_orders">
+                        <thead>
+                            <tr>
+                              <th>a</th>
+                              <th>b</th>
+                              <th>c</th>
+                              <th>d</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>a</td>
+                            <td>b</td>
+                            <td>c</td>
+                            <td>d</td>
+                          </tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td>a</td>
+                            <td>b</td>
+                            <td>c</td>
+                            <td>d</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <input type="checkbox" name="open-alert-window" id="open-alert-window">
+      <section class="alert-window">
+        <navbar>
+          <label for="open-alert-window"><i class="icon icon-2x icon-check" style="color: green"></i></label>
+          <label for="open-alert-window"><i class="icon icon-2x icon-cross" style="color: red"></i></label>
+        </navbar>
+        <div class="unique-scroll">
+          <form action="#forms" class="form-horizontal content">
+            <div class="form-group">
+              <div class="col-12">
+                <h2 width="100%" style="text-align: center">Full Name</h2>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-2 col-sm-12">
+                <label class="form-label" for="js-field-name">Field Name:</label>
+              </div>
+              <div class="col-3 col-sm-12">
+                <div class="input-group">
+                  <input class="form-input js-isArray" type="text" id="js-field-name" list="field-name" placeholder="Field Name">
+                  <datalist id="field-name">
+                    <option value="val1">Val1</option>
+                    <option value="val2">Val2</option>
+                  </datalist>
+                </div>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-2 col-sm-12">
+                <label class="form-label" for="js-field-name">Field Name:</label>
+              </div>
+              <div class="col-3 col-sm-12">
+                <div class="input-group">
+                  <input class="form-input js-isArray" type="text" id="js-field-name" list="field-name" placeholder="Field Name">
+                  <datalist id="field-name">
+                    <option value="val1">Val1</option>
+                    <option value="val2">Val2</option>
+                  </datalist>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-2 col-sm-12">
+                <label class="form-label" for="js-field-name">Field Name:</label>
+              </div>
+              <div class="col-3 col-sm-12">
+                <textarea class="form-input" id="js-field-name" placeholder="Field Name" rows="3"></textarea>
+              </div>
+              <div class="col-1"></div>
+              <div class="col-2 col-sm-12">
+                <label class="form-label" for="js-field-name">Field Name:</label>
+              </div>
+              <div class="col-3 col-sm-12">
+                <div class="input-group">
+                  <input class="form-input js-isArray" type="date" id="js-field-name" placeholder="Field Name">
+                  <span class="btn input-group-btn">Add</span>
+                </div>
+              </div>
+              <div class="col-5 col-ml-auto col-sm-12">
+                <span class="chip js-field-name">
+                  <chip>17/08/2019</chip>
+                  <a href="#" class="btn btn-clear" id="closeMath.rand()" aria-label="Close" role="button"></a>
+                </span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-2"></div>
+              <div class="col-3">
+                <label class="form-switch">
+                  <input type="checkbox" id="js-field-name">
+                  <i class="form-icon"></i> Field Name
+                </label>
+              </div>
+              <div class="col-3"></div>
+            </div>
+            <hr></hr>
+            <div class="form-group">
+              <div class="col-2 col-sm-12">
+                <label class="form-label" for="js-cycle">Cycle:</label>
+              </div>
+              <div class="col-4 col-sm-12">
+                <select id="js-cycle" class="form-select">
+                  <option value="">--Select cycle--</option>
+                </select>
+              </div>
+              <div class="col-12 col-sm-12">
+                <label class="form-label" for="js-preferences">Total Price: price uah</label>
+              </div>
+            </div>
+
+            <div class="kits">
+              <div class="kit">
+                <h6 class="columns">
+                  <div class="col-9">Kit Name - Price pc - weight</div>
+                  <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                  <progress class="progress col-12" value="25" max="100"></progress>
+                  <progress class="progress col-12" value="" max="100"></progress>
+                </h6>
+                <div class="products-container unique-scroll">
+                  <div class="product columns">
+                    <div class="col-5">Product Name</div>
+                    <div class="col-1">U-t</div>
+                    <div class="col-3"> Price pc</div>
+                    <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                  </div>
+                </div>
+              </div>
+              <div class="kit">
+                <h6 class="columns">
+                  <div class="col-3">weight</div>
+                  <div class="col-3">Price pc</div>
+                  <div class="col-3"><input placeholder="Price" class="form-input" type="number"/></div>
+                  <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                  <progress class="progress col-12" value="25" max="100"></progress>
+                  <progress class="progress col-12" value="" max="100"></progress>
+                </h6>
+                <div class="products-container unique-scroll">
+                  <div class="product columns">
+                    <div class="col-5">Product Name</div>
+                    <div class="col-1">U-t</div>
+                    <div class="col-3">
+                      <select class="form-select">
+                          <option value="kit" title="kit">p-kt</option>
+                          <option value="wholesale" title="wholesale">p-wh</option>
+                          <option value="shop" title="shop">p-sh</option>
+                          <option value="restaurant" title="restaurant">p-rst</option>
+                        </select>
+                    </div>
+                    <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                  </div>
+                </div>
+              </div>
+              <div class="kit">
+                <span class="add-kit">Create individual kit</span>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

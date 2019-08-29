@@ -1,0 +1,44 @@
+@import "../variables/cycles.scss";
+
+header {
+  label{
+    color: #aaa;
+  }
+}
+
+input[name="win"]:checked ~ {
+
+}
+
+.win1, .win2, .win3{
+  display: none;
+}
+
+input[id="win1"][name="win"]:checked ~ .win1, input[id="win2"][name="win"]:checked ~ .win2, input[id="win3"][name="win"]:checked ~ .win3{
+  display: block;
+}
+
+.cycles{
+
+  .cycles-container{
+    height: calc(100vh - var(--header-height) - var(--cycle-footer-height) - var(--cycle-footer-border-width));
+
+    table tbody{
+      height: calc(var(--table-t-body-height) - var(--utilits-scroll-width) - var(--header-height) - var(--cycle-footer-height) - var(--cycle-footer-border-width));
+    }
+
+    .content{
+      border: 2px solid #444;
+      padding: 5px;
+      color: #a9a9af;
+      height: calc(100vh - var(--utilits-scroll-width) - var(--header-height) - var(--cycle-footer-height) - var(--cycle-footer-border-width));
+      overflow: auto;
+
+      .table-conatiner-fields{
+        td{
+          background-color: #222;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+:root{
+  --header-font-size: 16px;
+  --header-height: calc(var(--header-font-size) + 7px);
+  --header-bg-color: #24212a;
+  --header-paddings: 3px;
+  --header-color: #d91;
+  --header-font-size-smaller500: 24px;
+  --header-c-username: #aaa;
+  --header-drop-btn-color: #e0a10a;
+  --header-drop-btn-logout-color: #0aa;
+  --header-drop-btn-logout-color-hover: #0ea;
+  --header-drop-btn-color-hover: #fc0;
+  --header-drop-bg-color: #222;
+  --header-drop-box-shadow-c: rgba(255,255,255,0.2);
+  --header-drop-c: #acb;
+  --header-drop-c-hover: #cad;
+}

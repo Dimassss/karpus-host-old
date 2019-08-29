@@ -1,0 +1,16 @@
+:root {
+  --tabs-c: white;
+  --tabs-border-color: #044;
+  --tabs-border-width: 2px;
+  --tabs-tab-margin-top: 5px;
+  --tabs-tab-bg-color: #343439;
+  --tabs-tab-c: #cdcdcd;
+  --tabs-tab-height: 30px;
+  --tabs-tab-hover-bg-color: #393939;
+  --tabs-tab-active-bg-color: #343434;
+  --tabs-win-border-width: 1px;
+  --tabs-win-border-color: #222;
+  --tabs-win-bg-color: #000;
+  --tabs-win-height: calc(100vh - 2*var(--tabs-border-width) - var(--tabs-tab-margin-top) - var(--tabs-tab-height) - var(--tabs-win-border-width));
+  --tabs-win-content: #6fa;
+}

@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Cycles</title>
+    <!--<link rel="stylesheet" href="assets/css/styles/.css">-->
+    <link rel="stylesheet" href="../assets/css/vendor.css">
+    <link rel="stylesheet" href="../assets/css/styles/utilits.css">
+    <link rel="stylesheet" href="../assets/css/styles/header.css">
+    <link rel="stylesheet" href="../assets/css/styles/main-container.css">
+    <link rel="stylesheet" href="../assets/css/styles/cycles.css">
+    <link rel="stylesheet" href="../assets/css/styles/cycle-footer.css">
+    <link rel="stylesheet" href="../assets/css/styles/table.css">
+    <link rel="stylesheet" href="../assets/css/styles/kit-selecting.css">
+    <link rel="stylesheet" href="../assets/css/styles/form.css">
+    <style>
+      /*Orders table*/
+      #orders th:nth-child(1), #orders td:nth-child(1){
+        width: 180px;
+      }
+      #orders th:nth-child(2), #orders td:nth-child(2){
+        width: 180px;
+      }
+      #orders th:nth-child(3), #orders td:nth-child(3){
+        width: 120px;
+      }
+      #orders th:nth-child(4), #orders td:nth-child(4){
+        width: 180px;
+      }
+      #orders th:nth-child(5), #orders td:nth-child(5){
+        width: 180px;
+      }
+      #orders th:nth-child(6), #orders td:nth-child(6){
+        width: 80px;
+      }
+      #orders th:nth-child(7), #orders td:nth-child(7){
+        width: 90px;
+      }
+      #orders th:nth-child(8), #orders td:nth-child(8){
+        width: 90px;
+      }
+      #orders th:nth-child(9), #orders td:nth-child(9){
+        width: 90px;
+      }
+      #orders th:nth-child(10), #orders td:nth-child(10){
+        width: 180px;
+      }
+      #orders th:nth-child(11), #orders td:nth-child(11){
+        width: 150px;
+      }
+      /*Kit Table*/
+      #kits th:nth-child(1), #kits td:nth-child(1){
+        width: 100px;
+      }
+      #kits th:nth-child(2), #kits td:nth-child(2){
+        width: 80px;
+      }
+      #kits th:nth-child(3), #kits td:nth-child(3){
+        width: 90px;
+      }
+      /*Product Table*/
+      #products th:nth-child(1), #products td:nth-child(1){
+        width: 120px;
+      }
+      #products th:nth-child(2), #products td:nth-child(2){
+        width: 80px;
+      }
+      #products th:nth-child(3), #products td:nth-child(3){
+        width: 60px;
+      }
+      #products th:nth-child(4), #products td:nth-child(4){
+        width: 60px;
+      }
+      #products th:nth-child(5), #products td:nth-child(5){
+        width: 60px;
+      }
+      #products th:nth-child(6), #products td:nth-child(6){
+        width: 60px;
+      }
+      #products th:nth-child(7), #products td:nth-child(7){
+        width: 60px;
+      }
+      #products th:nth-child(8), #products td:nth-child(8){
+        width: 60px;
+      }
+      #products th:nth-child(9), #products td:nth-child(9){
+        width: 60px;
+      }
+      #products th:nth-child(10), #products td:nth-child(10){
+        width: 60px;
+      }
+      #products th:nth-child(11), #products td:nth-child(11){
+        width: 60px;
+      }
+      #products th:nth-child(12), #products td:nth-child(12){
+        width: 60px;
+      }
+      #products th:nth-child(13), #products td:nth-child(13){
+        width: 130px;
+      }
+      #products th:nth-child(14), #products td:nth-child(14){
+        width: 100px;
+      }
+      #products th:nth-child(15), #products td:nth-child(15){
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <header>
+      <div>
+        <a href="main.html" class="path">Cycles</a>:
+        <label for="win1">Orders</label>,
+        <label for="win2">Kits</label>,
+        <label for="win3">Products</label>
+      </div>
+      <div><span class="username">%username%</span>: <a class="logout" href="#">Logout</a></div>
+      <div class="drop">
+        <span tabindex="1" class="drop-btn">Menu</span>
+        <div class="dropdown-content">
+          <a href="#">Generate farm document</a>
+          <a href="#">Generate transport document</a>
+          <a href="#">Delete this cycle</a>
+          <a href="#">Delete record</a>
+          <a href="#">Create kit</a>
+          <a href="#">Create product</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="unique-scroll cycles">
+      <section class="cycles-container">
+        <div class="cycle">
+          <input type="radio" name="win" id="win1" hidden checked/>
+          <div class="win1 w-orders">
+            <section class="table-container">
+              <input id="js-search-field" class="search" placeholder="Search" value="" type="text"/>
+              <div class="unique-scroll">
+                <table id="orders">
+                  <thead>
+                    <tr>
+                      <th>Full Name</th>
+                      <th>Telephone</th>
+                      <th>Kit</th>
+                      <th>Products</th>
+                      <th>Adress</th>
+                      <th>Cost</th>
+                      <th>Is Billed</th>
+                      <th>Paid</th>
+                      <th>Pay Date</th>
+                      <th>Notes</th>
+                      <th>Order Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Dimas Karpus</td>
+                      <td>+38 (095) 892 3005</td>
+                      <td>Salat</td>
+                      <td>Salat: 4, Cucmber: 2, Tomato: 1</td>
+                      <td>Dnipro, Malomikhailovka, Gogola 18a</td>
+                      <td>540 uah</td>
+                      <td>Yes</td>
+                      <td>540 uah</td>
+                      <td>2019.07.21</td>
+                      <td>Some Notes Here</td>
+                      <td>Facebook</td>
+                    </tr>
+                    <tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr><tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>h</td><td>i</td><td>j</td><td>l</td></tr>
+
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td>Full Name</td>
+                      <td>Telephone</td>
+                      <td>Kit</td>
+                      <td>Products</td>
+                      <td>Adress</td>
+                      <td>Cost</td>
+                      <td>Is Billed</td>
+                      <td>Paid</td>
+                      <td>Pay Date</td>
+                      <td>Notes</td>
+                      <td>Order Source</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </section>
+          </div>
+          <input type="radio" name="win" id="win2" hidden/>
+          <div class="win2 container w-kits">
+            <div class="columns">
+              <div class="col-3">
+                <section class="table-container">
+                  <input id="js-search-field" class="search" placeholder="Search" value="" type="text"/>
+                  <div class="unique-scroll">
+                    <table id="kits">
+                      <thead>
+                          <tr>
+                            <th>Kit Name</th>
+                            <th>Type</th>
+                            <th>Price</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Salat</td>
+                          <td>Big</td>
+                          <td>245</td>
+                        </tr>
+                        <tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr><tr><td>a</td><td>b</td><td>c</td></tr>
+                      </tbody>
+                      <tfoot>
+                        <tr><td>Kit Name</td><td>Type</td><td>Price</td></tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </section>
+              </div>
+              <div class="col-9 unique-scroll content"><div class="container"><div class="columns">
+                <form action="#forms" class="form-horizontal col-7">
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-kit-name">Kit Name</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="js-kit-name" placeholder="Kit Name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-kit-price">Price</label>
+                    </div>
+                    <div class="col-2 col-sm-4">
+                      <label class="form-label">Price-pc</label>
+                    </div>
+                    <div class="col-7 col-sm-8">
+                      <input class="form-input" type="text" id="js-kit-price" placeholder="Price">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-kit-type">Type</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="js-kit-type" placeholder="Type">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-kit-size">Size</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="js-kit-size" placeholder="Size">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-kit-dimensions">Dimensions</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <input class="form-input" type="text" id="js-kit-dimensions" placeholder="Dimensions">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-kit-weight">Weight</label>
+                    </div>
+                    <div class="col-2 col-sm-12">
+                      <label class="form-label">Weight-pc</label>
+                    </div>
+                    <div class="col-7 col-sm-12">
+                      <input class="form-input" type="text" id="js-kit-weight" placeholder="Weight">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-kit-description">Description</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <textarea class="form-input" id="js-kit-description" placeholder="Description" rows="3"></textarea>
+                    </div>
+                  </div>
+                </form>
+                <div class="kits col-5">
+                  <div class="kit" style="margin-top: .5rem">
+                    <h6 class="columns">
+                      <div class="col-12" style="padding-bottom:.3rem">Kit creating</div>
+                      <progress class="progress col-12" value="25" max="100"></progress>
+                      <progress class="progress col-12" value="" max="100"></progress>
+                    </h6>
+                    <div class="products-container unique-scroll">
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                      <div class="product columns">
+                        <div class="col-5">Product Name</div>
+                        <div class="col-1">U-t</div>
+                        <div class="col-3">
+                          <select class="form-select">
+                              <option value="kit" title="kit">p-kt</option>
+                              <option value="wholesale" title="wholesale">p-wh</option>
+                              <option value="shop" title="shop">p-sh</option>
+                              <option value="restaurant" title="restaurant">p-rst</option>
+                            </select>
+                        </div>
+                        <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></div></div>
+            </div>
+          </div>
+          <input type="radio" name="win" id="win3" hidden/>
+          <div class="win3 container w-products">
+            <div class="columns">
+              <div class="col-5">
+                <section class="table-container">
+                  <input id="js-search-field" class="search" placeholder="Search" value="" type="text"/>
+                  <div class="unique-scroll">
+                    <table id="products">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Unit</th>
+                          <th title="Count start">c-st</th>
+                          <th title="Count wholesale">c-wh</th>
+                          <th title="Count shops">c-sh</th>
+                          <th title="Count start for kits">c-kt</th>
+                          <th title="Count from orders">c-or</th>
+                          <th title="Count left">c-lft</th>
+                          <th title="Price for wholesale">p-wh</th>
+                          <th title="Price for shops">p-sh</th>
+                          <th title="Price for restaurants">p-rst</th>
+                          <th title="Price for kits">p-kt</th>
+                          <th>Dimensions</th>
+                          <th>Weight</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Tomato</td>
+                          <td>kg</td>
+                          <td>100</td>
+                          <td>45</td>
+                          <td>35</td>
+                          <td>20</td>
+                          <td>19</td>
+                          <td>1</td>
+                          <td>6</td>
+                          <td>8</td>
+                          <td>9</td>
+                          <td>7</td>
+                          <td>3*4*5</td>
+                          <td>0.2</td>
+                          <td>A red object</td>
+                        </tr>
+                        <tr><td>a</td><td>b</td><td>c</td><td>d</td><td>e</td><td>f</td><td>g</td><td>g</td><td>g</td><td>g</td><td>g</td><td>g</td><td>g</td><td>g</td><td>g</td></tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>Name</td>
+                          <td>Unit</td>
+                          <td title="Count start">c-st</td>
+                          <td title="Count wholesale">c-wh</td>
+                          <td title="Count shops">c-sh</td>
+                          <td title="Count start for kits">c-kt</td>
+                          <td title="Count from orders">c-or</td>
+                          <td title="Count left">c-lft</td>
+                          <td title="Price for wholesale">p-wh</td>
+                          <td title="Price for shops">p-sh</td>
+                          <td title="Price for restaurants">p-rst</td>
+                          <td title="Price for kits">p-kt</td>
+                          <td>Dimensions</td>
+                          <td>Weight</td>
+                          <td>Description</td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </section>
+              </div>
+              <div class="col-7 content">
+                <form action="#forms" class="form-horizontal">
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-product-name">Product Name</label>
+                    </div>
+                    <div class="col-4 col-sm-12">
+                      <input class="form-input" type="text" id="js-product-name" placeholder="Product Name">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-product-unit">Unit</label>
+                    </div>
+                    <div class="col-4 col-sm-12">
+                      <input class="form-input" type="text" id="js-product-unit" placeholder="Unit">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-product-count">Count</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <table class="table-conatiner-fields" id="js-product-count-set">
+                        <tr>
+                          <td title="Count start">c-st</td>
+                          <td title="Count wholesale">c-wh</td>
+                          <td title="Count shops">c-sh</td>
+                          <td title="Count start for kits">c-kt</td>
+                          <td title="Count from orders">c-or</td>
+                          <td title="Count left">c-lft</td>
+                        </tr>
+                        <tr>
+                          <td title="Count start"><input data-type="c-st" class="form-input" value="0" type="number"/></td>
+                          <td title="Count wholesale"><input data-type="c-wh" class="form-input" value="0" type="number"/></td>
+                          <td title="Count shops"><input data-type="c-sh" class="form-input" value="0" type="number"/></td>
+                          <td title="Count start for kits"><input data-type="c-kt" class="form-input" value="0" type="number"/></td>
+                          <td title="Count from orders"><input data-type="c-or" class="form-input" value="0" type="number"/></td>
+                          <td title="Count left"><input data-type="c-lft" class="form-input" value="0" type="number"/></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-product-price">Price</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <table class="table-conatiner-fields" id="js-product-price-set">
+                        <tr>
+                          <td title="Price for wholesale">p-wh</td>
+                          <td title="Price for shops">p-sh</td>
+                          <td title="Price for restaurants">p-rst</td>
+                          <td title="Price for kits">p-kt</td>
+                        </tr>
+                        <tr>
+                          <td title="Price for wholesale"><input data-type="p-wh" class="form-input" value="0" type="number"/></td>
+                          <td title="Price for shops"><input data-type="p-sh" class="form-input" value="0" type="number"/></td>
+                          <td title="Price for restaurants"><input data-type="p-rst" class="form-input" value="0" type="number"/></td>
+                          <td title="Price for kits"><input data-type="p-kt" class="form-input" value="0" type="number"/></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-product-dimensions">Dimensions</label>
+                    </div>
+                    <div class="col-4 col-sm-12">
+                      <input class="form-input" type="text" id="js-product-dimensions" placeholder="Dimensions">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-product-weight">Weight</label>
+                    </div>
+                    <div class="col-4 col-sm-12">
+                      <input class="form-input" type="text" id="js-product-weight" placeholder="Weight">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-3 col-sm-12">
+                      <label class="form-label" for="js-product-description">Description</label>
+                    </div>
+                    <div class="col-9 col-sm-12">
+                      <textarea class="form-input" id="js-product-description" placeholder="Description" rows="3"></textarea>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="cycles-tab-container">
+        <div class="controll">
+          <div>
+            <input type="checkbox" name="create-cycle" id="create-cycle" hidden>
+            <label for="create-cycle"><i class="icon icon-plus"></i></label>
+            <div class="create-cycle">
+              <label for="create-cycle"><i class="icon icon-cross"></i></label>
+              <input type="text" name="new-cycle-name" value="" placeholder="Cycle Name">
+              <label for="create-cycle"><i class="icon icon-check"></i></label>
+            </div>
+          </div>
+          <div class="drop">
+            <span tabindex="1" class="drop-btn"><i class="icon icon-menu"></i></span>
+            <div class="dropup-content unique-scroll">
+              <label for="cycle-a">Cycle a</label>
+              <label for="cycle-b">Cycle b</label>
+              <label for="cycle-c">Cycle c</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+              <label for="cycle-#">Cycle #</label>
+            </div>
+          </div>
+        </div>
+        <div class="cycles">
+          <label for="cycle-a">Cycle a</label>
+          <label for="cycle-b">Cycle b</label>
+          <label for="cycle-c">Cycle c</label>
+          <label for="cycle-#">Cycle # a super big title for cycle</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+          <label for="cycle-#">Cycle #</label>
+        </div>
+        <div class="scroll-btns">
+          <i class="icon icon-arrow-left"></i>
+          <i class="icon icon-arrow-right"></i>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Kit Selcting</title>
+    <link rel="stylesheet" href="../assets/css/all.css">
+  </head>
+  <body>
+    <div class="kits">
+      <div class="kit">
+        <h6 class="columns">
+          <div class="col-9">Kit Name - Price - weight</div>
+          <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+          <progress class="progress col-12" value="25" max="100"></progress>
+          <progress class="progress col-12" value="" max="100"></progress>
+        </h6>
+        <div class="products-container unique-scroll">
+          <div class="product columns">
+            <div class="col-5">Product Name</div>
+            <div class="col-1">U-t</div>
+            <div class="col-3"> Price pc</div>
+            <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="kit">
+        <h6 class="columns">
+          <div class="col-3">weight</div>
+          <div class="col-3">Price pc</div>
+          <div class="col-3"><input placeholder="Price" class="form-input" type="number"/></div>
+          <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+          <progress class="progress col-12" value="25" max="100"></progress>
+          <progress class="progress col-12" value="" max="100"></progress>
+        </h6>
+        <div class="products-container unique-scroll">
+          <div class="product columns">
+            <div class="col-5">Product Name</div>
+            <div class="col-1">U-t</div>
+            <div class="col-3">
+              <select class="form-select">
+                  <option value="kit" title="kit">p-kt</option>
+                  <option value="wholesale" title="wholesale">p-wh</option>
+                  <option value="shop" title="shop">p-sh</option>
+                  <option value="restaurant" title="restaurant">p-rst</option>
+                </select>
+            </div>
+            <div class="col-3"><input placeholder="Count" class="form-input" type="number"/></div>
+          </div>
+        </div>
+      </div>
+      <div class="kit">
+        <span class="add-kit">Create individual kit</span>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+.customerProfile{
+  #customers tbody{
+    height: calc(var(--table-t-body-height) - var(--header-height) - var(--utilits-scroll-width));
+  }
+
+  .tabs-container .windows, .tabs-container .windows .window{
+    height: calc(var(--tabs-win-height) - var(--header-height));
+  }
+
+  .tabs-container .windows .window #customer_orders tbody{
+    height: calc(var(--tabs-win-height) - (100vh - var(--table-t-body-height)) - var(--header-height) - var(--form-btn-height) - var(--utilits-scroll-width));
+  }
+
+  .tabs-container .windows .window #customer_orders{
+    overflow-x: auto;
+  }
+
+  .top-border{
+    border-top: 2px dashed rgb(34, 34, 34);
+  }
+
+  .left-border{
+    border-left: 2px dashed rgb(34, 34, 34);
+  }
+}

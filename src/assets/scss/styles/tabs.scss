@@ -1,0 +1,68 @@
+@import "../mixins/utilits", "../variables/tabs.scss";
+
+.tabs-container{
+  position: relative;
+  color: var(--tabs-c);
+  border: var(--tabs-border-width) solid var(--tabs-border-color);
+
+  .tabs{
+    @include flex-container(row, nowrap, flex-start, stretch, stretch);
+    margin-top: var(--tabs-tab-margin-top);
+    user-select: none;
+
+    .tab{
+      margin: 0;
+      overflow: hidden;
+      flex: auto;
+      max-width: 200px;
+      background-color: var(--tabs-tab-bg-color);
+      color: var(--tabs-tab-c);
+      height: var(--tabs-tab-height);
+      line-height: var(--tabs-tab-height);
+      padding: 0 5px;
+      margin-left: 10px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+
+      &:hover{
+          background-color: var(--tabs-tab-hover-bg-color);
+      }
+
+      &:active{
+        background-color: var(--tabs-tab-active-bg-color);
+      }
+
+      & + .tab{
+        margin-left: 2px;
+      }
+    }
+  }
+
+  .windows{
+    border-top: var(--tabs-win-border-width) solid var(--tabs-win-border-color);
+    height: var(--tabs-win-height);
+    background-color: var(--tabs-win-bg-color);
+    width: 100%;
+
+    & > input{
+      display: none;
+    }
+
+    .window{
+      display: none;
+      height: var(--tabs-win-height);
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      .content{
+        color: var(--tabs-win-content);
+        padding: 5px;
+        margin: 10px 0;
+      }
+    }
+
+    input:checked + .window{
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@import "../../../bower_components/normalize.css/normalize.css",
+        "../../../bower_components/spectre.css/dist/spectre.min.css",
+        "../../../bower_components/spectre.css/dist/spectre-exp.min.css",
+        "../../../bower_components/spectre.css/dist/spectre-icons.min.css";
+
+body{
+  background-color: #090a09;
+  overflow: hidden;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}

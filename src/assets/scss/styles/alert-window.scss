@@ -1,0 +1,55 @@
+@import "../variables/alert-window.scss";
+
+input#open-alert-window:checked + .alert-window{
+  display: block;
+}
+
+input#open-alert-window{
+  display: none;
+}
+
+.alert-window{
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--alert-win-bg-color);
+  z-index: 1;
+  overflow: hidden;
+
+  & > div{
+    position: relative;
+    display: block;
+    width: 100vw;
+    height: var(--alert-win-content-height);
+    overflow: auto;
+    padding: var(--alert-win-content-padding);
+    color: var(--alert-win-content-c);
+  }
+
+  & > navbar{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: baseline;
+    padding: var(--alert-win-navbar-padding);
+    height: var(--alert-win-navbar-height);
+    width: 100vw;
+    color: var(--alert-win-navbar-c);
+
+    i{
+      margin: 0 5px;
+
+      &:hover{
+        box-shadow: 0px 0px 3px var(--alert-win-navbar-i-hover-shadow-color);
+      }
+
+      &:focus, &:active{
+        box-shadow: 0px 0px 3px var(--alert-win-navbar-i-triggered-shadow-color);
+      }
+    }
+  }
+}

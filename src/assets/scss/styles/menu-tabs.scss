@@ -1,0 +1,45 @@
+@import "../mixins/vendor_prefix", "../mixins/utilits", "../variables/menu-tabs.scss";
+
+.menu-tabs-container {
+  margin-bottom: 100px;
+  margin-top: 20px;
+  @include flex-container(row, wrap, space-evenly, flex-start, space-around);
+
+  .tab{
+    display: flex;
+    flex-wrap: nowrap;
+    border: 0;
+    align-items: center;
+    border-radius: 4px;
+    min-height: 70px;
+    background-color: var(--menu-tabs-tab-bg-color);
+    position: relative;
+    min-width: 180px;
+    width: auto;
+    max-width:  260px;
+    text-decoration: none;
+    margin-top: 20px;
+
+    &:hover{
+      box-shadow: 0px 0px 5px var(--menu-tabs-tab-bg-color-hover);
+    }
+
+    img{
+      align-self: flex-start;
+      width: 70px;
+      float: left;
+      border-radius: 4px;
+    }
+
+    h{
+      display: block;
+      color: var(--menu-tabs-h-c);
+      font-weight: bold;
+      font-size: 20px;
+      font-family: var(--menu-tabs-h-font-family);
+      padding: 5px;
+      text-align: center;
+      width: 100%;
+    }
+  }
+}

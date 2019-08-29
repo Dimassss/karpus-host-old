@@ -1,0 +1,19 @@
+:root{
+  /*--table-: ;*/
+  --table-search-c: #d0d0d7;
+  --table-search-bg: rgba(0, 0, 0, 0);
+  --table-search-font-size: 18px;
+  --table-search-padding: 5px;
+  --table-search-height: calc(var(--table-search-font-size) + 2*var(--table-search-padding));
+  --table-t-font-family: monospace;
+  --table-t-font-size: 14px;
+  --table-t-border: #1a1a1a;
+  --table-t-foot_head-bg-color: #131318;
+  --table-t-head-c: #9f0;
+  --table-t-head-height: 32px;
+  --table-t-head-font-size: 16px;
+  --table-t-body-c: #f62;
+  --table-t-foot-c: #a9f;
+  --table-t-foot-height: var(--table-t-head-height);
+  --table-t-body-height: calc(100vh - var(--table-search-height) - var(--table-t-head-height) - var(--table-t-foot-height));
+}

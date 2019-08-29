@@ -1,0 +1,74 @@
+@import "../mixins/vendor_prefix", "../mixins/utilits", "../variables/header.scss";
+
+header {
+  background-color: var(--header-bg-color);
+  padding: 0 var(--header-paddings);
+  color: var(--header-color);
+  font-size: var(--header-font-size);
+  line-height: var(--header-height);
+  user-select: none;
+  height: var(--header-height);
+  @include flex-container(row, wrap, space-between, stretch, stretch);
+
+  @media screen and (max-width: 500px){
+    font-size: var(--header-font-size-smaller500);
+  }
+
+  & > div:not(:last-child) {
+    min-width: 100px;
+  }
+
+  .username {
+    color: var(--header-c-username);
+  }
+
+  a, a:hover, a:active, a:focus, .drop-btn{
+    text-decoration: none;
+    color: var(--header-drop-btn-color);
+
+    &.logout {
+      color: var(--header-drop-btn-logout-color);
+
+      &:hover{
+        color: var(--header-drop-btn-logout-color-hover);
+      }
+    }
+
+    &:hover:not(.logout) {
+      color: var(--header-drop-btn-color-hover);
+    }
+  }
+
+  .drop{
+    .dropdown-content {
+      margin-top: 5px;
+      display: none;
+      position: absolute;
+      background-color: var(--header-drop-bg-color);
+      min-width: 160px;
+      max-width: 240px;
+      box-shadow: 1px 1px 4px 0px var(--header-drop-box-shadow-c);
+      z-index: 1;
+      right: 2px;
+
+      a{
+        display: block;
+        word-wrap: break-word;
+        border-bottom-left-radius: 5px;
+        border-left: 2px solid black;
+        padding-left: 3px;
+        margin: 2px;
+        margin-top: 6px;
+        color: var(--header-drop-c);
+
+        &:hover{
+          border-left: 2px solid var(--header-drop-c-hover);
+        }
+      }
+    }
+
+    .dropdown-content:hover, &:active .dropdown-content, .drop-btn:focus + .dropdown-content{
+      display: block;
+    }
+  }
+}
