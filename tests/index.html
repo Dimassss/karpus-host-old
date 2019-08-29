@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" style="background: #2a2a2a;">
+  <head>
+    <meta charset="utf-8">
+    <title>TESTS</title>
+  </head>
+  <body>
+    <!--JS sources-->
+    <!-- pattern <script src="../src/assets/js/" type="text/javascript"></script> -->
+    <script src="../src/assets/js/HTML_Input/Input.js" type="text/javascript"></script>
+    <script src="../src/assets/js/HTML_Output/Output.js" type="text/javascript"></script>
+
+    <!--JS tests-->
+    <!-- pattern <script src="" type="text/javascript"></script> -->
+    <script src="Test.js" type="text/javascript"></script>
+    <script src="unit/HTML_Input/Input.js" type="text/javascript"></script>
+    <script src="unit/HTML_Output/Output.js" type="text/javascript"></script>
+
+    <!--JS run tests-->
+    <script type="text/javascript">
+      console.log("%c===========================Run tests===============================", "color: green; font-size: 20px;");
+
+      console.log("%c------------------Initialize tests------------------\n\n", "color: orange");
+      var tests = [
+        {t: new HTML_Input__InputTest(), tn: "HTML_Input/Input.js"},
+        {t: new HTML_Output__OutputTest(), tn: "HTML_Output/Output.js"}
+      ]
+      var counter = 0,
+          passed = 0;
+
+      for(var i = 0; i < tests.length; i++){
+        console.log("%c Run test for " + tests[i].tn, "color: orange; padding: 5px 200px; border-top: 3px double #aa3;");
+        test = tests[i].t.run();
+        counter += test[0];
+        passed += test[1];
+      }
+
+      console.log("%c\n\n==========================Tests ended==============================", "color: green; font-size: 20px;");
+
+      console.log("%c=================== " + passed + " of " + counter + " test" + (counter <= 1?" has":"s have") + " passed ======================", "color: #aaa; font-size: 20px;");
+    </script>
+  </body>
+</html>
