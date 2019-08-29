@@ -1,0 +1,21 @@
+- empty = 0 || ""
+- do a precis for every column name to 5 signs
++ order -> give ability to select price policy for client (4 types [whole sale, shops, restaurants, kits])
++ cycle -> kit -> add column price in nav table
++ cycle -> add function -> delete cycle
++ cycle -> products -> count is a row-table (head is a name of count and body is a field) and count = [start, -wholesale, -shops, =start for kits, -from orders, =left]
++ cycle -> products -> price is like count and price = [whole sale, shops, restaurants, kits]
+- customer Profile -> telephone field -> only telephone value (without Vodafone), every new number begins with new line
+- alert-window -> field pay date-> type ukranian date, not USA
++ alert-window -> show final cost of the order and near this give a field to change the cost
++ kit ->
+    + 10 rows for kit products
+    + kit container can be scrolled
+    + kit container has 4 columns: name-fixed, unit-fixed, product-price-fixed, count
+    + in order-container you can create a new kit-custom-contaier by clicking on plus button
+    + kit header has its name, price and count, count is editable field
+    + on the top of the custome kit is progress bar for filling the kit box
+      + for custome kit is is progress bar for volume and wight of the kit and the wieght field
+        also price is editable by its filling automaticly
+        product price is editable by 4 types [whole sale, shops, restaurants, kits]
+-button enter for fields navigation+arrows
