@@ -1,4 +1,4 @@
-class HTML_Input__InputTest extends Test{
+class Inputs__InputTest extends Test{
   constructor(){
     super();
   }

@@ -7,14 +7,14 @@
   <body>
     <!--JS sources-->
     <!-- pattern <script src="../src/assets/js/" type="text/javascript"></script> -->
-    <script src="../src/assets/js/HTML_Input/Input.js" type="text/javascript"></script>
-    <script src="../src/assets/js/HTML_Output/Output.js" type="text/javascript"></script>
+    <script src="../src/assets/js/Inputs/Input.js" type="text/javascript"></script>
+    <script src="../src/assets/js/Outputs/Output.js" type="text/javascript"></script>
 
     <!--JS tests-->
     <!-- pattern <script src="" type="text/javascript"></script> -->
     <script src="Test.js" type="text/javascript"></script>
-    <script src="unit/HTML_Input/Input.js" type="text/javascript"></script>
-    <script src="unit/HTML_Output/Output.js" type="text/javascript"></script>
+    <script src="unit/Inputs/Input.js" type="text/javascript"></script>
+    <script src="unit/Outputs/Output.js" type="text/javascript"></script>
 
     <!--JS run tests-->
     <script type="text/javascript">
@@ -22,8 +22,8 @@
 
       console.log("%c------------------Initialize tests------------------\n\n", "color: orange");
       var tests = [
-        {t: new HTML_Input__InputTest(), tn: "HTML_Input/Input.js"},
-        {t: new HTML_Output__OutputTest(), tn: "HTML_Output/Output.js"}
+        {t: new Inputs__InputTest(), tn: "Inputs/Input.js"},
+        {t: new Outputs__OutputTest(), tn: "Outputs/Output.js"}
       ]
       var counter = 0,
           passed = 0;

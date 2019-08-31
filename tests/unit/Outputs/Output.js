@@ -1,4 +1,4 @@
-class HTML_Output__OutputTest extends Test{
+class Outputs__OutputTest extends Test{
   constructor(){
     super();
   }
