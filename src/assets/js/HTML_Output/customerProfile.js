@@ -1,5 +1,6 @@
 class CustomerProfile extends Output{
   constructor(){
+    if(g["HTML_Output"]["customerProfile"]) return g["HTML_Ouput"]["customerProfile"];
     const _this = this;
     const outputs = [
                       ["WP_Tbl", ".customerProfile table#customers", "e1"],
@@ -252,5 +253,6 @@ class CustomerProfile extends Output{
                         }
                       }
     super(editors, outputs);
+    return g["HTML_Output"]["customerProfile"] = this;
   }
 }
