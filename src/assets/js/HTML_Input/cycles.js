@@ -3,7 +3,7 @@
 @desc is needed to get data from Cycles page
 */
 
-class Cycles extends Input{
+class CyclesInput extends Input{
   constructor(){
     var q = this.q, qa = this.qa;
     if(g["HTML_Input"]["cycles"]) return g["HTML_Input"]["cycles"];

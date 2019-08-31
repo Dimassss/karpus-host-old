@@ -2,7 +2,7 @@
 @class CustomerProfile
 @desc is needed to get data from CustomerProfile page
 */
-class CustomerProfile extends Input{
+class CustomerProfileInput extends Input{
   constructor(){
     var q = this.q, qa = this.qa;
     if(g["HTML_Input"]["customerProfile"]) return g["HTML_Input"]["customerProfile"];

@@ -1,4 +1,4 @@
-class Cycles extends Output{
+class CyclesOutput extends Output{
   constructor(){
     if(g["HTML_Output"]["cycles"]) return g["HTML_Ouput"]["cycles"];
     const outputs = [

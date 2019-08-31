@@ -1,4 +1,4 @@
-class CustomerProfile extends Output{
+class CustomerProfileOutput extends Output{
   constructor(){
     if(g["HTML_Output"]["customerProfile"]) return g["HTML_Ouput"]["customerProfile"];
     const _this = this;
