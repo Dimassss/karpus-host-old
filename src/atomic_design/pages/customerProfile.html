@@ -302,8 +302,8 @@
                 <div class="input-group">
                   <input class="form-input js-isArray" type="text" id="js-addresses" list="addresses" placeholder="Address">
                   <datalist id="addresses">
-                    <option value="val1">Val1</option>
-                    <option value="val2">Val2</option>
+                    <option value="val1">Text1</option>
+                    <option value="val2">Text2</option>
                   </datalist>
                 </div>
                 <div class="input-group">
@@ -355,14 +355,16 @@
               </div>
               <div class="col-3 col-sm-12">
                 <div class="input-group">
-                  <input class="form-input js-isArray" id="js-order-paid" placeholder="Paid" rows="3"/>
-                  <input class="form-input js-isArray" type="date" id="js-order-pay-date" placeholder="Date">
+                  <input class="form-input js-isArray" id="js-order-paid" placeholder="Paid" data-array="js-order-pay-container" data-index="0"/>
+                  <input class="form-input js-isArray" type="date" id="js-order-pay-date" placeholder="Date" data-array="js-order-pay-container" data-index="1">
                   <span class="btn input-group-btn">Add</span>
                 </div>
-                <span class="chip">
-                  <chip>17/08/2019 - 400uah</chip>
-                  <a href="#" class="btn btn-clear" id="closeMath.rand()" aria-label="Close" role="button"></a>
-                </span>
+                <div class="js-order-pay-container">
+                  <span class="chip">
+                    <chip>17/08/2019 - 400uah</chip>
+                    <a href="#" class="btn btn-clear" id="closeMath.rand()" aria-label="Close" role="button"></a>
+                  </span>
+                </div>
               </div>
             </div>
             <div class="form-group">

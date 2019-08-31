@@ -30,14 +30,22 @@ class Cycles extends Input{
                     ["pr_d", ".cycles-container .w-products input#js-product-description", "v", "t1"]
                   ];
     const takes = {
-                    //get string from input or textarea
                     "t1": (s, v, r) => {
+                      /**
+                        @desc get string from input or textarea
+                        @return {String}
+                      */
+
                       const a = r(q(s).value);
                       if(v(a)) return a;
                       else throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"};
                     },
-                    //get kit object from .alert-window
                     "t2": (s, v, r) => {
+                      /**
+                        @desc get kit object from .alert-window
+                        @return {Object} => {pc_price, pc_weight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}
+                      */
+
                       var kit = q(s);
                       var pc_price = 0, pc_weight = 0, products = [], pr_bar = [];
 
@@ -49,7 +57,13 @@ class Cycles extends Input{
 
                         p_name = r(product_html.querySelector("div:nth-child(1)").innerHTML);
                         p_unit = r(product_html.querySelector("div:nth-child(2)").innerHTML);
-                        p_price = parseFloat(r(product_html.querySelector("div select").value));
+                        p_price = (() => {
+                                    var select = product_html.querySelector("div:nth-child(3) select");
+                                    if(!select) return undefined;
+                                    var res = {selected: select.value};
+                                    select.options.forEach(op => res[op.value] = parseFloat(op.innerText));
+                                    return Object.assign({}, res);
+                                  })() | parseFloat(r(product_html.querySelector("div:nth-child(3)").innerText));
                         p_count = parseFloat(r(product_html.querySelector("div input[placeholder='Count']").value));
                         p_weight = parseFloat(r(product_html.querySelector("div:nth-child(2)").getAttribute("data-weight")));
 
@@ -61,20 +75,32 @@ class Cycles extends Input{
 
                        return Object.assign({}, {pc_price:pc_price, pc_weight: pc_weight, products: products, progress_bars: pr_bar});
                     },
-                    //get float from input
                     "t3": (s, v, r) => {
+                      /**
+                        @desc get float from input
+                        @return {Float}
+                      */
+
                       return parseFloat(r(q(s)));
                     },
-                    //get array of floats from set of inputs
                     "t4": (s, v, r) => {
+                      /**
+                        @desc get array of floats from set of inputs
+                        @return {Object<String: Float>} => {"data-type": "value"}
+                      */
+
                       const a = {};
                       qa(s).forEach(p => {
-                        a[r(p.getAttribute("data-type"))] = r(p.value);
+                        a[r(p.getAttribute("data-type"))] = parseFloat(r(p.value));
                       });
                       return a;
                     },
-                    //get array of 3 floats from input
                     "t5": (s, v, r) => {
+                      /**
+                        @desc get array of 3 floats from input
+                        @return {Array<Float>} => [Float, Float, Float]
+                      */
+
                       const a = [], b = r(q(s)).split(" ");
                       a[0] = parseFloat(b[0]);
                       a[1] = parseFloat(b[1]);

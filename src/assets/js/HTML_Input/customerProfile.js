@@ -14,7 +14,7 @@ class CustomerProfile extends Input{
 
       count = parseInt(r(kit.querySelector("h6 input[placeholder='Count']")));
 
-      name = r(kit.getAttribute("data-kit-name"));
+      name = r(kit.getAttribute("data-name"));
       price = parseFloat(r(kit.querySelector("h6 input[placeholder='Price']").value | kit.querySelector("h6 div:nth-child(2)").innerHTML));
       weight = parseFloat(r(kit.querySelector("h6 .weight").innerHTML));
       pr_bar = [parseInt(kit.querySelector("h6 progress:first-child").value), parseInt(kit.querySelector("h6 progress:nth-child(2)").value)];
@@ -25,13 +25,19 @@ class CustomerProfile extends Input{
 
         p_name = r(product_html.querySelector("div:nth-child(1)").innerHTML);
         p_unit = r(product_html.querySelector("div:nth-child(2)").innerHTML);
-        p_price = parseFloat(r(product_html.querySelector("div select").value));
+        p_price = (() => {
+                    var select = product_html.querySelector("div:nth-child(3) select");
+                    if(!select) return undefined;
+                    var res = {selected: select.value};
+                    select.options.forEach(op => res[op.value] = parseFloat(op.innerText));
+                    return Object.assign({}, res);
+                  })() | parseFloat(r(product_html.querySelector("div:nth-child(3)").innerText));
         p_count = parseFloat(r(product_html.querySelector("div input[placeholder='Count']").value));
         p_weight = parseFloat(r(product_html.querySelector("div:nth-child(2)").getAttribute("data-weight")));
 
         products[products.length] = {name: p_name, unit: p_unit, price: p_price, count: p_count, weight: p_weight};
 
-        pc_price += p_price;
+        pc_price += typeof p_price == "object"?p_price[p_price.selected]: p_price;
         pc_weight += p_weight;
       }
 
@@ -66,16 +72,30 @@ class CustomerProfile extends Input{
                     ["AW_an_Tel", ".alert-window input#js-another-telephone", "v", "t1"]
                   ];
     const takes = {
-                    //get string from input or textarea
                     "t1": (s, v, r) => {
+                      /**
+                        @desc get string from input or textarea
+                        @return {String}
+                      */
+
                       const a = r(q(s).value);
                       if(v(a)) return a;
                       else throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"};
                     },
-                    //get boolean from input value
-                    "t2": (s, v, r) => r(q(s).checked),
-                    //get kits object-array with kits objects from .alert-window
+                    "t2": (s, v, r) => {
+                      /**
+                        @desc get boolean from input value
+                        @return {Boolean}
+                      */
+
+                      return r(q(s).checked);
+                    },
                     "t3": (s, v, r) => {
+                      /**
+                        @desc get kits object-array with kits objects from .alert-window
+                        @return {Object} => {kit_name:{count, price, pc_price, weight, pc_weight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}}
+                      */
+
                       const kits = {};
                       const kits_html = qa(s);
                       for(var i = 0; i < kits_html.length; i++){
@@ -86,10 +106,17 @@ class CustomerProfile extends Input{
 
                       return kits;
                     },
-                    //get kit object from .alert-window
+                    /**
+                      @desc get kit object from .alert-window
+                      @return {Object} => {pc_price, pc_weight, products: [{name, unit, price, count, weight}], progress_bars: [weight, volume]}
+                    */
                     "t4": take_getKit,
-                    //get string and array of string from input and its array
                     "t5": (s, v, r) => {
+                      /**
+                        @desc get string and array of string from input and its array
+                        @return {Array<String>} => ["val1", "val2"] where first element of array is from input and other from html-array
+                      */
+
                       const a = r(q(s).value);
                       if(v(a)) return a;
                       else throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"};
@@ -98,8 +125,12 @@ class CustomerProfile extends Input{
                       const ar = q(s).parentNode.querySelectorAll("." + id + "-container .chip." + id.substr(0, -1) + " chip").map(el => r(el.innerHTML));
                       return [a, ...ar];
                     },
-                    //get string and array of array of 2 strings from inputs and their arrays
                     "t6": (s, v, r) => {
+                      /**
+                        @desc get string and array of array of 2 strings from inputs and their arrays
+                        @return {Array<Array<String>>} => [["val1", "val2"],["val1", "val2"]] where first element of array is from input and other from html-array
+                      */
+
                       const a1 = r(qa(s)[0].value), a2 = r(qa(s)[1].value), b = [];
                       if(v(a)) return a;
                       else throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"};
