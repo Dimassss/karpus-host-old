@@ -1,5 +1,5 @@
 call npm init
-call npm install gulp
+call npm install -g gulp
 call npm install gulp-autoprefixer
 call npm install gulp-clean-css
 call npm install browser-sync
@@ -12,6 +12,7 @@ call npm install gulp-rigger
 call npm install gulp-watch
 call npm install gulp-change
 call npm install rimraf
+call npm install -g bower
 call bower init
 call bower install normalize.css
 call bower install spectre.css
