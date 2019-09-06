@@ -103,7 +103,7 @@ class Model{
     if(k[Object.keys(k)[0]]) websql.process({
       "sql": `DELETE FROM ${table} WHERE ${Object.keys(k)[0]} = ${k[Object.keys(k)[0]]}`,
       "data": [k[Object.keys(k)[0]]],
-      "success" () => delete _this;
+      "success": () => {_this = undefined}
     });
   }
 }
