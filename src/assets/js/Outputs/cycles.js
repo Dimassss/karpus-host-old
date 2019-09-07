@@ -1,6 +1,6 @@
 class CyclesOutput extends Output{
   constructor(){
-    if(g["HTML_Output"]["cycles"]) return g["HTML_Ouput"]["cycles"];
+    if(g["Output"]["cycles"]) return g["Ouput"]["cycles"];
     const outputs = [
                       ["C_ACC", ".cycles-tab-container .controll input[name='new-cycle-name']", "e2"], //Cycle controll => add/change cycle
                       ["C_CL1", ".cycles-tab-container .cycles label", "e6"], //Cycle cycles => cycles list1
@@ -178,6 +178,6 @@ class CyclesOutput extends Output{
                       }
                     };
     super(editors, outputs);
-    return g["HTML_Output"]["cycles"] = this;
+    return g["Output"]["cycles"] = this;
   }
 }

@@ -5,7 +5,7 @@
 class CustomerProfileInput extends Input{
   constructor(){
     var q = this.q, qa = this.qa;
-    if(g["HTML_Input"]["customerProfile"]) return g["HTML_Input"]["customerProfile"];
+    if(g["Input"]["customerProfile"]) return g["Input"]["customerProfile"];
 
     function take_getKit(s, v, r, kit){
       if(!kit) var kit = q(s);
@@ -144,6 +144,6 @@ class CustomerProfileInput extends Input{
 
     super(takes, validators, inputs);
 
-    return g["HTML_Input"]["customerProfile"] = this;
+    return g["Input"]["customerProfile"] = this;
   }
 }

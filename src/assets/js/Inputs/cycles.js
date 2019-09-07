@@ -6,7 +6,7 @@
 class CyclesInput extends Input{
   constructor(){
     var q = this.q, qa = this.qa;
-    if(g["HTML_Input"]["cycles"]) return g["HTML_Input"]["cycles"];
+    if(g["Input"]["cycles"]) return g["Input"]["cycles"];
 
     const inputs = [
                     ["add_c", ".cycle-tab-container .controll input#create-cycle", "v", "t1"],
@@ -112,6 +112,6 @@ class CyclesInput extends Input{
 
     super(takes, validators, inputs);
 
-    return g["HTML_Input"]["cycles"] = this;
+    return g["Input"]["cycles"] = this;
   }
 }
