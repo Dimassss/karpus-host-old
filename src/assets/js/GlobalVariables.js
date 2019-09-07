@@ -1,1 +1,1 @@
-const g = {HTML_Input:{}};
+const g = {Input:{}, Output:{}, Storage:{}};
