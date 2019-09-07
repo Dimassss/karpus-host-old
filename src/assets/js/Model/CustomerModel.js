@@ -4,6 +4,6 @@
 */
 class CustomerModel extends Model{
   constructor(k){
-    super({id: k}, "CUSTOMERS", {});
+    super();
   }
 }
