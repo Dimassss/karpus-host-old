@@ -69,12 +69,12 @@ class EventHandler{
 
   bind(target, on, f, data){
     var _this = this;
-    _this.q(target).addEventListener(on,
+    Array.from(_this.qa(target)).forEach(el => el.addEventListener(on,
                                     e => {
                                       e.stopPropagation();
                                       f(e, data);
                                     },
-                                    false);
+                                    false));
   }
 
   q(s){
