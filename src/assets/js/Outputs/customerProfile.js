@@ -4,6 +4,9 @@ class CustomerProfileOutput extends Output{
     const _this = this;
     const outputs = [
                       ["WP_Tbl", ".customerProfile table#customers", "e1"],
+                      ["WP_Tbl_CD", ".customerProfile table#customers tr[data-id=?]", "e11"],
+                      ["WP_Tbl_OD", ".customerProfile table#customer_orders tr[data-id=?]", "e11"],
+                      ["WP_ID", ".customerProfile", "e10"],
                       ["WP_Nm", ".customerProfile input#js-full-name", "e2"],
                       ["WP_Tel", ".customerProfile input#js-telephones", "e3"],
                       ["WP_Adr", ".customerProfile input#js-adresses", "e3"],
@@ -12,7 +15,9 @@ class CustomerProfileOutput extends Output{
                       ["WP_Pr", ".customerProfile textarea#js-preferences", "e2"],
                       ["WP_SM", ".customerProfile input#js-social-media", "e3"],
                       ["WP_Act", ".customerProfile input#js-activity", "e2"],
-                      ["Wo_Tbl", ".customerProfile table#customer_orders", "e1"],
+                      ["WO_Tbl", ".customerProfile table#customer_orders", "e1"],
+                      ["AW_ID", ".alert-window", "e10"],
+                      ["AW_Nm", ".alert-window h2:first-child", "e9"],
                       ["AW_Tel", ".alert-window input#js-telephones", "e4"],
                       ["AW_SM", ".alert-window input#js-social-media", "e4"],
                       ["AW_ON", ".alert-window textarea#js-order-notes", "e2"],
@@ -186,11 +191,12 @@ class CustomerProfileOutput extends Output{
                         for(var i = 0; i < d.length; i++){
                           list += `<option value="${d[i][0]}"${i==1?" selected":""}>${d[i][1]}</option>`;
                         }
+                        this.q(s).innerHTML = list;
                       },
                       "e8": (s, d) => {
                         /**
                           @desc paste needed html-kit-containers or edit conetent of existed kit-containers
-                          @param d {Object} => {kit_name:{count, price, pc_price, weight, pc_weight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}}
+                          @param d {Object} => {kit_name:{count, price, pcPrice, weight, pcWeight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}}
                           @do take every kit-object from %d variable and generate from this html. Than set this html to outerHTML of previous container or create new
                           @note data-name="ind-%id%" means induvidual kit, where data-name=kit_name
                         */
@@ -201,8 +207,8 @@ class CustomerProfileOutput extends Output{
                                 <h6 class="columns">
                                   <div class="col-9">${k} - ${d[k].price} - ${d[k].weight}</div>
                                   <div class="col-3"><input placeholder="Count" class="form-input" type="number" value="${d[k].count}" min="0" step="1"/></div>
-                                  <progress class="progress col-12" value="${d[k].progress_bars[0]}" min="0" max="100"></progress>
-                                  <progress class="progress col-12" value="${d[k].progress_bars[1]}" min="0" max="100"></progress>
+                                  <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
+                                  <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
                                 </h6>
                                 <div class="products-container unique-scroll">
                                   ${(ps => {
@@ -220,11 +226,11 @@ class CustomerProfileOutput extends Output{
                           else r = `<div class="kit" data-name="${k.toLowerCase()}">
                                       <h6 class="columns">
                                         <div class="col-3">${d[k].weight} kg</div>
-                                        <div class="col-3">${d[k].pc_price}</div>
+                                        <div class="col-3">${d[k].pcPrice}</div>
                                         <div class="col-3"><input value="${d[k].price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
                                         <div class="col-3"><input value="${d[k].count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
-                                        <progress class="progress col-12" value="${d[k].progress_bars[0]}" min="0" max="100"></progress>
-                                        <progress class="progress col-12" value="${d[k].progress_bars[1]}" min="0" max="100"></progress>
+                                        <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
+                                        <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
                                       </h6>
                                       <div class="products-container unique-scroll">
                                         ${(ps => {
@@ -250,8 +256,17 @@ class CustomerProfileOutput extends Output{
                             if(kit) kit.outerHTML = r
                             else _this.q(`${s} span.add-kit`).parentNode.insertAdjacentHTML("beforebegin", r);
                           }
-                        }
+                        },
+                      "e9": (s, d) => {
+                        this.q(s).innerHTML = d;
+                      },
+                      "e10": (s, d) => {
+                        this.q(s).setAttribute("data-id", d);
+                      },
+                      "e11": (s, d) => {
+                        this.q(s.replace("?", d)).outerHTML = "";
                       }
+                    }
     super(editors, outputs);
     return g["Output"]["customerProfile"] = this;
   }

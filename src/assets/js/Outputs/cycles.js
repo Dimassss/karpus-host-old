@@ -2,6 +2,7 @@ class CyclesOutput extends Output{
   constructor(){
     if(g["Output"]["cycles"]) return g["Ouput"]["cycles"];
     const outputs = [
+                      ["C_ID", "section.cycles-container .cycle", "e7"],
                       ["C_ACC", ".cycles-tab-container .controll input[name='new-cycle-name']", "e2"], //Cycle controll => add/change cycle
                       ["C_CL1", ".cycles-tab-container .cycles label", "e6"], //Cycle cycles => cycles list1
                       ["C_CL2", ".cycles-tab-container .controll .drop .dropup-content label", "e6"], //Cycle controll => cycle list2
@@ -21,8 +22,8 @@ class CyclesOutput extends Output{
                       ["P_Nm", ".w-products .content form input#js-product-name", "e2"], //Products => product name
                       ["P_Unt", ".w-products .content form input#js-product-unit", "e2"], //Products => product unit
                       ["P_C", ".w-products .content form input#js-product-count-set", "e3"], //Products => product count set
-                      ["P_Pr", ".w-products .content form input#js-product-price-set", "e3"], //Products => product price set
-                      ["P_Dm", ".w-products .content form input#js-product-dimensions", "e5"], //Products => product dimensions
+                      ["P_Pr", ".w-products .content form table#js-product-price-set", "e3"], //Products => product price set
+                      ["P_Dm", ".w-products .content form table#js-product-dimensions", "e5"], //Products => product dimensions
                       ["P_W", ".w-products .content form input#js-product-weight", "e2"], //Products => product weight
                       ["P_D", ".w-products .content form textarea#js-product-description", "e2"], //Products => description
                     ];
@@ -117,22 +118,27 @@ class CyclesOutput extends Output{
                           @param d {Object<String:String|Float>} => d = {field_name: value}
                           @do take %d variable and than paste every value into its field
                         */
+                        var _this = this;
+
+                        for(var k in d){
+                            _this.q(`${s} input[data-type='${k}']`).value = d[k];
+                        }
                       },
                       "e4": (s, d) => {
                         /**
                           @desc paste needed html-kit-containers or edit conetent of existed kit-containers
-                          @param d {Object} => {count, price, pc_price, weight, pc_weight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}
+                          @param d {Object} => {count, price, pcPrice, weight, pcWeight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progressBars: [weight, volume]}
                           @do take every kit-object from %d variable and generate from this html. Than set this html to outerHTML of previous container or create new
                           @note data-name="ind-%id%" means induvidual kit, where data-name=kit_name
                         */
                         _this.q(s).outerHTML = `<div class="kit"">
                                   <h6 class="columns">
                                     <div class="col-3">${d.weight} kg</div>
-                                    <div class="col-3">${d.pc_price}</div>
+                                    <div class="col-3">${d.pcPrice}</div>
                                     <div class="col-3"><input value="${d.price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
                                     <div class="col-3"><input value="${d.count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
-                                    <progress class="progress col-12" value="${d.progress_bars[0]}" min="0" max="100"></progress>
-                                    <progress class="progress col-12" value="${d.progress_bars[1]}" min="0" max="100"></progress>
+                                    <progress class="progress col-12" value="${d.progressBars[0]}" min="0" max="100"></progress>
+                                    <progress class="progress col-12" value="${d.progressBars[1]}" min="0" max="100"></progress>
                                   </h6>
                                   <div class="products-container unique-scroll">
                                     ${(ps => {
@@ -175,6 +181,9 @@ class CyclesOutput extends Output{
                           if(a) a.innerHTML = d[c];
                           else _this.q(s.substr(0, -5)).insertAdjacentHTML("beforeend", `<label for="cycle-${c}">${d[c]}</label>`);
                         }
+                      },
+                      "e7": (s, d) => {
+                        this.q(s).setAttribute("data-id", d);
                       }
                     };
     super(editors, outputs);
