@@ -1,9 +1,12 @@
 /**
 @class ProductModel
-@param {Number} k => is primary key of record in db. By default this is number so k is number
+@params
+  @param {Object} data => all fields to set in current object
+
+@constructor {id, cycleID, name, unit, price:{kit, wholesale, shop, restaurant}, count, dimensions, weight, description}
 */
 class ProductModel extends Model{
-  constructor(k){
-    super();
+  constructor(data){
+    super(data);
   }
 }

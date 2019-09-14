@@ -1,9 +1,14 @@
 /**
 @class CustomerModel
-@param {Number} k => is primary key of record in db. By default this is number so k is number
+@params
+  @param {Object} data => all fields to set in current object
+
+@constructor {id: 0, fullName:"", telephones: [], adresses: [], email: "", notes: "", preferences: "", socialMedias: [], activity: ""}
+
+
 */
 class CustomerModel extends Model{
-  constructor(k){
-    super();
+  constructor(data){
+    super(data);
   }
 }

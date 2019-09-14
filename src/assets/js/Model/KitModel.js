@@ -1,9 +1,12 @@
 /**
 @class KitModel
-@param {Number} k => is primary key of record in db. By default this is number so k is number
+@params
+  @param {Object} data => all fields to set in current object
+
+@constructor {id, cycleID, name, count, price, pcPrice, weight, pcWeight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}
 */
 class KitModel extends Model{
-  constructor(k){
-    super();
+  constructor(data){
+    super(data);
   }
 }
