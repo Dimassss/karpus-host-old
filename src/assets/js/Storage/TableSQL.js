@@ -6,7 +6,7 @@
   @param {Object} v => HashMap of column names in object and sql string to create this column. Example: v = {name: "	`name` VARCHAR(80) NOT NULL"}
                   v = {columnName: sqlString}
 @methods
-  @method load
+  @method l
     @param {Array} keys => array of primary keys in object
     @do delete current object from db
     @return {Array<Object>} => array of object from db
@@ -17,7 +17,7 @@
   @method del
     @param {Array} keys => array of primary keys in object
     @do delete current object from db
-  @method select
+  @method sl
     @param {String} where => where sql query. Example where = "id = 8, name=`Vasa`"
     @param {Array} data => array of values to replace "?" in @where string
     @return {Array<Object>} => return selected objects from db
@@ -36,11 +36,11 @@ class TableSQL{
         columns += v[c][2] + ",";
       }
       return columns;
-    })()} PRIMARY KEY (\`${k}\`))`);
+    })()}) PRIMARY KEY (\`${k}\`))`);
 
   }
 
-  load(keys){
+  l(keys){
     var records = [];
     for(var i = 0; i< keys.length; i++) if(!k[1]){
       websql.process({
@@ -114,7 +114,7 @@ class TableSQL{
     });
   }
 
-  select(where, data){
+  sl(where, data){
     var records = [];
     for(var i = 0; i< keys.length; i++) if(!k[1]){
       websql.process({
