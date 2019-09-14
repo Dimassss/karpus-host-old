@@ -10,7 +10,7 @@ class CustomerProfileInput extends Input{
     function take_getKit(s, v, r, kit){
       if(!kit) var kit = q(s);
 
-      var name, price, pc_price = 0, weight, pc_weight = 0, count, products = [], pr_bar = [];
+      var name, price, pcPrice = 0, weight, pcWeight = 0, count, products = [], pr_bar = [];
 
       count = parseInt(r(kit.querySelector("h6 input[placeholder='Count']")));
 
@@ -37,15 +37,19 @@ class CustomerProfileInput extends Input{
 
         products[products.length] = {name: p_name, unit: p_unit, price: p_price, count: p_count, weight: p_weight};
 
-        pc_price += typeof p_price == "object"?p_price[p_price.selected]: p_price;
-        pc_weight += p_weight;
+        pcPrice += typeof p_price == "object"?p_price[p_price.selected]: p_price;
+        pcWeight += p_weight;
       }
 
-       return Object.assign({}, {price: price, pc_price:pc_price, weight: weight, pc_weight: pc_weight, count: count, products: products, progress_bars: pr_bar});
+       return Object.assign({}, {price: price, pcPrice:pcPrice, weight: weight, pcWeight: pcWeight, count: count, products: products, progressBars: pr_bar});
     }
 
     const inputs = [
+                    ["Tbl_Slct", ".selected", "v", "t9"],
                     ["NT_SF", ".customerProfile input[name='js-customer-nav-table-search]", "v", "t1"],
+                    ["WP_ID", ".customerProfile", "v", "t7"],
+                    ["WP_SC", ".customerProfile table#customers tr.selected", "t8"],
+                    ["WP_SC", ".customerProfile table#customer_orders tr.selected", "t8"],
                     ["WP_Nm", ".customerProfile input#js-full-name", "v", "t1"],
                     ["WP_Tel", ".customerProfile input#js-telephones", "v", "t5"],
                     ["WP_Adr", ".customerProfile input#js-adresses", "v", "t5"],
@@ -55,6 +59,7 @@ class CustomerProfileInput extends Input{
                     ["WP_SM", ".customerProfile input#js-social-media", "v", "t5"],
                     ["WP_Act", ".customerProfile input#js-activity", "v", "t1"],
                     ["WO_SF", ".customerProfile input[name='js-customer-order-table-search']", "v", "t1"],
+                    ["AW_ID", ".alert-window", "v", "t7"],
                     ["AW_Tel", ".alert-window input#js-telephones", "v", "t5"],
                     ["AW_SM", ".alert-window input#js-social-media", "v", "t5"],
                     ["AW_ON", ".alert-window textarea#js-order-notes", "v", "t1"],
@@ -64,7 +69,7 @@ class CustomerProfileInput extends Input{
                     ["AW_Bill", ".alert-window input#js-is-billed", "v", "t2"],
                     ["AW_Pay", ".alert-window input#js-order-paid", "v", "t1"],
                     ["AW_P", ".alert-window input#js-order-pay-date, .alert-window input#js-order-paid", "v", "t6"],
-                    ["AW_PD", ".alert-window input#js-order-pay-date", "v", "t1"]
+                    ["AW_PD", ".alert-window input#js-order-pay-date", "v", "t1"],
                     ["AW_c_id", ".alert-window select#js-cycle", "v", "t1"],
                     ["AW_kits", ".alert-window .kits .kit:not(.add)", "v", "t3"],
                     ["AW_n_ths", ".alert-window input#js-is-not-this", "v", "t2"],
@@ -93,7 +98,7 @@ class CustomerProfileInput extends Input{
                     "t3": (s, v, r) => {
                       /**
                         @desc get kits object-array with kits objects from .alert-window
-                        @return {Object} => {kit_name:{count, price, pc_price, weight, pc_weight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}}
+                        @return {Object} => {kit_name:{count, price, pcPrice, weight, pcWeight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}}
                       */
 
                       const kits = {};
@@ -108,7 +113,7 @@ class CustomerProfileInput extends Input{
                     },
                     /**
                       @desc get kit object from .alert-window
-                      @return {Object} => {pc_price, pc_weight, products: [{name, unit, price, count, weight}], progress_bars: [weight, volume]}
+                      @return {Object} => {pcPrice, pcWeight, products: [{name, unit, price, count, weight}], progress_bars: [weight, volume]}
                     */
                     "t4": take_getKit,
                     "t5": (s, v, r) => {
@@ -138,6 +143,16 @@ class CustomerProfileInput extends Input{
                       let id = q(s).getAttribute("id");
                       const ar = q(s).parentNode.querySelectorAll(".chip chip").map(el => r(el.innerHTML).split(" - "));
                       return [[a1, a2], ...ar];
+                    },
+                    "t7": (s, v, r) => {
+                      return parseInt(r(this.q(s).getAttribute("data-id")));
+                    },
+                    "t8": (s, v, r) => {
+                      return this.q(s);
+                    },
+                    "t9": (s, v, r) => {
+                      let k = this.q(s);
+                      return k?[k.parentNode.parentNode.getAttribute("id"), parseInt(k.getAttribute("data-id")), k]:[];
                     }
                   };
     const validators = {"v": () => true}

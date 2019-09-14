@@ -9,6 +9,8 @@ class CyclesInput extends Input{
     if(g["Input"]["cycles"]) return g["Input"]["cycles"];
 
     const inputs = [
+                    ["Tbl_Slct", "table tr.selected", "t7"]
+                    ["C_ID", "section.cycles-container .cycle", "t6"],
                     ["add_c", ".cycle-tab-container .controll input#create-cycle", "v", "t1"],
                     ["or_SF", ".cycles-container .w-orders input#js-search-field", "v", "t1"],
                     ["kt_SF", ".cycles-container .w-kits input#js-search-field", "v", "t1"],
@@ -43,11 +45,11 @@ class CyclesInput extends Input{
                     "t2": (s, v, r) => {
                       /**
                         @desc get kit object from .alert-window
-                        @return {Object} => {pc_price, pc_weight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}
+                        @return {Object} => {pcPrice, pcWeight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}
                       */
 
                       var kit = q(s);
-                      var pc_price = 0, pc_weight = 0, products = [], pr_bar = [];
+                      var pcPrice = 0, pcWeight = 0, products = [], pr_bar = [];
 
                       pr_bar = [parseInt(kit.querySelector("h6 progress:first-child").value), parseInt(kit.querySelector("h6 progress:nth-child(2)").value)];
 
@@ -69,11 +71,11 @@ class CyclesInput extends Input{
 
                         products[products.length] = {name: p_name, unit: p_unit, price: p_price, count: p_count, weight: p_weight};
 
-                        pc_price += p_price;
-                        pc_weight += p_weight;
+                        pcPrice += p_price;
+                        pcWeight += p_weight;
                       }
 
-                       return Object.assign({}, {pc_price:pc_price, pc_weight: pc_weight, products: products, progress_bars: pr_bar});
+                       return Object.assign({}, {pcPrice:pcPrice, pcWeight: pcWeight, products: products, progressBars: pr_bar});
                     },
                     "t3": (s, v, r) => {
                       /**
@@ -106,6 +108,13 @@ class CyclesInput extends Input{
                       a[1] = parseFloat(b[1]);
                       a[2] = parseFloat(b[2]);
                       return a;
+                    },
+                    "t6": (s, v, r) => {
+                      return parseInt(r(this.q(s).getAttribute("data-id")));
+                    },
+                    "t7": (s, v, r) => {
+                      let k = this.q(s);
+                      return k?[k.parentNode.parentNode.getAttribute("id"), parseInt(k.getAttribute("data-id")), k]:[];
                     }
                   };
     const validators = {"v": () => true}
