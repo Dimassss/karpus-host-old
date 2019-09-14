@@ -32,7 +32,7 @@ var path = {
         fonts: 'build_dev/assets/fonts/'
     },
     src: {
-        html: 'src/atomic_design/pages/*.html',
+        html: 'src/view/*.html',
         html_dev: 'src/atomic_design/**/*.html',
         js: 'src/assets/js/**/*.js',
         style: 'src/assets/scss/**/*.scss',
@@ -40,7 +40,7 @@ var path = {
         fonts: 'src/assets/fonts/**/*.*'
     },
     watch: {
-        html: 'src/atomic_design/pages/*.html',
+        html: 'src/view/*.html',
         js: 'src/assets/js/**/*.js',
         style: 'src/assets/scss/**/*.scss',
         img: 'src/assets/img/**/*.*',
@@ -71,6 +71,7 @@ var config = {
 var config_dev = (() => {const c = JSON.parse(JSON.stringify(config));
                           c.server.baseDir = "./build_dev";
                           c.startPath = "/index.html";
+                          c.port = 8081;
                           return c;})();
 
 gulp.task('webserver', function (cb) {
