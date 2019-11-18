@@ -74,9 +74,23 @@
         <div class="columns">
           <div class="col-4 col-xl-5">
             <section class="table-container">
-              <input name="js-customer-nav-table-search" class="search" placeholder="Search" value="" type="text"/>
+              <input name="js-customer-nav-table-search" class="search" placeholder="Search" value="" type="text" autocomplete="off"/>
               <div class="unique-scroll">
-                <table id="customers"></table>
+                <table id="customers">
+                  <thead>
+                      <tr>
+                        <th>Full Name</th>
+                        <th>Telephone</th>
+                      </tr>
+                  </thead>
+                  <tbody></tbody>
+                  <tfoot>
+                    <tr>
+                      <td>Full Name</td>
+                      <td>Telephone</td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </section>
           </div>
@@ -87,7 +101,7 @@
                 <label class="tab" for="win2">Orders</label>
               </div>
               <div class="windows">
-                <input type="radio" name="win" id="win1" checked/>
+                <input type="radio" name="win" id="win1" autocomplete="off" checked/>
                 <div class="window unique-scroll">
                   <form action="#forms" class="form-horizontal content">
                     <div class="form-group">
@@ -95,7 +109,7 @@
                         <label class="form-label" for="js-full-name">Full Name</label>
                       </div>
                       <div class="col-4 col-sm-12">
-                        <input class="form-input" type="text" id="js-full-name" placeholder="Full Name">
+                        <input class="form-input" type="text" id="js-full-name" placeholder="Full Name" autocomplete="off">
                       </div>
                     </div>
                     <div class="form-group">
@@ -104,7 +118,7 @@
                       </div>
                       <div class="col-3 col-sm-12">
                         <div class="input-group">
-                          <input class="form-input js-isArray" type="text" id="js-telephones" placeholder="Telephone">
+                          <input class="form-input js-isArray" type="text" id="js-telephones" placeholder="Telephone" autocomplete="off">
                           <span class="btn input-group-btn">Add</span>
                         </div>
                       </div>
@@ -116,7 +130,7 @@
                       </div>
                       <div class="col-3 col-sm-12">
                         <div class="input-group">
-                          <input class="form-input js-isArray" type="text" id="js-addresses" placeholder="Address">
+                          <input class="form-input js-isArray" type="text" id="js-addresses" placeholder="Address" autocomplete="off">
                           <span class="btn input-group-btn">Add</span>
                         </div>
                       </div>
@@ -128,7 +142,7 @@
                         <label class="form-label" for="js-e-mail">E-mail</label>
                       </div>
                       <div class="col-4 col-sm-12">
-                        <input class="form-input" type="text" id="js-e-mail" placeholder="E-mail">
+                        <input class="form-input" type="text" id="js-e-mail" placeholder="E-mail" autocomplete="off">
                       </div>
                     </div>
                     <div class="form-group">
@@ -153,7 +167,7 @@
                       </div>
                       <div class="col-3 col-sm-12">
                         <div class="input-group">
-                          <input class="form-input js-isArray" type="text" id="js-social-medias" placeholder="Social Media">
+                          <input class="form-input js-isArray" type="text" id="js-social-medias" placeholder="Social Media" autocomplete="off">
                           <span class="btn input-group-btn">Add</span>
                         </div>
                       </div>
@@ -164,7 +178,7 @@
                         <label class="form-label" for="js-activity">Activity</label>
                       </div>
                       <div class="col-4 col-sm-12">
-                        <input class="form-input" type="text" id="js-activity" placeholder="Activity">
+                        <input class="form-input" type="text" id="js-activity" placeholder="Activity" autocomplete="off">
                       </div>
                     </div>
                   </form>
@@ -174,9 +188,39 @@
                 <div class="window unique-scroll">
                   <label for="open-alert-window" class="btn btn-fit" name="create_order">Create order</label>
                   <section class="table-container">
-                    <input name="js-cutomer-order-table-search" class="search" placeholder="Search" value="" type="text"/>
+                    <input name="js-customer-order-table-search" class="search" placeholder="Search" value="" type="text" autocomplete="off"/>
                     <div class="unique-scroll">
-                      <table id="customer_orders"></table>
+                      <table id="customer_orders">
+                        <thead>
+                            <tr>
+                              <th>Cycle</th>
+                              <th>Kit</th>
+                              <th>Products</th>
+                              <th>Adress</th>
+                              <th>Cost</th>
+                              <th>Is Billed</th>
+                              <th>Paid</th>
+                              <th>Pay Date</th>
+                              <th>Notes</th>
+                              <th>Order Source</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                        <tfoot>
+                          <tr>
+                            <td>Cycle</td>
+                            <td>Kit</td>
+                            <td>Products</td>
+                            <td>Adress</td>
+                            <td>Cost</td>
+                            <td>Is Billed</td>
+                            <td>Paid</td>
+                            <td>Pay Date</td>
+                            <td>Notes</td>
+                            <td>Order Source</td>
+                          </tr>
+                        </tfoot>
+                      </table>
                     </div>
                   </section>
                 </div>
@@ -205,7 +249,7 @@
               </div>
               <div class="col-3 col-sm-12">
                 <div class="input-group">
-                  <input class="form-input js-isArray" type="text" id="js-telephones" list="telephones" placeholder="Telephone">
+                  <input class="form-input js-isArray" type="text" id="js-telephones" list="telephones" placeholder="Telephone" autocomplete="off">
                   <datalist id="telephones">
                   </datalist>
                 </div>
@@ -222,13 +266,13 @@
               </div>
               <div class="col-3 col-sm-12">
                 <div class="input-group">
-                  <input class="form-input js-isArray" type="text" id="js-addresses" list="addresses" placeholder="Address">
+                  <input class="form-input js-isArray" type="text" id="js-addresses" list="addresses" placeholder="Address" autocomplete="off">
                   <datalist id="addresses">
                   </datalist>
                 </div>
                 <div class="input-group">
-                  <input class="form-input" type="text" id="js-another-full-name" placeholder="Full Name">
-                  <input class="form-input" type="text" id="js-another-telephone" placeholder="Telephone">
+                  <input class="form-input" type="text" id="js-another-full-name" placeholder="Full Name" autocomplete="off">
+                  <input class="form-input" type="text" id="js-another-telephone" placeholder="Telephone" autocomplete="off">
                 </div>
               </div>
             </div>
@@ -238,7 +282,7 @@
               </div>
               <div class="col-3 col-sm-12">
                 <div class="input-group">
-                  <input class="form-input js-isArray" type="text" id="js-social-media" list="medias" placeholder="Media">
+                  <input class="form-input js-isArray" type="text" id="js-social-media" list="medias" placeholder="Media" autocomplete="off">
                   <datalist id="medias">
                   </datalist>
                 </div>
@@ -251,7 +295,7 @@
                 <label class="form-label" for="js-addresses">Sum-pc</label>
               </div>
               <div class="col-2 col-sm-8">
-                <input class="form-input" type="number" id="js-summary" placeholder="Summary">
+                <input class="form-input" type="number" id="js-summary" placeholder="Summary" autocomplete="off">
               </div>
             </div>
             <div class="form-group">
@@ -273,8 +317,8 @@
               </div>
               <div class="col-3 col-sm-12">
                 <div class="input-group">
-                  <input class="form-input js-isArray" id="js-order-paid" placeholder="Paid" data-array="js-order-pay-container" data-index="0"/>
-                  <input class="form-input js-isArray" type="date" id="js-order-pay-date" placeholder="Date" data-array="js-order-pay-container" data-index="1">
+                  <input class="form-input js-isArray" id="js-order-paid" placeholder="Paid" data-array="js-order-pay-container" data-index="0" autocomplete="off"/>
+                  <input class="form-input js-isArray" type="date" id="js-order-pay-date" placeholder="Date" data-array="js-order-pay-container" data-index="1" autocomplete="off">
                   <span class="btn input-group-btn">Add</span>
                 </div>
                 <div class="js-order-pay-container">
@@ -299,10 +343,38 @@
                 </select>
               </div>
             </div>
-            <div class="kits"></div>
+            <div class="kits">
+              <div class="kit add">
+                <span class="add-kit">Create individual kit</span>
+              </div>
+            </div>
           </form>
         </div>
       </section>
     </main>
   </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="../assets/js/GlobalVariables.js"></script>
+  <script type="text/javascript" src="../assets/js/EventHandlers/eventHandler.js"></script>
+  <script type="text/javascript" src="../assets/js/Inputs/Input.js"></script>
+  <script type="text/javascript" src="../assets/js/Inputs/customerProfile.js"></script>
+  <script type="text/javascript" src="../assets/js/Outputs/Output.js"></script>
+  <script type="text/javascript" src="../assets/js/Outputs/customerProfile.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/Model.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/CustomerModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/CycleModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/KitModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/OrderModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/ProductModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/websql.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/TableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/CustomerTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/CycleTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/KitTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/OrderTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/ProductTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/DAO/DAO.js"></script>
+  <script type="text/javascript" src="../assets/js/DAO/CustomerProfileDAO.js"></script>
+  <script type="text/javascript" src="../assets/js/Controllers/CustomerProfileController.js"></script>
+  <script type="text/javascript" src="../assets/js/CustomerProfile.js"></script>
 </html>

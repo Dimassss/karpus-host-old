@@ -13,8 +13,12 @@
     <link rel="stylesheet" href="../assets/css/styles/table.css">
     <link rel="stylesheet" href="../assets/css/styles/kit-selecting.css">
     <link rel="stylesheet" href="../assets/css/styles/form.css">
+    <link rel="stylesheet" href="../assets/css/styles/alert-window.css">
     <style>
       /*Orders table*/
+      #orders{
+        min-width: 1520px;
+      }
       #orders th:nth-child(1), #orders td:nth-child(1){
         width: 180px;
       }
@@ -49,6 +53,10 @@
         width: 150px;
       }
       /*Kit Table*/
+      #kits {
+          min-width: 270px;
+      }
+
       #kits th:nth-child(1), #kits td:nth-child(1){
         width: 100px;
       }
@@ -59,6 +67,10 @@
         width: 90px;
       }
       /*Product Table*/
+      #products {
+          min-width: 1230px;
+      }
+
       #products th:nth-child(1), #products td:nth-child(1){
         width: 120px;
       }
@@ -137,7 +149,39 @@
             <section class="table-container">
               <input id="js-search-field" class="search" placeholder="Search" value="" type="text"/>
               <div class="unique-scroll">
-                <table id="orders"></table>
+                <table id="orders">
+                  <thead>
+                    <tr>
+                      <th>Full Name</th>
+                      <th>Telephone</th>
+                      <th>Kit</th>
+                      <th>Products</th>
+                      <th>Adress</th>
+                      <th>Cost</th>
+                      <th>Is Billed</th>
+                      <th>Paid</th>
+                      <th>Pay Date</th>
+                      <th>Notes</th>
+                      <th>Order Source</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                  <tfoot>
+                    <tr>
+                      <td>Full Name</td>
+                      <td>Telephone</td>
+                      <td>Kit</td>
+                      <td>Products</td>
+                      <td>Adress</td>
+                      <td>Cost</td>
+                      <td>Is Billed</td>
+                      <td>Paid</td>
+                      <td>Pay Date</td>
+                      <td>Notes</td>
+                      <td>Order Source</td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </section>
           </div>
@@ -148,7 +192,19 @@
                 <section class="table-container">
                   <input id="js-search-field" class="search" placeholder="Search" value="" type="text"/>
                   <div class="unique-scroll">
-                    <table id="kits"></table>
+                    <table id="kits">
+                      <thead>
+                        <tr>
+                          <th>Kit Name</th>
+                          <th>Type</th>
+                          <th>Price</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                      <tfoot>
+                        <tr><td>Kit Name</td><td>Type</td><td>Price</td></tr>
+                      </tfoot>
+                    </table>
                   </div>
                 </section>
               </div>
@@ -237,7 +293,47 @@
                 <section class="table-container">
                   <input id="js-search-field" class="search" placeholder="Search" value="" type="text"/>
                   <div class="unique-scroll">
-                    <table id="products"></table>
+                    <table id="products">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Unit</th>
+                          <th title="Count start">c-st</th>
+                          <th title="Count wholesale">c-wh</th>
+                          <th title="Count shops">c-sh</th>
+                          <th title="Count start for kits">c-kt</th>
+                          <th title="Count from orders">c-or</th>
+                          <th title="Count left">c-lft</th>
+                          <th title="Price for wholesale">p-wh</th>
+                          <th title="Price for shops">p-sh</th>
+                          <th title="Price for restaurants">p-rst</th>
+                          <th title="Price for kits">p-kt</th>
+                          <th>Dimensions</th>
+                          <th>Weight</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                      <tfoot>
+                        <tr>
+                          <td>Name</td>
+                          <td>Unit</td>
+                          <td title="Count start">c-st</td>
+                          <td title="Count wholesale">c-wh</td>
+                          <td title="Count shops">c-sh</td>
+                          <td title="Count start for kits">c-kt</td>
+                          <td title="Count from orders">c-or</td>
+                          <td title="Count left">c-lft</td>
+                          <td title="Price for wholesale">p-wh</td>
+                          <td title="Price for shops">p-sh</td>
+                          <td title="Price for restaurants">p-rst</td>
+                          <td title="Price for kits">p-kt</td>
+                          <td>Dimensions</td>
+                          <td>Weight</td>
+                          <td>Description</td>
+                        </tr>
+                      </tfoot>
+                    </table>
                   </div>
                 </section>
               </div>
@@ -358,7 +454,7 @@
         </div>
       </section>
 
-      <input type="checkbox" name="open-alert-window" id="open-alert-window_not_work">
+      <input type="checkbox" name="open-alert-window" id="open-alert-window_not_work" style="display: none">
       <section class="alert-window">
         <navbar>
           <label for="open-alert-window"><i class="icon icon-2x icon-check" style="color: green"></i></label>
@@ -748,4 +844,28 @@
       </section>
     </main>
   </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="../assets/js/GlobalVariables.js"></script>
+  <script type="text/javascript" src="../assets/js/EventHandlers/eventHandler.js"></script>
+  <script type="text/javascript" src="../assets/js/Inputs/Input.js"></script>
+  <script type="text/javascript" src="../assets/js/Inputs/cycles.js"></script>
+  <script type="text/javascript" src="../assets/js/Outputs/Output.js"></script>
+  <script type="text/javascript" src="../assets/js/Outputs/cycles.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/Model.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/CustomerModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/CycleModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/KitModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/OrderModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Model/ProductModel.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/websql.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/TableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/CustomerTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/CycleTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/KitTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/OrderTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/Storage/ProductTableSQL.js"></script>
+  <script type="text/javascript" src="../assets/js/DAO/DAO.js"></script>
+  <script type="text/javascript" src="../assets/js/DAO/CyclesDAO.js"></script>
+  <script type="text/javascript" src="../assets/js/Controllers/CycleController.js"></script>
+  <script type="text/javascript" src="../assets/js/Cycles.js"></script>
 </html>
