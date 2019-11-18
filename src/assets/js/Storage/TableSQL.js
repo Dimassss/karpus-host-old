@@ -33,18 +33,20 @@ class TableSQL{
     websql.process(`CREATE TABLE IF NOT EXISTS ${table}(${(function(){
       var columns = ""
       for(var c in v){
-        columns += v[c][2] + ",";
+        columns += v[c] + ",";
       }
-      return columns;
-    })()}) PRIMARY KEY (\`${k}\`))`);
+      return columns.slice(0, -1);
+    })()})`);
 
   }
 
-  l(keys){
+  l(keys, cb){
+    let _this = this;
     var records = [];
-    for(var i = 0; i< keys.length; i++) if(!k[1]){
-      websql.process({
-        "sql": `SELECT * FROM ${table} WHERE ${k[0]} in (${(function(){
+    var processDATA = [];
+    for(var i = 0; i < keys.length; i++) if(keys[i]){
+      processDATA[processDATA.length] = {
+        "sql": `SELECT * FROM ${_this.table} WHERE ${_this.k} in (${(function(){
           var r = "";
           for(var j = 0; j < keys.length; j++) r += "?,";
           return r.slice(0, -1);
@@ -53,23 +55,31 @@ class TableSQL{
         "success": (tr, r) => {
           for(var i = 0; i < r.rows.length; i++){
             var row = r.rows.item(i);
+            records[i] = {};
             for(var col in row){
               records[i][col] = row[col];
             }
           }
         }
-      });
+      };
     }
-    return record;
+
+    if(processDATA.length > 0) websql.process(processDATA, () => {cb(records)});
+    else cb(records);
   }
 
-  save(records){
-    var k = this.k, table = this.table, v = this.v;
+  save(records, cb){
+    var k = this.k, table = this.table, v = this.v, forI = [], counter = 0;
     var processDATA = [];
-    for(var i = 0; i < records.length; i++) if(!records[i][k]) processDATA[processDATA.length] = {
+
+    for(var i = 0; i < records.length; i++){
+      if(records[i] && !records[i][k]){
+        forI[forI.length] = i - 1;
+        processDATA[processDATA.length] = {
                               "sql": `INSERT INTO ${table} ${(function(){
                                         var cols = "(", vals = "(";
                                         for(var c in v){
+                                          if(c == k) continue;
                                           cols += c + ",";
                                           vals += "?,";
                                         }
@@ -78,58 +88,64 @@ class TableSQL{
                                       })()}`,
                               "data": (function(){
                                 var r = [];
+                                var todb = records[i].toDB();
                                 for(var c in v){
-                                  r[r.length] = records[i][c];
+                                  if(c == k) continue;
+                                  r[r.length] = todb[c];
                                 }
                                 return r;
                               })(),
                               "success": (tr, r) => {
-                                records[i][k] = r.insertedId;
+                                records[forI[counter] + 1][k] = r.insertId;
+                                counter++;
                               }
                             };
-      else processDATA[processDATA.length] = {"sql": `UPDATE ${table} SET ${(function(){
+      }else if(records[i]) processDATA[processDATA.length] = {"sql": `UPDATE ${table} SET ${(function(){
                                 var vals = "";
                                 for(var c in v){
+                                  if(c == k) continue;
                                   if(c != Object.keys(k)[0]) vals += `${c} = ?,`;
                                 }
                                 return vals.slice(0, -1);
                               })()} WHERE ${k} = ${records[i][k]}`,
                               "data": (function(){
                                 var r = [];
+                                var todb = records[i].toDB();
                                 for(var c in v){
-                                  r[r.length] = records[i][c];
+                                  if(c == k) continue;
+                                  r[r.length] = todb[c];
                                 }
                                 return r;
                               })()
                             };
-    websql.process(processDATA);
-    return records;
+    }
+
+    if(processDATA.length > 0) websql.process(processDATA, () => {cb(records)});
+    else cb(records);
   }
 
   del(keys){
-    var k = this.k, table = this.table, v = this.v;
-    for(var i = 0; i < records.length; i++) if(records[i][k]) websql.process({
+    var k = this.k, table = this.table;
+    for(var i = 0; i < keys.length; i++) if(keys[i]) websql.process({
       "sql": `DELETE FROM ${table} WHERE ${k} = ?`,
       "data": [keys[i]]
     });
   }
 
-  sl(where, data){
-    var records = [];
-    for(var i = 0; i< keys.length; i++) if(!k[1]){
-      websql.process({
-        "sql": `SELECT * FROM ${table} WHERE ${where}`,
-        "data": data,
-        "success": (tr, r) => {
-          for(var i = 0; i < r.rows.length; i++){
-            var row = r.rows.item(i);
-            for(var col in row){
-              records[i][col] = row[col];
-            }
+  sl(where, data, cb){
+    var records = [], forI = [], counter = 0;
+    websql.process({
+      "sql": `SELECT * FROM ${this.table} WHERE ${where}`,
+      "data": data,
+      "success": (tr, r) => {
+        for(var i = 0; i < r.rows.length; i++){
+          var row = r.rows.item(i);
+          records[i] = [];
+          for(var col in row){
+            records[i][col] = row[col];
           }
         }
-      });
-    }
-    return record;
+      }
+    }, () => cb(records));
   }
 }

@@ -235,7 +235,6 @@ var websql = (function () {
      */
     websql.process = function (sqlInput, finalSuccessCallback, failureCallback) {
         if (websql.database) {
-
             var sqlObjects = sqlObjectCreator(sqlInput);
 
             if(isUndefined(finalSuccessCallback)){
@@ -350,3 +349,8 @@ var websql = (function () {
 
     return websql;
 })();
+
+websql.openDatabase(
+     "karpus.com.ua",
+     "Database of crm logic",
+     3*1024*1024);
