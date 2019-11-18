@@ -7,7 +7,8 @@ const g = {
       customerNavTableScrollCounter: 0,
       customerNavTableCountToSelect: 40,
       orderNavTableScrollCounter: 0,
-      orderNavTableCountToSelect: 40
+      orderNavTableCountToSelect: 40,
+      instance: undefined
     },
     Cycles:{
       cyclesNavBarScrollCounter: 0,
