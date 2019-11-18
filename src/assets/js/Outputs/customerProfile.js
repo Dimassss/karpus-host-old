@@ -1,33 +1,42 @@
 class CustomerProfileOutput extends Output{
   constructor(){
-    if(g["Output"]["customerProfile"]) return g["Ouput"]["customerProfile"];
-    const _this = this;
+    function q(s){
+      return document.querySelector(s);
+    }
+
+    function qa(s){
+      return document.querySelectorAll(s);
+    }
+
+    if(g["Output"]["customerProfile"]) return g["Output"]["customerProfile"];
+    var _this;
     const outputs = [
                       ["WP_Tbl", ".customerProfile table#customers", "e1"],
-                      ["WP_Tbl_CD", ".customerProfile table#customers tr[data-id=?]", "e11"],
-                      ["WP_Tbl_OD", ".customerProfile table#customer_orders tr[data-id=?]", "e11"],
+                      ["WP_Tbl_CD", '.customerProfile table#customers tr[data-id="?"]', "e11"],
+                      ["WP_Tbl_OD", '.customerProfile table#customer_orders tr[data-id="?"]', "e11"],
                       ["WP_ID", ".customerProfile", "e10"],
                       ["WP_Nm", ".customerProfile input#js-full-name", "e2"],
                       ["WP_Tel", ".customerProfile input#js-telephones", "e3"],
-                      ["WP_Adr", ".customerProfile input#js-adresses", "e3"],
+                      ["WP_Adr", ".customerProfile input#js-addresses", "e3"],
                       ["WP_E-m", ".customerProfile input#js-e-mail", "e2"],
                       ["WP_Nt", ".customerProfile textarea#js-notes", "e2"],
                       ["WP_Pr", ".customerProfile textarea#js-preferences", "e2"],
-                      ["WP_SM", ".customerProfile input#js-social-media", "e3"],
+                      ["WP_SM", ".customerProfile input#js-social-medias", "e3"],
                       ["WP_Act", ".customerProfile input#js-activity", "e2"],
                       ["WO_Tbl", ".customerProfile table#customer_orders", "e1"],
+                      ["AW_Opn", "input#open-alert-window[name=open-alert-window]", "e5"],
                       ["AW_ID", ".alert-window", "e10"],
                       ["AW_Nm", ".alert-window h2:first-child", "e9"],
                       ["AW_Tel", ".alert-window input#js-telephones", "e4"],
                       ["AW_SM", ".alert-window input#js-social-media", "e4"],
                       ["AW_ON", ".alert-window textarea#js-order-notes", "e2"],
-                      ["AW_Pr", ".alert-window textarea#js-preferences", "e2"],
+                      ["AW_Pr", ".alert-window textarea#js-order-preferences", "e2"],
                       ["AW_Adr", ".alert-window input#js-addresses", "e4"],
                       ["AW_Sum", ".alert-window input#js-summary", "e2"],
                       ["AW_Bill", ".alert-window input#js-is-billed", "e5"],
                       ["AW_Pay", ".alert-window input#js-order-paid", "e2"],
                       ["AW_P", ".alert-window input#js-order-pay-date, .alert-window input#js-order-paid", "e6"],
-                      ["AW_PD", ".alert-window input#js-order-pay-date", "e2"]
+                      ["AW_PD", ".alert-window input#js-order-pay-date", "e2"],
                       ["AW_c_id", ".alert-window select#js-cycle", "e7"],
                       ["AW_kits", ".alert-window .kits .kit", "e8"],
                       ["AW_n_ths", ".alert-window input#js-is-not-this", "e5"],
@@ -51,7 +60,6 @@ class CustomerProfileOutput extends Output{
 
                         //preparing variables
                         var head, body, foot;
-
                         //creating head of table
                         if(d.head){
                           head = "<thead>";
@@ -69,19 +77,25 @@ class CustomerProfileOutput extends Output{
                         if(d.body){
                           //body is object where {data-id: tr-outerHTML}
                           body = {};
-                          d.body.forEach(tr => {
-                            if(tr.length <= 1){
-                              body[tr.id] = undefined;
-                            }else{
-                              var trHTML = `<tr data-id="${tempId}">`;
-                              for(var i = 1; i < tr.length; i++){
-                                let td = tr[i];
-                                trHTML += `<td${(td[1]?` colspan="${td[1]}"`:"")}${(td[2]?` rowspan="${td[2]}"`:"")}>${td[0]}</td>`;
+                          if(typeof d.body == "object"){
+                            for(var j = 0; j < d.body.length; j++){
+                              let tr = d.body[j];
+
+                              if(tr.length <= 1){
+                                body[tr[0].id] = undefined;
+                              }else{
+                                var trHTML = `<tr data-id="${tr[0].id}"${tr[0].class?` class="${tr[0].class}"`:""}>`;
+                                for(var i = 1; i < tr.length; i++){
+                                  let td = tr[i];
+                                  trHTML += `<td${(td[1]?` colspan="${td[1]}"`:"")}${(td[2]?` rowspan="${td[2]}"`:"")}>${td[0]}</td>`;
+                                }
+                                trHTML += "</tr>";
+                                body[tr[0].id] = trHTML;
                               }
-                              trHTML = "</tr>";
-                              body[tr.id] = trHTML;
                             }
-                          });
+                          }else{
+                            q(s + " tbody").innerHTML = "";
+                          }
                         }
 
                         //creating foot of table
@@ -105,8 +119,13 @@ class CustomerProfileOutput extends Output{
                         //editing body
                         if(body){
                           for(var k in body){
-                            var tr = _this.q(s + ` tbody tr[data-id='${k}']`);
-                            if(tr) tr.outerHTML = body[k];
+                            var tr = q(s + ` tbody tr[data-id="${k}"]`);
+                            if(tr){
+                              let classList = tr.getAttribute("class") + ".";
+                              tr.outerHTML = body[k];
+                              q(s + ` tbody tr[data-id="${k}"]`).setAttribute("class", classList.slice(0, -1));
+                              q(s + ` tbody tr[data-id="${k}"]`).setAttribute("class", q(s + ` tbody tr[data-id="${k}"]`).classList.value.replace(/js-hasEventListener-[-a-zA-Z0-9]+/g, ""));
+                            }
                             else _this.q(s + ` tbody`).insertAdjacentHTML("beforeend", body[k]);
                           }
                         }
@@ -125,15 +144,17 @@ class CustomerProfileOutput extends Output{
                           @param d {Array<String>}
                           @do take %d variable and than paste first element into field and another elements convert to html-array and paste into array container
                         */
+
                         var field = _this.q(s),
                             containerName = " ." + field.getAttribute("id") + "-container",
                             htmlArray = "";
 
                         field.value = d[0];
+
                         for(var i = 1; i < d.length; i++){
                           htmlArray += `<span class="chip ${field.getAttribute("id").substr(0, -1)}">
                                           <chip>${d[i]}</chip>
-                                          <a href="#" class="btn btn-clear" id="${closeMath.rand()}" aria-label="Close" role="button"></a>
+                                          <a href="#" class="btn btn-clear" id="${Math.random()}" aria-label="Close" role="button" onclick="this.parentNode.outerHTML = ''"></a>
                                         </span>`;
                         }
 
@@ -142,13 +163,17 @@ class CustomerProfileOutput extends Output{
                       "e4": (s, d) => {
                         /**
                           @desc paste needed text into field and antoher into html-list of this field
-                          @param d {Array<Array<String, String>>} where d = [[value, text], [value, text]]
+                          @param d {Array<Array<String, String>>} where d = [value, value]
                           @do take first element and paste it to the field and another elements convert to the html-list and paste it into list container
                         */
+
+                        _this.q(s).value = d[0];
+
                         var list = "";
-                        for(var i = 0; i < d.length; i++){
-                          list += `<option value="${d[i][0]}"${i==0?" selected":""}>${d[i][1]}</option>`;
+                        for(var i = 1; i < d.length; i++){
+                          list += `<option>${d[i]}</option>`;
                         }
+
                         _this.q(s.substr(0, -(s.split(" ").reverse()[0].length)) + " datalist#" + _this.q(s).getAttribute("list")).innerHTML = list;
                       },
                       "e5": (s, d) => {
@@ -165,16 +190,17 @@ class CustomerProfileOutput extends Output{
                           @param d {Array<Array<String, String>>}
                           @do take %d variable and than paste 2 values of first element into 2 fields and another elements convert to html-array and paste into array container
                         */
+
                         var fields = _this.qa(s),
-                            containerName = " ." + fields[0].getAttribute("data-array") + "-container",
+                            containerName = " ." + fields[0].getAttribute("data-array"),
                             htmlArray = "";
 
-                        field[0].value = d[0][parseIntager(field[0].getAttribute("data-index"))];
-                        field[1].value = d[0][parseIntager(field[1].getAttribute("data-index"))];
+                        fields[0].value = d[0][parseInt(fields[0].getAttribute("data-index"))];
+                        fields[1].value = d[0][parseInt(fields[1].getAttribute("data-index"))];
                         for(var i = 1; i < d.length; i++){
-                          htmlArray += `<span class="chip">
+                          if(d[i] && d[i][0] && d[i][1]) htmlArray += `<span class="chip">
                                           <chip>${d[i][0]} - ${d[i][1]}</chip>
-                                          <a href="#" class="btn btn-clear" id="${closeMath.rand()}" aria-label="Close" role="button"></a>
+                                          <a href="#" class="btn btn-clear" id="close-${Math.random()}" aria-label="Close" role="button"></a>
                                         </span>`;
                         }
 
@@ -189,7 +215,7 @@ class CustomerProfileOutput extends Output{
 
                         var list = "";
                         for(var i = 0; i < d.length; i++){
-                          list += `<option value="${d[i][0]}"${i==1?" selected":""}>${d[i][1]}</option>`;
+                          if(d[i].length == 2) list += `<option value="${d[i][0]}"${d[i][2]?" selected":""}>${d[i][1]}</option>`;
                         }
                         this.q(s).innerHTML = list;
                       },
@@ -200,15 +226,19 @@ class CustomerProfileOutput extends Output{
                           @do take every kit-object from %d variable and generate from this html. Than set this html to outerHTML of previous container or create new
                           @note data-name="ind-%id%" means induvidual kit, where data-name=kit_name
                         */
-
+                        console.log(d);
                         for(var k in d){
+                          console.log(d[k]);
+
                           var r;
-                          if(k.substr(0,4) == "ind-") r = `<div class="kit" data-name="${k.toLowerCase()}">
+                          if(k.substr(0,4) == "ind-") r = `<div class="kit js-to-save" data-name="${k.toLowerCase()}">
                                 <h6 class="columns">
-                                  <div class="col-9">${k} - ${d[k].price} - ${d[k].weight}</div>
+                                  <div class="col-3">${k}</div>
+                                  <div class="col-3">${d[k].price}</div>
+                                  <div class="col-3">${d[k].weight}</div>
                                   <div class="col-3"><input placeholder="Count" class="form-input" type="number" value="${d[k].count}" min="0" step="1"/></div>
-                                  <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
-                                  <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
+                                  <progress class="progress col-12" value="${d[k].progress_bars[0]}" min="0" max="100"></progress>
+                                  <progress class="progress col-12" value="${d[k].progress_bars[1]}" min="0" max="100"></progress>
                                 </h6>
                                 <div class="products-container unique-scroll">
                                   ${(ps => {
@@ -223,14 +253,14 @@ class CustomerProfileOutput extends Output{
                                   })(d[k].products)}
                                 </div>
                               </div>`;
-                          else r = `<div class="kit" data-name="${k.toLowerCase()}">
+                          else r = `<div class="kit js-to-save" data-name="${k.toLowerCase()}">
                                       <h6 class="columns">
-                                        <div class="col-3">${d[k].weight} kg</div>
+                                        <div class="col-3 weight">${d[k].weight} kg</div>
                                         <div class="col-3">${d[k].pcPrice}</div>
                                         <div class="col-3"><input value="${d[k].price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
                                         <div class="col-3"><input value="${d[k].count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
-                                        <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
-                                        <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
+                                        <progress class="progress col-12" value="${d[k].progress_bars[0]}" min="0" max="100"></progress>
+                                        <progress class="progress col-12" value="${d[k].progress_bars[1]}" min="0" max="100"></progress>
                                       </h6>
                                       <div class="products-container unique-scroll">
                                         ${(ps => {
@@ -240,10 +270,10 @@ class CustomerProfileOutput extends Output{
                                                                                     <div class="col-1" data-weight="${ps[i].weight}">${ps[i].unit}</div>
                                                                                     <div class="col-3">
                                                                                       <select class="form-select">
-                                                                                        <option value="kit" title="kit"${p[i].price.selected == "kit"?" selected":""}>k-${p[i].price.kit}</option>
-                                                                                        <option value="wholesale" title="wholesale"${p[i].price.selected == "wholesale"?" selected":""}>w-${p[i].price.wholesale}</option>
-                                                                                        <option value="shop" title="shop"${p[i].price.selected == "shop"?" selected":""}>s-${p[i].price.shop}</option>
-                                                                                        <option value="restaurant" title="restaurant"${p[i].price.selected == "restaurant"?" selected":""}>r-${p[i].price.restaurant}</option>
+                                                                                        <option value="p-kt" title="kit"${ps[i].price.selected == "p-kt"?" selected":""}>k-${ps[i].price["p-kt"]}</option>
+                                                                                        <option value="p-wh" title="wholesale"${ps[i].price.selected == "p-wh"?" selected":""}>w-${ps[i].price["p-wh"]}</option>
+                                                                                        <option value="p-sh" title="shop"${ps[i].price.selected == "p-sh"?" selected":""}>s-${ps[i].price["p-sh"]}</option>
+                                                                                        <option value="p-rst" title="restaurant"${ps[i].price.selected == "p-rst"?" selected":""}>r-${ps[i].price["p-rst"]}</option>
                                                                                       </select>
                                                                                     </div>
                                                                                     <div class="col-3"><input value="${ps[i].count}" placeholder="Count" class="form-input" type="number"/></div>
@@ -251,11 +281,14 @@ class CustomerProfileOutput extends Output{
                                         return r;
                                         })(d[k].products)}
                                       </div></div>`;
-                            //kits[k] = r;
-                            var kit = _this.q(`${s}[data-name=${k}]`);
-                            if(kit) kit.outerHTML = r
+
+                            var kit = _this.q(`${s}[data-name="${k}"]`);
+                            if(kit) kit.outerHTML = r;
                             else _this.q(`${s} span.add-kit`).parentNode.insertAdjacentHTML("beforebegin", r);
                           }
+
+                          Array.from(qa(`${s}:not(.js-to-save):not(.add)`)).forEach(k => k.outerHTML = "");
+                          Array.from(qa(`${s}.js-to-save`)).forEach(k => k.classList.remove("js-to-save"));
                         },
                       "e9": (s, d) => {
                         this.q(s).innerHTML = d;
@@ -264,10 +297,11 @@ class CustomerProfileOutput extends Output{
                         this.q(s).setAttribute("data-id", d);
                       },
                       "e11": (s, d) => {
-                        this.q(s.replace("?", d)).outerHTML = "";
+                        this.q(s.replace("?", d)).remove();
                       }
-                    }
+                    };
     super(editors, outputs);
+    _this = this;
     return g["Output"]["customerProfile"] = this;
   }
 }

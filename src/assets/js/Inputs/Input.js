@@ -59,13 +59,6 @@
 @method getInputs
   @return {Object<Object..., String, String, String>} tree of inputs elements where branches are short names of that fields
 
-@method q
-  @param s {String} => css selector
-  @return document.querySelector(s)'s return
-
-@method qa
-  @param s {String} => css selector
-  @return document.querySelectorAll(s)'s return
 */
 class Input{
   constructor(takes, validators, inputs){
@@ -79,11 +72,9 @@ class Input{
   takeData(short_name){
     var _this = this;
     var input = _this.inputs;
-
     for(var i = 0; i < short_name.length; i++){
       input = input[short_name[i]];
     }
-
     return _this.takes[input.take_name](input.css_selector, _this.validators[input.validator_name], str => String(str).replace(/&/g, '&amp;')
                                                                                                       .replace(/</g, '&lt;')
                                                                                                       .replace(/>/g, '&gt;')
@@ -130,6 +121,7 @@ class Input{
     function generateTree(inputs, short_name, css_selector, validator_name, take_name){
       if(!inputs[short_name[0]]) inputs[short_name[0]] = {};
       if(short_name.length <= 1){
+        if(css_selector.split("?").length <= 1) if(!document.querySelector(css_selector)) console.warn("Invalid css selector for Input: " + css_selector);
         inputs[short_name].css_selector = css_selector;
         inputs[short_name].validator_name = validator_name;
         inputs[short_name].take_name = take_name;
@@ -159,13 +151,5 @@ class Input{
   getInputs(){
     var _this = this;
     return JSON.parse(JSON.stringify(_this.inputs));
-  }
-
-  q(s){
-    return document.querySelector(s);
-  }
-
-  qa(s){
-    return document.querySelectorAll(s);
   }
 }

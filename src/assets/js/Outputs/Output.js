@@ -98,7 +98,7 @@ class Output{
     }
 
     for(var i = 0; i < outputs.length; i++){
-      _this.outputs = generateTree(_this.outputs, outputs[i][0], outputs[i][1], outputs[i][2]);
+      if(outputs[i]) _this.outputs = generateTree(_this.outputs, outputs[i][0], outputs[i][1], outputs[i][2]);
     }
   }
 

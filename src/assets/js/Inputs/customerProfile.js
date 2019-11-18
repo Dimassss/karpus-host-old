@@ -4,7 +4,14 @@
 */
 class CustomerProfileInput extends Input{
   constructor(){
-    var q = this.q, qa = this.qa;
+    function q(s){
+      return document.querySelector(s);
+    }
+
+    function qa(s){
+      return document.querySelectorAll(s);
+    }
+
     if(g["Input"]["customerProfile"]) return g["Input"]["customerProfile"];
 
     function take_getKit(s, v, r, kit){
@@ -12,14 +19,14 @@ class CustomerProfileInput extends Input{
 
       var name, price, pcPrice = 0, weight, pcWeight = 0, count, products = [], pr_bar = [];
 
-      count = parseInt(r(kit.querySelector("h6 input[placeholder='Count']")));
+      count = parseInt(r(kit.querySelector("h6 input[placeholder='Count']").value));
 
       name = r(kit.getAttribute("data-name"));
-      price = parseFloat(r(kit.querySelector("h6 input[placeholder='Price']").value | kit.querySelector("h6 div:nth-child(2)").innerHTML));
+      if(kit.querySelector("h6 input[placeholder='Price']").value) price = parseFloat(r(kit.querySelector("h6 input[placeholder='Price']").value));
+      else price = parseFloat(r(kit.querySelector("h6 div:nth-child(2)").innerHTML));
       weight = parseFloat(r(kit.querySelector("h6 .weight").innerHTML));
-      pr_bar = [parseInt(kit.querySelector("h6 progress:first-child").value), parseInt(kit.querySelector("h6 progress:nth-child(2)").value)];
-
-      var products_html = kit.querySelectorAll(".products-container .product");
+      pr_bar = [parseInt(kit.querySelectorAll("h6 progress")[0].value), parseInt(kit.querySelectorAll("h6 progress")[1].value)];
+      var products_html = Array.from(kit.querySelectorAll(".products-container .product"));
       for(var j = 0; j < products_html.length; j++){
         var p_name, p_unit, p_price, p_count, p_weight, product_html = products_html[j];
 
@@ -27,49 +34,54 @@ class CustomerProfileInput extends Input{
         p_unit = r(product_html.querySelector("div:nth-child(2)").innerHTML);
         p_price = (() => {
                     var select = product_html.querySelector("div:nth-child(3) select");
+
                     if(!select) return undefined;
                     var res = {selected: select.value};
-                    select.options.forEach(op => res[op.value] = parseFloat(op.innerText));
+                    Array.from(select.options).forEach(op => res[op.value] = parseFloat(op.innerText.split("-")[1]));
+
                     return Object.assign({}, res);
-                  })() | parseFloat(r(product_html.querySelector("div:nth-child(3)").innerText));
-        p_count = parseFloat(r(product_html.querySelector("div input[placeholder='Count']").value));
+                    })();
+        p_count = parseInt(r(product_html.querySelector("div input[placeholder='Count']").value));
         p_weight = parseFloat(r(product_html.querySelector("div:nth-child(2)").getAttribute("data-weight")));
 
         products[products.length] = {name: p_name, unit: p_unit, price: p_price, count: p_count, weight: p_weight};
-
+        console.log(products[products.length-1]);
         pcPrice += typeof p_price == "object"?p_price[p_price.selected]: p_price;
         pcWeight += p_weight;
       }
 
-       return Object.assign({}, {price: price, pcPrice:pcPrice, weight: weight, pcWeight: pcWeight, count: count, products: products, progressBars: pr_bar});
+      return Object.assign({}, {price: price, pcPrice:pcPrice, weight: weight, pcWeight: pcWeight, count: count, products: products, progress_bars: pr_bar});
     }
 
     const inputs = [
-                    ["Tbl_Slct", ".selected", "v", "t9"],
-                    ["NT_SF", ".customerProfile input[name='js-customer-nav-table-search]", "v", "t1"],
+                    ["TblC_Slct", "table#customers .selected", "v", "t9"],
+                    ["TblO_Slct", "table#customer_orders .selected", "v", "t9"],
+                    ["Tbl_rows", "table#customers tbody tr", "v", "t10"],
+                    ["NT_SF", ".customerProfile input[name=js-customer-nav-table-search]", "v", "t1"],
                     ["WP_ID", ".customerProfile", "v", "t7"],
                     ["WP_SC", ".customerProfile table#customers tr.selected", "t8"],
-                    ["WP_SC", ".customerProfile table#customer_orders tr.selected", "t8"],
+                    ["WP_SC", ".customerProfile table#customers tr.selected", "v", "t8"],
                     ["WP_Nm", ".customerProfile input#js-full-name", "v", "t1"],
-                    ["WP_Tel", ".customerProfile input#js-telephones", "v", "t5"],
-                    ["WP_Adr", ".customerProfile input#js-adresses", "v", "t5"],
+                    ["WP_Tel", ".customerProfile input#js-telephones", "v1", "t5"],
+                    ["WP_Adr", ".customerProfile input#js-addresses", "v1", "t5"],
                     ["WP_E-m", ".customerProfile input#js-e-mail", "v", "t1"],
                     ["WP_Nt", ".customerProfile textarea#js-notes", "v", "t1"],
                     ["WP_Pr", ".customerProfile textarea#js-preferences", "v", "t1"],
-                    ["WP_SM", ".customerProfile input#js-social-media", "v", "t5"],
+                    ["WP_SM", ".customerProfile input#js-social-medias", "v1", "t5"],
                     ["WP_Act", ".customerProfile input#js-activity", "v", "t1"],
-                    ["WO_SF", ".customerProfile input[name='js-customer-order-table-search']", "v", "t1"],
+                    ["WO_SF", ".customerProfile input[name=js-customer-order-table-search]", "v", "t1"],
+                    ["WO_SO", ".customerProfile table#customer_orders tr.selected", "v", "t8"],
                     ["AW_ID", ".alert-window", "v", "t7"],
                     ["AW_Tel", ".alert-window input#js-telephones", "v", "t5"],
                     ["AW_SM", ".alert-window input#js-social-media", "v", "t5"],
                     ["AW_ON", ".alert-window textarea#js-order-notes", "v", "t1"],
-                    ["AW_Pr", ".alert-window textarea#js-preferences", "v", "t1"],
+                    ["AW_Pr", ".alert-window textarea#js-order-preferences", "v", "t1"],
                     ["AW_Adr", ".alert-window input#js-addresses", "v", "t5"],
                     ["AW_Sum", ".alert-window input#js-summary", "v", "t1"],
                     ["AW_Bill", ".alert-window input#js-is-billed", "v", "t2"],
-                    ["AW_Pay", ".alert-window input#js-order-paid", "v", "t1"],
+                    ["AW_Pay", ".alert-window input#js-order-paid", "v1", "t1"],
                     ["AW_P", ".alert-window input#js-order-pay-date, .alert-window input#js-order-paid", "v", "t6"],
-                    ["AW_PD", ".alert-window input#js-order-pay-date", "v", "t1"],
+                    ["AW_PD", ".alert-window input#js-order-pay-date", "v1", "t1"],
                     ["AW_c_id", ".alert-window select#js-cycle", "v", "t1"],
                     ["AW_kits", ".alert-window .kits .kit:not(.add)", "v", "t3"],
                     ["AW_n_ths", ".alert-window input#js-is-not-this", "v", "t2"],
@@ -85,7 +97,7 @@ class CustomerProfileInput extends Input{
 
                       const a = r(q(s).value);
                       if(v(a)) return a;
-                      else throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"};
+                      else console.assert(false, {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"});
                     },
                     "t2": (s, v, r) => {
                       /**
@@ -102,13 +114,15 @@ class CustomerProfileInput extends Input{
                       */
 
                       const kits = {};
-                      const kits_html = qa(s);
-                      for(var i = 0; i < kits_html.length; i++){
-                        const count = parseInt(r(kit.querySelector("h6 input[placeholder='Count']")));
-                        if(count < 1) continue;
-                        kits[r(kit.getAttribute("data-kit-name"))] = take_getKit(s, v, r, kits_html[i]);
-                      }
+                      const kits_html = Array.from(qa(s));
 
+                      for(var i = 0; i < kits_html.length; i++){
+                        const count = parseInt(r(kits_html[i].querySelector("h6 input[placeholder='Count']").value));
+
+                        if(count < 1 || !count) continue;
+                        kits[r(kits_html[i].getAttribute("data-name"))] = take_getKit(s, v, r, kits_html[i]);
+                      }
+                      console.log(kits);
                       return kits;
                     },
                     /**
@@ -121,13 +135,12 @@ class CustomerProfileInput extends Input{
                         @desc get string and array of string from input and its array
                         @return {Array<String>} => ["val1", "val2"] where first element of array is from input and other from html-array
                       */
-
                       const a = r(q(s).value);
-                      if(v(a)) return a;
-                      else throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"};
+                      if(!v(a)) console.error({field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input", input: a});
 
                       let id = q(s).getAttribute("id");
-                      const ar = q(s).parentNode.querySelectorAll("." + id + "-container .chip." + id.substr(0, -1) + " chip").map(el => r(el.innerHTML));
+                      const ar = Array.from(q(s).parentNode.parentNode.parentNode.querySelectorAll("." + id + "-container .chip chip")).map(el => r(el.innerHTML));
+
                       return [a, ...ar];
                     },
                     "t6": (s, v, r) => {
@@ -137,25 +150,32 @@ class CustomerProfileInput extends Input{
                       */
 
                       const a1 = r(qa(s)[0].value), a2 = r(qa(s)[1].value), b = [];
-                      if(v(a)) return a;
-                      else throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input"};
+                      if(!v(a1) || !v(a2)) throw {field: s ,class: "CustomerProfile", src: "js/HTML_Input/customerProfile.js", errorMsg: "Invalid input", input: [a1, a2]};
 
                       let id = q(s).getAttribute("id");
-                      const ar = q(s).parentNode.querySelectorAll(".chip chip").map(el => r(el.innerHTML).split(" - "));
-                      return [[a1, a2], ...ar];
+                      const ar = Array.from(q(s).parentNode.parentNode.querySelectorAll(".chip chip")).map(el => r(el.innerHTML).split(" - "));
+                      let result, inp = [[a1, a2]]
+                      result = inp.concat(ar);
+                      return result;
                     },
                     "t7": (s, v, r) => {
-                      return parseInt(r(this.q(s).getAttribute("data-id")));
+                      return parseInt(r(q(s).getAttribute("data-id")));
                     },
                     "t8": (s, v, r) => {
-                      return this.q(s);
+                      return q(s);
                     },
                     "t9": (s, v, r) => {
-                      let k = this.q(s);
+                      let k = q(s);
                       return k?[k.parentNode.parentNode.getAttribute("id"), parseInt(k.getAttribute("data-id")), k]:[];
+                    },
+                    "t10": (s, v, r) => {
+                      return qa(s);
                     }
                   };
-    const validators = {"v": () => true}
+    const validators = {
+                        "v": () => true,
+                        "v1": str => str !== ""
+                      };
 
     super(takes, validators, inputs);
 

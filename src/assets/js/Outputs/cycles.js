@@ -1,8 +1,18 @@
 class CyclesOutput extends Output{
   constructor(){
-    if(g["Output"]["cycles"]) return g["Ouput"]["cycles"];
+    function q(s){
+      return document.querySelector(s);
+    }
+
+    function qa(s){
+      return document.querySelectorAll(s);
+    }
+
+    if(g["Output"]["cycles"]) return g["Output"]["cycles"];
     const outputs = [
                       ["C_ID", "section.cycles-container .cycle", "e7"],
+                      ["P_ID", ".w-products form", "e7"],
+                      ["K_ID", ".w-kits form", "e7"],
                       ["C_ACC", ".cycles-tab-container .controll input[name='new-cycle-name']", "e2"], //Cycle controll => add/change cycle
                       ["C_CL1", ".cycles-tab-container .cycles label", "e6"], //Cycle cycles => cycles list1
                       ["C_CL2", ".cycles-tab-container .controll .drop .dropup-content label", "e6"], //Cycle controll => cycle list2
@@ -21,11 +31,28 @@ class CyclesOutput extends Output{
                       ["P_Tbl", ".w-products table#products", "e1"], //Product => products nav table
                       ["P_Nm", ".w-products .content form input#js-product-name", "e2"], //Products => product name
                       ["P_Unt", ".w-products .content form input#js-product-unit", "e2"], //Products => product unit
-                      ["P_C", ".w-products .content form input#js-product-count-set", "e3"], //Products => product count set
+                      ["P_C", ".w-products .content form table#js-product-count-set", "e3"], //Products => product count set
                       ["P_Pr", ".w-products .content form table#js-product-price-set", "e3"], //Products => product price set
-                      ["P_Dm", ".w-products .content form table#js-product-dimensions", "e5"], //Products => product dimensions
+                      ["P_Dm", ".w-products .content form input#js-product-dimensions", "e5"], //Products => product dimensions
                       ["P_W", ".w-products .content form input#js-product-weight", "e2"], //Products => product weight
                       ["P_D", ".w-products .content form textarea#js-product-description", "e2"], //Products => description
+                      ["AW_ID", ".alert-window", "e7"],
+                      ["AW_Nm", ".alert-window h2:first-child", "e8"],
+                      ["AW_Tel", ".alert-window input#js-telephones", "e9"],
+                      ["AW_SM", ".alert-window input#js-social-media", "e9"],
+                      ["AW_ON", ".alert-window textarea#js-order-notes", "e2"],
+                      ["AW_Pr", ".alert-window textarea#js-order-preferences", "e2"],
+                      ["AW_Adr", ".alert-window input#js-addresses", "e9"],
+                      ["AW_Sum", ".alert-window input#js-summary", "e2"],
+                      ["AW_Bill", ".alert-window input#js-is-billed", "e10"],
+                      ["AW_Pay", ".alert-window input#js-order-paid", "e2"],
+                      ["AW_P", ".alert-window input#js-order-pay-date, .alert-window input#js-order-paid", "e11"],
+                      ["AW_PD", ".alert-window input#js-order-pay-date", "e2"],
+                      ["AW_c_id", ".alert-window select#js-cycle", "e12"],
+                      ["AW_kits", ".alert-window .kits .kit", "e13"],
+                      ["AW_n_ths", ".alert-window input#js-is-not-this", "e10"],
+                      ["AW_an_FN", ".alert-window input#js-another-full-name", "e2"],
+                      ["AW_an_Tel", ".alert-window input#js-another-telephone", "e2"]
                     ];
     const editors = {
                       "e1": (s, d) => {
@@ -62,17 +89,19 @@ class CyclesOutput extends Output{
                         if(d.body){
                           //body is object where {data-id: tr-outerHTML}
                           body = {};
-                          d.body.forEach(tr => {
+
+                          if(d.body == -1) q(s + " tbody").innerHTML = "";
+                          else d.body.forEach(tr => {
                             if(tr.length <= 1){
-                              body[tr.id] = undefined;
+                              body[tr[0].id] = "";
                             }else{
-                              var trHTML = `<tr data-id="${tempId}">`;
+                              var trHTML = `<tr data-id="${tr[0].id}">`;
                               for(var i = 1; i < tr.length; i++){
                                 let td = tr[i];
                                 trHTML += `<td${(td[1]?` colspan="${td[1]}"`:"")}${(td[2]?` rowspan="${td[2]}"`:"")}>${td[0]}</td>`;
                               }
-                              trHTML = "</tr>";
-                              body[tr.id] = trHTML;
+                              trHTML += "</tr>";
+                              body[tr[0].id] = trHTML;
                             }
                           });
                         }
@@ -92,15 +121,18 @@ class CyclesOutput extends Output{
 
                         //delete/add/change/set html table
                         //setting head
-                        if(head) _this.q(s + " thead").outerHTML = head;
+                        if(head) q(s + " thead").outerHTML = head;
                         //setting foot
-                        if(foot) _this.q(s + " tfoot").outerHTML = foot;
+                        if(foot) q(s + " tfoot").outerHTML = foot;
                         //editing body
                         if(body){
                           for(var k in body){
-                            var tr = _this.q(s + ` tbody tr[data-id='${k}']`);
-                            if(tr) tr.outerHTML = body[k];
-                            else _this.q(s + ` tbody`).insertAdjacentHTML("beforeend", body[k]);
+                            var tr = q(s + ` tbody tr[data-id='${k}']`);
+                            if(tr){
+                              if(!tr.classList.contains("selected") || body[k] == "") tr.outerHTML = body[k];
+                              else tr.outerHTML = body[k].substr(0,4) + 'class="selected" ' + body[k].substr(4);
+                            }
+                            else q(s + ` tbody`).insertAdjacentHTML("beforeend", body[k]);
                           }
                         }
                       },
@@ -110,7 +142,7 @@ class CyclesOutput extends Output{
                           @param d {String|Float}
                           @do take %d varialbe and paste it needed place of %s element
                         */
-                        _this.q(s).value = d;
+                        q(s).value = d;
                       },
                       "e3": (s, d) => {
                         /**
@@ -121,7 +153,7 @@ class CyclesOutput extends Output{
                         var _this = this;
 
                         for(var k in d){
-                            _this.q(`${s} input[data-type='${k}']`).value = d[k];
+                          q(`${s} input[data-type='${k}']`).value = d[k];
                         }
                       },
                       "e4": (s, d) => {
@@ -131,14 +163,12 @@ class CyclesOutput extends Output{
                           @do take every kit-object from %d variable and generate from this html. Than set this html to outerHTML of previous container or create new
                           @note data-name="ind-%id%" means induvidual kit, where data-name=kit_name
                         */
-                        _this.q(s).outerHTML = `<div class="kit"">
+
+                        q(s).outerHTML = `<div class="kit" style="margin-top: .5rem">
                                   <h6 class="columns">
-                                    <div class="col-3">${d.weight} kg</div>
-                                    <div class="col-3">${d.pcPrice}</div>
-                                    <div class="col-3"><input value="${d.price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
-                                    <div class="col-3"><input value="${d.count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
-                                    <progress class="progress col-12" value="${d.progressBars[0]}" min="0" max="100"></progress>
-                                    <progress class="progress col-12" value="${d.progressBars[1]}" min="0" max="100"></progress>
+                                    <div class="col-12" style="padding-bottom:.3rem">Kit creating</div>
+                                    <progress class="progress col-12" value="${d.progress_bars[0]}" min="0" max="100"></progress>
+                                    <progress class="progress col-12" value="${d.progress_bars[1]}" min="0" max="100"></progress>
                                   </h6>
                                   <div class="products-container unique-scroll">
                                     ${(ps => {
@@ -148,10 +178,10 @@ class CyclesOutput extends Output{
                                                                                 <div class="col-1" data-weight="${ps[i].weight}">${ps[i].unit}</div>
                                                                                 <div class="col-3">
                                                                                   <select class="form-select">
-                                                                                    <option value="kit" title="kit"${p[i].price.selected == "kit"?" selected":""}>k-${p[i].price.kit}</option>
-                                                                                    <option value="wholesale" title="wholesale"${p[i].price.selected == "wholesale"?" selected":""}>w-${p[i].price.wholesale}</option>
-                                                                                    <option value="shop" title="shop"${p[i].price.selected == "shop"?" selected":""}>s-${p[i].price.shop}</option>
-                                                                                    <option value="restaurant" title="restaurant"${p[i].price.selected == "restaurant"?" selected":""}>r-${p[i].price.restaurant}</option>
+                                                                                    <option value="p-kt" title="kit"${ps[i].price.selected == "p-kt"?" selected":""}>k-${ps[i].price["p-kt"]}</option>
+                                                                                    <option value="p-wh" title="wholesale"${ps[i].price.selected == "p-wh"?" selected":""}>w-${ps[i].price["p-wh"]}</option>
+                                                                                    <option value="p-sh" title="shop"${ps[i].price.selected == "p-sh"?" selected":""}>s-${ps[i].price["p-sh"]}</option>
+                                                                                    <option value="p-rst" title="restaurant"${ps[i].price.selected == "p-rst"?" selected":""}>r-${ps[i].price["p-rst"]}</option>
                                                                                   </select>
                                                                                 </div>
                                                                                 <div class="col-3"><input value="${ps[i].count}" placeholder="Count" class="form-input" type="number"/></div>
@@ -167,7 +197,8 @@ class CyclesOutput extends Output{
                           @param d {Array<String|Float>}
                           @do take %d varialbe and convert array of numbers/strings to string, where each string is splited by white space
                         */
-                        _this.q(s).value = d.join(" ");
+
+                        q(s).value = d.join(" ");
                       },
                       "e6": (s, d) => {
                         /**
@@ -177,14 +208,138 @@ class CyclesOutput extends Output{
                         */
 
                         for(var c in d){
-                          let a = _this.q(`${s}[for='cycle-${c}']`);
-                          if(a) a.innerHTML = d[c];
-                          else _this.q(s.substr(0, -5)).insertAdjacentHTML("beforeend", `<label for="cycle-${c}">${d[c]}</label>`);
+                          let a = q(`${s}[for=cycle-${c}]`);
+                          if(a){
+                            if(d[c]) a.innerHTML = d[c];
+                            else q(s + "[for=cycle-" + c + "]").outerHTML = "";
+                          } else q(s.slice(0, -6)).insertAdjacentHTML("beforeend", `<label for="cycle-${c}">${d[c]}</label>`);
                         }
                       },
                       "e7": (s, d) => {
                         this.q(s).setAttribute("data-id", d);
-                      }
+                      },
+                      "e8": (s, d) => {
+                        this.q(s).innerHTML = d;
+                      },
+                      "e9": (s, d) => {
+                        /**
+                          @desc paste needed text into field and antoher into html-list of this field
+                          @param d {Array<Array<String, String>>} where d = [value, value]
+                          @do take first element and paste it to the field and another elements convert to the html-list and paste it into list container
+                        */
+                        var list = d[0]?`<option selected>${d[0]}</option>`:"";
+                        for(var i = 1; i < d.length; i++){
+                          list += `<option>${d[i]}</option>`;
+                        }
+
+                        _this.q(s.substr(0, -(s.split(" ").reverse()[0].length)) + " datalist#" + _this.q(s).getAttribute("list")).innerHTML = list;
+                      },
+                      "e10": (s, d) => {
+                        /**
+                          @desc set boolean value to the checkbox or radio input field
+                          @param d {Boolean}
+                          @do set boolean value to the checkbox or radio input field
+                        */
+                        _this.q(s).checked = d;
+                      },
+                      "e11": (s, d) => {
+                        /**
+                          @desc paste needed values into 2 fields and another into html-array of those fields
+                          @param d {Array<Array<String, String>>}
+                          @do take %d variable and than paste 2 values of first element into 2 fields and another elements convert to html-array and paste into array container
+                        */
+                        var fields = _this.qa(s),
+                            containerName = " ." + fields[0].getAttribute("data-array"),
+                            htmlArray = "";
+
+                        fields[0].value = d[0][parseInt(fields[0].getAttribute("data-index"))];
+                        fields[1].value = d[0][parseInt(fields[1].getAttribute("data-index"))];
+                        for(var i = 1; i < d.length; i++){
+                          if(!(!d[i][0] || !d[i][1])) htmlArray += `<span class="chip">
+                                          <chip>${d[i][0]} - ${d[i][1]}</chip>
+                                          <a href="#" class="btn btn-clear" id="close-${Math.random()}" aria-label="Close" role="button"></a>
+                                        </span>`;
+                        }
+
+                        _this.q(s.substr(0, -(s.split(" ").reverse()[0].length)) + containerName).innerHTML = htmlArray;
+                      },
+                      "e12": (s, d) => {
+                        /**
+                          @desc set/add values to the select container
+                          @param d {Array<Array<String, String>>} where d = [[value, text], [value, text]]
+                          @do take %d variable and convert it to html, than take first element of array and make it cheked and another add to the select container
+                        */
+
+                        var list = "";
+                        for(var i = 0; i < d.length; i++){
+                          if(d[i].length == 2) list += `<option value="${d[i][0]}"${i==1?" selected":""}>${d[i][1]}</option>`;
+                        }
+                        this.q(s).innerHTML = list;
+                      },
+                      "e13": (s, d) => {
+                        /**
+                          @desc paste needed html-kit-containers or edit conetent of existed kit-containers
+                          @param d {Object} => {kit_name:{count, price, pcPrice, weight, pcWeight, products: [{name, unit, price|:{kit, wholesale, shop, restaurant, selected: price_type}, count, weight}], progress_bars: [weight, volume]}}
+                          @do take every kit-object from %d variable and generate from this html. Than set this html to outerHTML of previous container or create new
+                          @note data-name="ind-%id%" means induvidual kit, where data-name=kit_name
+                        */
+
+                        for(var k in d){
+                          var r;
+                          if(k.substr(0,4) == "ind-") r = `<div class="kit" data-name="${k.toLowerCase()}">
+                                <h6 class="columns">
+                                  <div class="col-9">${k} - ${d[k].price} - ${d[k].weight}</div>
+                                  <div class="col-3"><input placeholder="Count" class="form-input" type="number" value="${d[k].count}" min="0" step="1"/></div>
+                                  <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
+                                  <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
+                                </h6>
+                                <div class="products-container unique-scroll">
+                                  ${(ps => {
+                                    var r = "";
+                                    for(var i = 0; i < ps.length; i++) r += `<div class="product columns">
+                                                                              <div class="col-5">${ps[i].name}</div>
+                                                                              <div class="col-1" data-weight="${ps[i].weight}">${ps[i].unit}</div>
+                                                                              <div class="col-3">${ps[i].price}</div>
+                                                                              <div class="col-3"><input value="${ps[i].count}" placeholder="Count" class="form-input" type="number"/></div>
+                                                                            </div>`;
+                                    return r;
+                                  })(d[k].products)}
+                                </div>
+                              </div>`;
+                          else r = `<div class="kit" data-name="${k.toLowerCase()}">
+                                      <h6 class="columns">
+                                        <div class="col-3">${d[k].weight} kg</div>
+                                        <div class="col-3">${d[k].pcPrice}</div>
+                                        <div class="col-3"><input value="${d[k].price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
+                                        <div class="col-3"><input value="${d[k].count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
+                                        <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
+                                        <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
+                                      </h6>
+                                      <div class="products-container unique-scroll">
+                                        ${(ps => {
+                                          var r = "";
+                                          for(var i = 0; i < ps.length; i++) r += `<div class="product columns">
+                                                                                    <div class="col-5">${ps[i].name}</div>
+                                                                                    <div class="col-1" data-weight="${ps[i].weight}">${ps[i].unit}</div>
+                                                                                    <div class="col-3">
+                                                                                      <select class="form-select">
+                                                                                        <option value="kit" title="kit"${p[i].price.selected == "kit"?" selected":""}>k-${p[i].price.kit}</option>
+                                                                                        <option value="wholesale" title="wholesale"${p[i].price.selected == "wholesale"?" selected":""}>w-${p[i].price.wholesale}</option>
+                                                                                        <option value="shop" title="shop"${p[i].price.selected == "shop"?" selected":""}>s-${p[i].price.shop}</option>
+                                                                                        <option value="restaurant" title="restaurant"${p[i].price.selected == "restaurant"?" selected":""}>r-${p[i].price.restaurant}</option>
+                                                                                      </select>
+                                                                                    </div>
+                                                                                    <div class="col-3"><input value="${ps[i].count}" placeholder="Count" class="form-input" type="number"/></div>
+                                                                                  </div>`;
+                                        return r;
+                                        })(d[k].products)}
+                                      </div></div>`;
+                            //kits[k] = r;
+                            var kit = _this.q(`${s}[data-name=${k}]`);
+                            if(kit) kit.outerHTML = r
+                            else _this.q(`${s} span.add-kit`).parentNode.insertAdjacentHTML("beforebegin", r);
+                          }
+                        }
                     };
     super(editors, outputs);
     return g["Output"]["cycles"] = this;
