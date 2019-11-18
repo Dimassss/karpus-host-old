@@ -35,118 +35,180 @@
 */
 class CycleController{
   constructor(){
+    if(g.Controller.Cycles.instance) return g.Controller.Cycles.instance;
     this.dao = new CyclesDAO();
     this.in = new CyclesInput();
+    return g.Controller.Cycles.instance = this;
   }
 
-  addCyclesToNavBar(e){
-    this.dao.dispalyCycles('TRUE ORDER BY id DESC LIMIT ?, ?', [
+  addCyclesToNavBar(e, cb){
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.dispalyCycles('TRUE ORDER BY id DESC LIMIT ?, ?', [
             g.Controller.Cycles.cyclesNavBarScrollCounter * g.Controller.Cycles.cyclesNavBarCountToSelect,
             g.Controller.Cycles.cyclesNavBarCountToSelect
-          ]);
+          ], cb);
   }
 
   scrollNavBarLeft(e){
-    g.Controller.Cycles.toScroll = true;
-    while(g.Controller.Cycles.toScroll) document.querySelector(".cycles-tab-container .cycles").scrollBy(-2, 0);
+    g.Controller.Cycles.toScroll = setInterval(() => document.querySelector(".cycles-tab-container .cycles").scrollBy(-3, 0), 6);
   }
 
   scrollNavBarRight(e){
-    g.Controller.Cycles.toScroll = true;
-    while(g.Controller.Cycles.toScroll) document.querySelector(".cycles-tab-container .cycles").scrollBy(2, 0);
+    g.Controller.Cycles.toScroll = setInterval(() => document.querySelector(".cycles-tab-container .cycles").scrollBy(3, 0), 6);
   }
 
   endScroll(e){
-    g.Controller.Cycles.toScroll = false;
+    clearInterval(g.Controller.Cycles.toScroll);
+    g.Controller.Cycles.toScroll = undefined;
   }
 
   createCycle(e){
-    var cycleName = this.in.takeData("add_c");
+    let _this = g.Controller.Cycles.instance;
+
+    var cycleName = _this.in.takeData("add_c");
     if(cycleName != ""){
-      this.dao.createCycle(false?this.in.takeData("C_ID"):-1, cycleName);
+      _this.dao.createCycle(false?_this.in.takeData("C_ID"):-1, cycleName, cycleID => {
+        _this.dao.dispalyCycles('id = ?', [cycleID], () => {
+          _this.selectCycle(e, cycleID);
+        });
+      });
     }
-    this.dao.dispalyCycles('id = ?', [this.in.takeData("C_ID")]);
-    this.selectCycle(e, this.in.takeData("C_ID"));
+
   }
 
-  selectCycle(e, id){
+  selectCycle(e, id, cb){
+    let _this = g.Controller.Cycles.instance;
+    // let sl = _this.in.takeData("C_Slct");
+    // if(sl[2]) sl[2].classList.remove("selected");
+    // e.target.parentNode.classList.add("selected");
     id = id?id:e.target.getAttribute("for").split("-")[1];
-    this.dao.fillCycleWindows(id);
+    _this.dao.fillCycleWindows(id, cb);
   }
 
   editOrder(e){
-    this.dao.openOrderCreatingWindow();
-    this.dao.fillOrderCreatingWindow(e.target.getAttribute("data-id"));
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.openOrderCreatingWindow();
+    _this.dao.fillOrderCreatingWindow(e.target.getAttribute("data-id"));
   }
 
   closeOrder(e){
-    this.dao.closeOrderCreatingWindow();
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.closeOrderCreatingWindow();
   }
 
   saveOrder(e){
-    let r = this.dao.getOrderFromPage();
+    let _this = g.Controller.Cycles.instance;
+    let r = _this.dao.getOrderFromPage();
     var order = r[0];
     var customer = r[1];
-    this.dao.saveOrder(order);
+    _this.dao.saveOrder(order);
   }
 
   displayKitsOnCycleSelect(e){
-    this.dao.displayKits(this.in.takeData("AW_c_id"));
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.displayKits(_this.in.takeData("AW_c_id"));
   }
 
   deleteCycle(e){
-    let cycleID = this.in.takeData("C_ID");
-    this.dao.cleanCycleWindows(cycleID);
-    this.deleteCycle(cycleID)
+    let _this = g.Controller.Cycles.instance;
+    let cycleID = _this.in.takeData("C_ID");
+    _this.dao.cleanCycleWindows(cycleID);
+    _this.dao.deleteCycle(cycleID)
   }
 
   deleteRecord(e){
-    let sl = this.in.takeData("Tbl_Slct");
+    let _this = g.Controller.Cycles.instance;
+    let sl = _this.in.takeData("Tbl_Slct");
     let db = ({"orders": new OrderTableSQL(), "products": new ProductTableSQL(), "kits": new KitTableSQL()})[sl[0]];
+    let dbCycle = new CycleTableSQL();
+    dbCycle.load([_this.in.takeData("C_ID")], cycles => {
+      if(cycles[0]){
+        let index = cycles[0][sl[0] + "ID"].indexOf(sl[1]);
+
+        if(index > -1) cycles[0][sl[0] + "ID"].splice(index, 1);
+        db.del([sl[1]]);
+        dbCycle.save(cycles, () => {});
+        (new CyclesOutput()).insertData(sl[0][0].toUpperCase() + "_Tbl", {body:[[{id: sl[1]}]]});
+      }
+    });
     db.del([sl[1]]);
   }
 
   selectRecord(e){
-    let sl = this.in.takeData("Tbl_Slct");
-    sl[2].classList.remove("selected");
-    e.target.classList.add("selected");
-    sl = this.in.takeData("Tbl_Slct");
-    let fillProfile = ({"orders": undefined, "products": this.dao.fillProductProfile, "kits": this.dao.fillKitProfile})[sl[0]];
-    if(fillProfile != undefined) fillProfile(sl[1], this.in.takeData("C_ID"));
+    let _this = g.Controller.Cycles.instance;
+    let sl = _this.in.takeData("Tbl_Slct");
+    if(sl[2]) sl[2].classList.remove("selected");
+    e.target.parentNode.classList.add("selected");
+    sl = _this.in.takeData("Tbl_Slct");
+    let fillProfile = ({"orders": undefined, "products": _this.dao.fillProductProfile, "kits": _this.dao.fillKitProfile})[sl[0]];
+    if(fillProfile != undefined) fillProfile(sl[1], _this.in.takeData("C_ID"));
   }
 
   addToArray(e){
-    this.dao.addToArray(...({
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.addToArray(...({
               "Paid":["AW_P", ["", ""]],
               "Date":["AW_P", ["", ""]]
             })[e.target.parentNode.querySelector("input").getAttribute("placeholder")]);
   }
 
-  saveProduct(e){
-    var product = this.dao.takeProductFromPage();
+  saveProduct(e, cb){
+    let _this = g.Controller.Cycles.instance;
+    var product = _this.dao.takeProductFromPage();
+    const id = product["id"] + 1;
     var db = new ProductTableSQL();
-    product = db.save([product])[0];
-    this.dao.fillProductsWin([product["id"]]);
+    var dbCycle = new CycleTableSQL();
+
+    db.save([product], products => {
+      if(products[0]["id"] != id - 1){
+        dbCycle.load([products[0]["cycleID"]], cycles => {
+          if(cycles[0]){
+            cycles[0]["productsID"][cycles[0]["productsID"].length] = products[0]["id"];
+            dbCycle.save(cycles, () => {});
+          }
+        });
+        (new CyclesOutput()).insertData("P_ID", products[0]["id"]);
+      }
+      _this.dao.fillProductsWin([products[0]["id"]], cb);
+    });
+
   }
 
-  saveKit(e){
-    var kit = this.dao.takeKitFromPage();
+  saveKit(e, cb){
+    let _this = g.Controller.Cycles.instance;
+    var kit = _this.dao.takeKitFromPage();
+    const id = kit["id"] + 1;
     var db = new KitTableSQL();
-    kit = db.save([kit])[0];
-    this.dao.fillKitsWin([kit["id"]]);
+    var dbCycle = new CycleTableSQL();
+
+    db.save([kit], kits => {
+      if(kits[0]["id"] != id - 1){
+        dbCycle.load([kits[0]["cycleID"]], cycles => {
+          if(cycles[0]){
+            cycles[0]["kitsID"][cycles[0]["kitsID"].length] = kits[0]["id"];
+            dbCycle.save(cycles, () => {})
+          }
+        });
+        (new CyclesOutput()).insertData("K_ID", kits[0]["id"]);
+      }
+      _this.dao.fillKitsWin([kits[0]["id"]], cb);
+    });
   }
 
   createKit(e){
+    let _this = g.Controller.Cycles.instance;
     Array.from(document.querySelectorAll("table .selected")).forEach(s => s.classList.remove("selected"));
-    this.dao.cleanKitProfile(this.in.takeData("C_ID"));
+    _this.dao.cleanKitProfile(_this.in.takeData("C_ID"));
   }
 
   createProduct(e){
+    let _this = g.Controller.Cycles.instance;
     Array.from(document.querySelectorAll("table .selected")).forEach(s => s.classList.remove("selected"));
-    this.dao.cleanProductProfile();
+    _this.dao.cleanProductProfile();
   }
 
   search(e){
+    let _this = g.Controller.Cycles.instance;
     let table = e.target.parentNode.querySelector("table");
     let str = e.target.value;
     let s = (str=="")?(() => true):(tr => Array.from(tr).fillter(td => td.innerHTML.search(str) > -1).length > 0);
