@@ -76,6 +76,10 @@
         display:table;
         width:100%;
         table-layout:fixed;
+
+        &.selected{
+          background-color: #151515;
+        }
       }
     }
 

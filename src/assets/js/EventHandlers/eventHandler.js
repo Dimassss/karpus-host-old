@@ -51,7 +51,6 @@
 */
 class EventHandler{
   constructor(){
-    console.log("EventHandler Created");
   }
 
   watch(target, config, f){
@@ -69,12 +68,20 @@ class EventHandler{
 
   bind(target, on, f, data){
     var _this = this;
-    Array.from(_this.qa(target)).forEach(el => el.addEventListener(on,
-                                    e => {
-                                      e.stopPropagation();
-                                      f(e, data);
-                                    },
-                                    false));
+    let els = _this.qa(target);
+    if(els.length <= 0) console.warn(target, on);
+    Array.from(_this.qa(target)).forEach(el => {
+                                    if(!el.classList.contains("js-hasEventListener-" + f.name + "-" + on)){
+                                      el.addEventListener(on,
+                                        e => {
+                                          e.stopPropagation();
+                                          if(!data) f(e);
+                                          else f(e, ...data);
+                                        },
+                                        false);
+                                      el.classList.add("js-hasEventListener-" + f.name + "-" + on);
+                                    }
+                                  });
   }
 
   q(s){
