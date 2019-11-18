@@ -1,0 +1,3 @@
+-customerProfile.html
+  deleting of customer left an empty line in nav table
+  searching of orders
