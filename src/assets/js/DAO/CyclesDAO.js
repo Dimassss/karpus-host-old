@@ -55,18 +55,25 @@ class CyclesDAO extends DAO{
 
   fillCycleWindows(cycleID, cb){
     var db = new CycleTableSQL();
-
-    this.cleanCycleWindows();
+    var _this = this;
+    _this.cleanCycleWindows();
 
     db.load([cycleID], cycles => {
       let cycle = cycles[0];
-
       (new CyclesOutput()).insertData("C_ID", cycleID);
-      if(cycle["ordersID"].length > 0) this.fillOrdersWin(cycle["ordersID"], cb);
-      if(cycle["kitsID"].length > 0) this.fillKitsWin(cycle["kitsID"], cb);
-      if(cycle["productsID"].length > 0) this.fillProductsWin(cycle["productsID"], cb)
 
-      if(cb) cb();
+      (new OrderTableSQL()).select(`cycleID LIKE ?`, [JSON.stringify(cycleID)], orders => {
+        _this.fillOrdersWin(orders.map(o => o.id));
+
+        (new KitTableSQL()).select(`cycleID = ?`, [cycleID], kits => {
+          _this.fillKitsWin(kits.map(o => o.id));
+
+          (new ProductTableSQL()).select(`cycleID = ?`, [cycleID], products => {
+
+            _this.fillProductsWin(products.map(o => o.id), cb);
+          });
+        });
+      });
     });
   }
 
@@ -88,7 +95,7 @@ class CyclesDAO extends DAO{
         for(var col in db.v) if(col != "id" && col != "cycleID" && col != "customerID") row[row.length] = orders[i][col];
         tableObject.body[tableObject.body.length] = Array.from(row);
       }
-      tableObject.head = tableObject.foot = Object.keys(db.v);
+      //tableObject.head = tableObject.foot = [Object.keys(db.v).map(col => [col, 1, 1])];
 
       out.insertData("O_Tbl", tableObject);
 
@@ -353,23 +360,14 @@ class CyclesDAO extends DAO{
   saveOrder(order){
     let db = OrderTableSQL();
 
-    if(cycleID != order["cycleID"]){
-      let dbCycle = CycleTableSQL();
+    if(!order["cycleID"]){
       let cycleID = (new CyclesInput()).takeData("C_ID");
-      let cyclesToUpdate = dbCycle.load([cycleID])
-      let cycleUpdated1 = cyclesToUpdate[0];
-      let cycleUpdated2 = cyclesToUpdate[1];
-      const orderID = cycleUpdated1.ordersID.indexOf(order["id"]);
-      if(orderID > -1){
-        cycleUpdated1.ordersID.splice(orderID, 1);
-        cycleUpdated2.ordersID[cycleUpdated2.ordersID.length] = order["id"];
-      }
-      dbCycle.save(cyclesToUpdate);
-      (new CyclesOutput).insertData("O_Tbl", {body:[[{id: order["id"]}]]});
+      if(!cycleID) throw "WTF, Why havent record been selected???";
+      order["cycleID"] = cycleID;
     }else{
       this.fillOrdersWin(order["id"]);
     }
-    db.save([order])[0];
+    db.save([order]);
   }
 
   displayKits(cycleID){
@@ -435,5 +433,10 @@ class CyclesDAO extends DAO{
       dimensions: inp.takeData("kt_Dm"),
       ...inp.takeData("kt_prs"),
     });
+  }
+
+  getCurrentCycleID(){
+    let inp = new CyclesInput();
+    return inp.takeData("C_ID");
   }
 }

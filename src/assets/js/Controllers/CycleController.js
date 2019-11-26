@@ -78,10 +78,7 @@ class CycleController{
 
   selectCycle(e, id, cb){
     let _this = g.Controller.Cycles.instance;
-    // let sl = _this.in.takeData("C_Slct");
-    // if(sl[2]) sl[2].classList.remove("selected");
-    // e.target.parentNode.classList.add("selected");
-    id = id?id:e.target.getAttribute("for").split("-")[1];
+    id = typeof id !== "undefined"?id:e.target.getAttribute("for").split("-")[1];
     _this.dao.fillCycleWindows(id, cb);
   }
 

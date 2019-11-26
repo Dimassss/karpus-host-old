@@ -73,12 +73,13 @@ class CyclesOutput extends Output{
                         var head, body, foot;
 
                         //creating head of table
+
                         if(d.head){
                           head = "<thead>";
                           d.head.forEach(tr => {
                             head += "<tr>";
                             tr.forEach(th => {
-                              head += "<th" + (th[1]?` colspan="${th[1]}"`:"") + (th[2]?` rowspan="${th[2]}"`:"") + ">" + th[0] + "</th>";
+                              if(th[0] != "id") head += "<th" + (th[1]?` colspan="${th[1]}"`:"") + (th[2]?` rowspan="${th[2]}"`:"") + ">" + th[0] + "</th>";
                             })
                             head += "</tr>";
                           });
@@ -112,7 +113,7 @@ class CyclesOutput extends Output{
                           d.foot.forEach(tr => {
                             foot += "<tr>";
                             tr.forEach(td => {
-                              foot +=  `<td${(td[1]?` colspan="${td[1]}"`:"")}${(td[2]?` rowspan="${td[2]}"`:"")}>${td[0]}</td>`;
+                              if(td[0] != "id") foot +=  `<td${(td[1]?` colspan="${td[1]}"`:"")}${(td[2]?` rowspan="${td[2]}"`:"")}>${td[0]}</td>`;
                             })
                             foot += "</tr>";
                           });
