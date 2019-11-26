@@ -206,6 +206,7 @@ class CustomerProfileDAO extends DAO{
             out.insertData("AW_c_id", [ [selectedCycle.id, selectedCycle.name], ...restCycles.map(cycle => [cycle.id, cycle.name]) ]);
 
             dbKit.load(selectedCycle["kitsID"], kitsFromDB => {
+
               kitsFromDB.forEach((kit, i) => {
                 var orderKit = order.kits[kit.name];
                 if(!orderKit) return false;
@@ -269,9 +270,9 @@ class CustomerProfileDAO extends DAO{
     var db = new CustomerTableSQL();
     var out = new CustomerProfileOutput();
     var _in = new CustomerProfileInput();
-    db.del([customerID]);
-    out.insertData("WP_Tbl_CD", customerID);
     if(_in.takeData("WP_ID") == customerID) this.fillCustomerWin(-1);
+    out.insertData("WP_Tbl_CD", customerID);
+    db.del([customerID]);
   }
 
   deleteOrder(orderID){

@@ -231,7 +231,7 @@ class CustomerProfileOutput extends Output{
                           console.log(d[k]);
 
                           var r;
-                          if(k.substr(0,4) == "ind-") r = `<div class="kit js-to-save" data-name="${k.toLowerCase()}">
+                          if(k.substr(0,4) == "ind-") r = `<div class="kit js-to-save" data-name="${k}">
                                 <h6 class="columns">
                                   <div class="col-3">${k}</div>
                                   <div class="col-3">${d[k].price}</div>
@@ -253,7 +253,7 @@ class CustomerProfileOutput extends Output{
                                   })(d[k].products)}
                                 </div>
                               </div>`;
-                          else r = `<div class="kit js-to-save" data-name="${k.toLowerCase()}">
+                          else r = `<div class="kit js-to-save" data-name="${k}">
                                       <h6 class="columns">
                                         <div class="col-3 weight">${d[k].weight} kg</div>
                                         <div class="col-3">${d[k].pcPrice}</div>
