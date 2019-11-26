@@ -1,5 +1,5 @@
 cd tests
 index.html
 cd..
-gulp dev
+gulp
 pause
