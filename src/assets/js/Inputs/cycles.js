@@ -140,7 +140,7 @@ class CyclesInput extends Input{
                         pcPrice += p_price[p_price["selected"]] | p_price;
                         pcWeight += p_weight;
                       }
-                      
+
                       return Object.assign({}, {pcPrice:pcPrice, pcWeight: pcWeight, products: products, progress_bars: pr_bar});
                     },
                     "t3": (s, v, r) => {

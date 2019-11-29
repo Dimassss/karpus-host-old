@@ -85,7 +85,7 @@ class CycleController{
   editOrder(e){
     let _this = g.Controller.Cycles.instance;
     _this.dao.openOrderCreatingWindow();
-    _this.dao.fillOrderCreatingWindow(e.target.getAttribute("data-id"));
+    _this.dao.fillOrderCreatingWin(parseInt(e.target.parentNode.getAttribute("data-id")));
   }
 
   closeOrder(e){
@@ -118,16 +118,8 @@ class CycleController{
     let sl = _this.in.takeData("Tbl_Slct");
     let db = ({"orders": new OrderTableSQL(), "products": new ProductTableSQL(), "kits": new KitTableSQL()})[sl[0]];
     let dbCycle = new CycleTableSQL();
-    dbCycle.load([_this.in.takeData("C_ID")], cycles => {
-      if(cycles[0]){
-        let index = cycles[0][sl[0] + "ID"].indexOf(sl[1]);
 
-        if(index > -1) cycles[0][sl[0] + "ID"].splice(index, 1);
-        db.del([sl[1]]);
-        dbCycle.save(cycles, () => {});
-        (new CyclesOutput()).insertData(sl[0][0].toUpperCase() + "_Tbl", {body:[[{id: sl[1]}]]});
-      }
-    });
+    (new CyclesOutput()).insertData(sl[0][0].toUpperCase() + "_Tbl", {body:[[{id: sl[1]}]]});
     db.del([sl[1]]);
   }
 

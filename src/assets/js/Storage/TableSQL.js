@@ -126,12 +126,7 @@ class TableSQL{
 
   del(keys){
     var k = this.k, table = this.table;
-    /*for(var i = 0; i < keys.length; i++) if(keys[i]) websql.process({
-      "sql": `DELETE FROM ${table} WHERE ${k} = ?`,
-      "data": [keys[i]]
-    });*/
-
-    for(var i = 0; i < keys.length; i++) if(keys[i]) console.log({
+    for(var i = 0; i < keys.length; i++) if(keys[i]) websql.process({
       "sql": `DELETE FROM ${table} WHERE ${k} = ?`,
       "data": [keys[i]]
     });

@@ -3,7 +3,8 @@ function run(){
   var e = new EventHandler();
   var c = new CycleController();
   var trBindRecords = () => e.bind(".cycles-container table#orders tbody tr, .cycles-container table#kits tbody tr, .cycles-container table#products tbody tr", "click", c.selectRecord);
-  var trBindCycles = () => e.bind("label[for^=cycle-]", "click", e => {c.selectCycle(e, undefined, trBindRecords)});
+  var trBindOrders = () => e.bind(".cycles-container table#orders tbody tr", "dblclick", c.editOrder);
+  var trBindCycles = () => e.bind("label[for^=cycle-]", "click", e => {c.selectCycle(e, undefined, () => {trBindOrders(); trBindRecords();})});
 
   c.addCyclesToNavBar(undefined, trBindCycles)
   e.bind(".cycles-tab-container .cycles, .cycles-tab-container .controll .dropup-content", "scroll", (e) => {
@@ -19,7 +20,7 @@ function run(){
   e.bind(".cycles-tab-container .create-cycle label[for=create-cycle]:nth-child(3)", "click", c.createCycle);
   e.bind(".cycles-container table#orders tbody tr", "dblclick", c.editOrder);
   e.bind("section.alert-window navbar label:nth-child(2)", "click", c.closeOrder);
-  e.bind("section.alert-window navbar label:nth-child(1)", "click", c.saveOrder);
+  e.bind("section.alert-window navbar label:nth-child(1)", "click", c.saveOrder, [() => {trBindOrders(); trBindRecords();}]);
   e.bind("section.alert-window #js-cycle", "change", c.displayKitsOnCycleSelect);
   e.bind("body > header div.drop a:nth-child(3)", "click", c.deleteCycle);
   e.bind("body > header div.drop a:nth-child(4)", "click", c.deleteRecord);
@@ -37,33 +38,3 @@ function run(){
     return document.querySelectorAll(s);
   }
 }
-
-/*
-
-c.addCustomersToTable(undefined, trBindCustomers);
-c.addOrdersToTable(undefined, trBindOrders);
-
-e.bind("table#customers tbody", "scroll", (e) => {
-  let tbl = q("table#customers tbody");
-  let dH = tbl.scrollHeight - tbl.scrollTop;
-  if(dH < 400) c.addCustomersToTable(e, trBindCustomers);
-});
-e.bind("table#orders tbody", "scroll", (e) => {
-  let tbl = q("table#orders tbody");
-  let dH = tbl.scrollHeight - tbl.scrollTop;
-  if(dH < 400) c.addOrdersToTable(e, trBindOrders);
-});
-trBindOrders();
-trBindCustomers();
-e.bind("body > header div.drop a:nth-child(1)", "click", c.createCustomer);
-e.bind("body > header div.drop a:nth-child(2)", "click", c.deleteCustomer);
-e.bind("body > header div.drop a:nth-child(3)", "click", c.deleteOrder);
-e.bind("section.alert-window navbar label:nth-child(1)", "click", c.saveOrder);
-e.bind("section.alert-window #js-cycle", "change", c.displayKitsOnCycleSelect);
-e.bind("input[name=js-customer-nav-table-search]", "change", e => {c.searchCustomers(e, trBindCustomers)});
-e.bind("input[name=js-cutomer-order-table-search]", "change", e => {c.seachOrders(e, trBindOrders)});
-e.bind('label[for="open-alert-window"][name=create_order]', "click", c.createOrder);
-e.bind('.windows .window .form-input:not(.js-isArray)', "change", e => c.saveCustomer(e, trBindCustomers));
-e.bind('.windows .window .form-group .input-group span.btn.input-group-btn', "click", e => {c.addToArray(e); c.saveCustomer(e, trBindCustomers)});
-e.bind('section.alert-window .form-group .input-group span.btn.input-group-btn', "click", c.addToArray);
-*/

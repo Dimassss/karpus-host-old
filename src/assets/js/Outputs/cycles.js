@@ -9,6 +9,7 @@ class CyclesOutput extends Output{
     }
 
     if(g["Output"]["cycles"]) return g["Output"]["cycles"];
+    var _this;
     const outputs = [
                       ["C_ID", "section.cycles-container .cycle", "e7"],
                       ["P_ID", ".w-products form", "e7"],
@@ -228,7 +229,9 @@ class CyclesOutput extends Output{
                           @param d {Array<Array<String, String>>} where d = [value, value]
                           @do take first element and paste it to the field and another elements convert to the html-list and paste it into list container
                         */
-                        var list = d[0]?`<option selected>${d[0]}</option>`:"";
+                        _this.q(s).value = d[0];
+
+                        var list = "";
                         for(var i = 1; i < d.length; i++){
                           list += `<option>${d[i]}</option>`;
                         }
@@ -287,12 +290,12 @@ class CyclesOutput extends Output{
 
                         for(var k in d){
                           var r;
-                          if(k.substr(0,4) == "ind-") r = `<div class="kit" data-name="${k.toLowerCase()}">
+                          if(k.substr(0,4) == "ind-") r = `<div class="kit" data-name="${k}">
                                 <h6 class="columns">
                                   <div class="col-9">${k} - ${d[k].price} - ${d[k].weight}</div>
                                   <div class="col-3"><input placeholder="Count" class="form-input" type="number" value="${d[k].count}" min="0" step="1"/></div>
-                                  <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
-                                  <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
+                                  <progress class="progress col-12" value="${d[k].progress_bars[0]}" min="0" max="100"></progress>
+                                  <progress class="progress col-12" value="${d[k].progress_bars[1]}" min="0" max="100"></progress>
                                 </h6>
                                 <div class="products-container unique-scroll">
                                   ${(ps => {
@@ -307,14 +310,14 @@ class CyclesOutput extends Output{
                                   })(d[k].products)}
                                 </div>
                               </div>`;
-                          else r = `<div class="kit" data-name="${k.toLowerCase()}">
+                          else r = `<div class="kit" data-name="${k}">
                                       <h6 class="columns">
                                         <div class="col-3">${d[k].weight} kg</div>
                                         <div class="col-3">${d[k].pcPrice}</div>
                                         <div class="col-3"><input value="${d[k].price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
                                         <div class="col-3"><input value="${d[k].count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
-                                        <progress class="progress col-12" value="${d[k].progressBars[0]}" min="0" max="100"></progress>
-                                        <progress class="progress col-12" value="${d[k].progressBars[1]}" min="0" max="100"></progress>
+                                        <progress class="progress col-12" value="${d[k].progress_bars[0]}" min="0" max="100"></progress>
+                                        <progress class="progress col-12" value="${d[k].progress_bars[1]}" min="0" max="100"></progress>
                                       </h6>
                                       <div class="products-container unique-scroll">
                                         ${(ps => {
@@ -324,10 +327,10 @@ class CyclesOutput extends Output{
                                                                                     <div class="col-1" data-weight="${ps[i].weight}">${ps[i].unit}</div>
                                                                                     <div class="col-3">
                                                                                       <select class="form-select">
-                                                                                        <option value="kit" title="kit"${p[i].price.selected == "kit"?" selected":""}>k-${p[i].price.kit}</option>
-                                                                                        <option value="wholesale" title="wholesale"${p[i].price.selected == "wholesale"?" selected":""}>w-${p[i].price.wholesale}</option>
-                                                                                        <option value="shop" title="shop"${p[i].price.selected == "shop"?" selected":""}>s-${p[i].price.shop}</option>
-                                                                                        <option value="restaurant" title="restaurant"${p[i].price.selected == "restaurant"?" selected":""}>r-${p[i].price.restaurant}</option>
+                                                                                        <option value="p-kt" title="kit"${ps[i].price.selected == "p-kt"?" selected":""}>k-${ps[i].price["p-kt"]}</option>
+                                                                                        <option value="p-wh" title="wholesale"${ps[i].price.selected == "p-wh"?" selected":""}>w-${ps[i].price["p-wh"]}</option>
+                                                                                        <option value="p-sh" title="shop"${ps[i].price.selected == "p-sh"?" selected":""}>s-${ps[i].price["p-sh"]}</option>
+                                                                                        <option value="p-rst" title="restaurant"${ps[i].price.selected == "p-rst"?" selected":""}>r-${ps[i].price["p-rst"]}</option>
                                                                                       </select>
                                                                                     </div>
                                                                                     <div class="col-3"><input value="${ps[i].count}" placeholder="Count" class="form-input" type="number"/></div>
@@ -343,6 +346,7 @@ class CyclesOutput extends Output{
                         }
                     };
     super(editors, outputs);
+    _this = this;
     return g["Output"]["cycles"] = this;
   }
 }
