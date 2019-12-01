@@ -205,92 +205,92 @@ class CustomerProfileController{
       if(!confirm("Fill up database with example data?")) return false;
 
       c.save([
-        new CycleModel({name: "cycle00", kitsID: [0,1,2], productsID: [0,1,2,3], ordersID: []}),
-        new CycleModel({name: "cycle01", kitsID: [3,4,5], productsID: [4,5,6,7], ordersID: []}),
-        new CycleModel({name: "cycle02", kitsID: [6,7,8], productsID: [8,9,10,11], ordersID: []}),
-        new CycleModel({name: "cycle03", kitsID: [9,10,11], productsID: [12,13,14,15], ordersID: []}),
+        new CycleModel({name: "cycle00"}),
+        new CycleModel({name: "cycle01"}),
+        new CycleModel({name: "cycle02"}),
+        new CycleModel({name: "cycle03"}),
       ], ()=>{
-        p.save([
-          new ProductModel({cycleID: 0, name: "product00", unit: "kg", price: {"p-wh": 25, "p-sh": 25, "p-rst": 30, "p-kt": 50}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.0, description: "Some description about product00"}),
-          new ProductModel({cycleID: 0, name: "product01", unit: "g", price: {"p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 30}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.1, description: "Some description about product01"}),
-          new ProductModel({cycleID: 0, name: "product02", unit: "kg", price: {"p-wh": 55, "p-sh": 27, "p-rst": 30, "p-kt": 76}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.2, description: "Some description about product02"}),
-          new ProductModel({cycleID: 0, name: "product03", unit: "kg", price: {"p-wh": 35, "p-sh": 26, "p-rst": 30, "p-kt": 23}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.3, description: "Some description about product03"}),
+        for(var i = 0; i< 20; i++) p.save([
+          new ProductModel({cycleID: 1, name: "product00", unit: "kg", price: {"p-wh": 25, "p-sh": 25, "p-rst": 30, "p-kt": 50}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.0, description: "Some description about product00"}),
+          new ProductModel({cycleID: 1, name: "product01", unit: "g", price: {"p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 30}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.1, description: "Some description about product01"}),
+          new ProductModel({cycleID: 1, name: "product02", unit: "kg", price: {"p-wh": 55, "p-sh": 27, "p-rst": 30, "p-kt": 76}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.2, description: "Some description about product02"}),
+          new ProductModel({cycleID: 1, name: "product03", unit: "kg", price: {"p-wh": 35, "p-sh": 26, "p-rst": 30, "p-kt": 23}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.3, description: "Some description about product03"}),
 
-          new ProductModel({cycleID: 1, name: "product04", unit: "c", price: {"p-wh": 65, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.4, description: "Some description about product04"}),
-          new ProductModel({cycleID: 1, name: "product05", unit: "c", price: {"p-wh": 25, "p-sh": 28, "p-rst": 30, "p-kt": 22}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.5, description: "Some description about product05"}),
-          new ProductModel({cycleID: 1, name: "product06", unit: "kg", price: {"p-wh": 35, "p-sh": 65, "p-rst": 30, "p-kt": 27}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.6, description: "Some description about product06"}),
-          new ProductModel({cycleID: 1, name: "product07", unit: "kg", price: {"p-wh": 5, "p-sh": 25, "p-rst": 30, "p-kt": 25}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.7, description: "Some description about product07"}),
+          new ProductModel({cycleID: 2, name: "product04", unit: "c", price: {"p-wh": 65, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.4, description: "Some description about product04"}),
+          new ProductModel({cycleID: 2, name: "product05", unit: "c", price: {"p-wh": 25, "p-sh": 28, "p-rst": 30, "p-kt": 22}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.5, description: "Some description about product05"}),
+          new ProductModel({cycleID: 2, name: "product06", unit: "kg", price: {"p-wh": 35, "p-sh": 65, "p-rst": 30, "p-kt": 27}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.6, description: "Some description about product06"}),
+          new ProductModel({cycleID: 2, name: "product07", unit: "kg", price: {"p-wh": 5, "p-sh": 25, "p-rst": 30, "p-kt": 25}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.7, description: "Some description about product07"}),
 
-          new ProductModel({cycleID: 2, name: "product08", unit: "L", price: {"p-wh": 75, "p-sh": 75, "p-rst": 30, "p-kt": 26}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.8, description: "Some description about product08"}),
-          new ProductModel({cycleID: 2, name: "product09", unit: "kg", price: {"p-wh": 25, "p-sh": 75, "p-rst": 30, "p-kt": 22}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.9, description: "Some description about product09"}),
-          new ProductModel({cycleID: 2, name: "product10", unit: "L", price: {"p-wh": 75, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.1, description: "Some description about product10"}),
-          new ProductModel({cycleID: 2, name: "product11", unit: "kg", price: {"p-wh": 65, "p-sh": 26, "p-rst": 30, "p-kt": 24}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.11, description: "Some description about product11"}),
+          new ProductModel({cycleID: 3, name: "product08", unit: "L", price: {"p-wh": 75, "p-sh": 75, "p-rst": 30, "p-kt": 26}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.8, description: "Some description about product08"}),
+          new ProductModel({cycleID: 3, name: "product09", unit: "kg", price: {"p-wh": 25, "p-sh": 75, "p-rst": 30, "p-kt": 22}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.9, description: "Some description about product09"}),
+          new ProductModel({cycleID: 3, name: "product10", unit: "L", price: {"p-wh": 75, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.1, description: "Some description about product10"}),
+          new ProductModel({cycleID: 3, name: "product11", unit: "kg", price: {"p-wh": 65, "p-sh": 26, "p-rst": 30, "p-kt": 24}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.11, description: "Some description about product11"}),
 
-          new ProductModel({cycleID: 3, name: "product12", unit: "c", price: {"p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 28}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.12, description: "Some description about product12"}),
-          new ProductModel({cycleID: 3, name: "product13", unit: "g", price: {"p-wh": 20, "p-sh": 25, "p-rst": 30, "p-kt": 23}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.13, description: "Some description about product13"}),
-          new ProductModel({cycleID: 3, name: "product14", unit: "L", price: {"p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 21}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.14, description: "Some description about product14"}),
-          new ProductModel({cycleID: 3, name: "product15", unit: "c", price: {"p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 29}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.15, description: "Some description about product15"}),
+          new ProductModel({cycleID: 4, name: "product12", unit: "c", price: {"p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 28}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.12, description: "Some description about product12"}),
+          new ProductModel({cycleID: 4, name: "product13", unit: "g", price: {"p-wh": 20, "p-sh": 25, "p-rst": 30, "p-kt": 23}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.13, description: "Some description about product13"}),
+          new ProductModel({cycleID: 4, name: "product14", unit: "L", price: {"p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 21}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.14, description: "Some description about product14"}),
+          new ProductModel({cycleID: 4, name: "product15", unit: "c", price: {"p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 29}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.15, description: "Some description about product15"}),
         ], ()=>{
           k.save([
-            new KitModel({cycleID: 0, name: "Kit00", price: 140, pcPrice: 120, weight: 11, pcWeight: 10, products: [
+            new KitModel({cycleID: 1, name: "Kit00", price: 140, pcPrice: 120, weight: 11, pcWeight: 10, products: [
               {name: "product02", unit: "kg", price:{selected: "p-kt", "p-wh": 55, "p-sh": 27, "p-rst": 30, "p-kt": 76}, count:2, weight:1.5},
               {name: "product01", unit: "g", price:{selected: "p-kt", "p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 30}, count:5, weight:3.4},
               {name: "product03", unit: "kg", price:{selected: "p-kt", "p-wh": 35, "p-sh": 26, "p-rst": 30, "p-kt": 23}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE1", size: "S", description: "Some description about kit00"}),
-            new KitModel({cycleID: 0, name: "Kit01", price: 140, pcPrice: 220, weight: 13, pcWeight: 10, products: [
+            new KitModel({cycleID: 1, name: "Kit01", price: 140, pcPrice: 220, weight: 13, pcWeight: 10, products: [
               {name: "product00", unit: "kg", price:{selected: "p-kt", "p-wh": 25, "p-sh": 25, "p-rst": 30, "p-kt": 50}, count:2, weight:1.5},
               {name: "product01", unit: "g", price:{selected: "p-kt", "p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 30}, count:5, weight:3.4},
               {name: "product02", unit: "kg", price:{selected: "p-kt", "p-wh": 55, "p-sh": 27, "p-rst": 30, "p-kt": 76}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE2", size: "M", description: "Some description about kit01"}),
-            new KitModel({cycleID: 0, name: "Kit02", price: 140, pcPrice: 320, weight: 17, pcWeight: 10, products: [
+            new KitModel({cycleID: 1, name: "Kit02", price: 140, pcPrice: 320, weight: 17, pcWeight: 10, products: [
               {name: "product03", unit: "kg", price:{selected: "p-kt", "p-wh": 35, "p-sh": 26, "p-rst": 30, "p-kt": 23}, count:2, weight:1.5},
               {name: "product02", unit: "kg", price:{selected: "p-kt", "p-wh": 55, "p-sh": 27, "p-rst": 30, "p-kt": 76}, count:5, weight:3.4},
               {name: "product00", unit: "kg", price:{selected: "p-kt", "p-wh": 25, "p-sh": 25, "p-rst": 30, "p-kt": 50}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE2", size: "L", description: "Some description about kit02"}),
 
-            new KitModel({cycleID: 1, name: "Kit03", price: 140, pcPrice: 120, weight: 10, pcWeight: 10, products: [
+            new KitModel({cycleID: 2, name: "Kit03", price: 140, pcPrice: 120, weight: 10, pcWeight: 10, products: [
               {name: "product04", unit: "c", price:{selected: "p-kt", "p-wh": 65, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count:2, weight:1.5},
               {name: "product06", unit: "kg", price:{selected: "p-kt", "p-wh": 35, "p-sh": 65, "p-rst": 30, "p-kt": 27}, count:5, weight:3.4},
               {name: "product07", unit: "kg", price:{selected: "p-kt", "p-wh": 5, "p-sh": 25, "p-rst": 30, "p-kt": 25}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE3", size: "S", description: "Some description about kit03"}),
-            new KitModel({cycleID: 1, name: "Kit04", price: 140, pcPrice: 170, weight: 14, pcWeight: 10, products: [
+            new KitModel({cycleID: 2, name: "Kit04", price: 140, pcPrice: 170, weight: 14, pcWeight: 10, products: [
               {name: "product04", unit: "c", price:{selected: "p-kt", "p-wh": 65, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count:2, weight:1.5},
               {name: "product05", unit: "c", price:{selected: "p-kt", "p-wh": 25, "p-sh": 28, "p-rst": 30, "p-kt": 22}, count:5, weight:3.4},
               {name: "product06", unit: "kg", price:{selected: "p-kt", "p-wh": 35, "p-sh": 65, "p-rst": 30, "p-kt": 27}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE2", size: "M", description: "Some description about kit04"}),
-            new KitModel({cycleID: 1, name: "Kit05", price: 140, pcPrice: 210, weight: 18, pcWeight: 10, products: [
+            new KitModel({cycleID: 2, name: "Kit05", price: 140, pcPrice: 210, weight: 18, pcWeight: 10, products: [
               {name: "product04", unit: "c", price:{selected: "p-kt", "p-wh": 65, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count:2, weight:1.5},
               {name: "product05", unit: "c", price:{selected: "p-kt", "p-wh": 25, "p-sh": 28, "p-rst": 30, "p-kt": 22}, count:5, weight:3.4},
               {name: "product07", unit: "kg", price:{selected: "p-kt", "p-wh": 5, "p-sh": 25, "p-rst": 30, "p-kt": 25}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE1", size: "L", description: "Some description about kit05"}),
 
-            new KitModel({cycleID: 2, name: "Kit06", price: 140, pcPrice: 100, weight: 09, pcWeight: 10, products: [
+            new KitModel({cycleID: 3, name: "Kit06", price: 140, pcPrice: 100, weight: 09, pcWeight: 10, products: [
               {name: "product11", unit: "kg", price:{selected: "p-kt", "p-wh": 65, "p-sh": 26, "p-rst": 30, "p-kt": 24}, count:2, weight:1.5},
               {name: "product10", unit: "L", price:{selected: "p-kt", "p-wh": 75, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count:5, weight:3.4},
               {name: "product09", unit: "kg", price:{selected: "p-kt", "p-wh": 25, "p-sh": 75, "p-rst": 30, "p-kt": 22}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE3", size: "S", description: "Some description about kit06"}),
-            new KitModel({cycleID: 2, name: "Kit07", price: 140, pcPrice: 140, weight: 12, pcWeight: 10, products: [
+            new KitModel({cycleID: 3, name: "Kit07", price: 140, pcPrice: 140, weight: 12, pcWeight: 10, products: [
               {name: "product08", unit: "L", price:{selected: "p-kt", "p-wh": 75, "p-sh": 75, "p-rst": 30, "p-kt": 26}, count:2, weight:1.5},
               {name: "product09", unit: "kg", price:{selected: "p-kt", "p-wh": 25, "p-sh": 75, "p-rst": 30, "p-kt": 22}, count:5, weight:3.4},
               {name: "product11", unit: "kg", price:{selected: "p-kt", "p-wh": 65, "p-sh": 26, "p-rst": 30, "p-kt": 24}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE1", size: "M", description: "Some description about kit07"}),
-            new KitModel({cycleID: 2, name: "Kit08", price: 140, pcPrice: 195, weight: 15, pcWeight: 10, products: [
+            new KitModel({cycleID: 3, name: "Kit08", price: 140, pcPrice: 195, weight: 15, pcWeight: 10, products: [
               {name: "product10", unit: "L", price:{selected: "p-kt", "p-wh": 75, "p-sh": 23, "p-rst": 30, "p-kt": 27}, count:2, weight:1.5},
               {name: "product08", unit: "L", price:{selected: "p-kt", "p-wh": 75, "p-sh": 75, "p-rst": 30, "p-kt": 26}, count:5, weight:3.4},
               {name: "product09", unit: "kg", price:{selected: "p-kt", "p-wh": 25, "p-sh": 75, "p-rst": 30, "p-kt": 22}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE3", size: "L", description: "Some description about kit08"}),
 
-            new KitModel({cycleID: 3, name: "Kit09", price: 140, pcPrice: 126, weight: 10, pcWeight: 10, products: [
+            new KitModel({cycleID: 4, name: "Kit09", price: 140, pcPrice: 126, weight: 10, pcWeight: 10, products: [
               {name: "product15", unit: "c", price:{selected: "p-kt", "p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 29}, count:2, weight:1.5},
               {name: "product14", unit: "L", price:{selected: "p-kt", "p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 21}, count:5, weight:3.4},
               {name: "product13", unit: "g", price:{selected: "p-kt", "p-wh": 20, "p-sh": 25, "p-rst": 30, "p-kt": 23}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE2", size: "S", description: "Some description about kit09"}),
-            new KitModel({cycleID: 3, name: "Kit10", price: 140, pcPrice: 147, weight: 14, pcWeight: 10, products: [
+            new KitModel({cycleID: 4, name: "Kit10", price: 140, pcPrice: 147, weight: 14, pcWeight: 10, products: [
               {name: "product15", unit: "c", price:{selected: "p-kt", "p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 29}, count:2, weight:1.5},
               {name: "product14", unit: "L", price:{selected: "p-kt", "p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 21}, count:5, weight:3.4},
               {name: "product12", unit: "c", price:{selected: "p-kt", "p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 28}, count:4, weight:2.7}
             ], progress_bars: [80, 75], dimensions: [0.3, 0.4, 0.4], type: "TYPE1", size: "M", description: "Some description about kit10"}),
-            new KitModel({cycleID: 3, name: "Kit11", price: 140, pcPrice: 170, weight: 14, pcWeight: 10, products: [
+            new KitModel({cycleID: 4, name: "Kit11", price: 140, pcPrice: 170, weight: 14, pcWeight: 10, products: [
               {name: "product12", unit: "c", price:{selected: "p-kt", "p-wh": 26, "p-sh": 22, "p-rst": 30, "p-kt": 28}, count:2, weight:1.5},
               {name: "product14", unit: "L", price:{selected: "p-kt", "p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 21}, count:5, weight:3.4},
               {name: "product13", unit: "g", price:{selected: "p-kt", "p-wh": 20, "p-sh": 25, "p-rst": 30, "p-kt": 23}, count:4, weight:2.7}

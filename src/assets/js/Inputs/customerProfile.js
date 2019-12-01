@@ -45,7 +45,6 @@ class CustomerProfileInput extends Input{
         p_weight = parseFloat(r(product_html.querySelector("div:nth-child(2)").getAttribute("data-weight")));
 
         products[products.length] = {name: p_name, unit: p_unit, price: p_price, count: p_count, weight: p_weight};
-        console.log(products[products.length-1]);
         pcPrice += typeof p_price == "object"?p_price[p_price.selected]: p_price;
         pcWeight += p_weight;
       }
@@ -122,7 +121,7 @@ class CustomerProfileInput extends Input{
                         if(count < 1 || !count) continue;
                         kits[r(kits_html[i].getAttribute("data-name"))] = take_getKit(s, v, r, kits_html[i]);
                       }
-                      console.log(kits);
+                      
                       return kits;
                     },
                     /**

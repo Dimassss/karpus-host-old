@@ -31,7 +31,7 @@ class CyclesOutput extends Output{
                       ["K_Cr", ".w-kits .content .kits .kit", "e4"], //Kit Creating
                       ["P_Tbl", ".w-products table#products", "e1"], //Product => products nav table
                       ["P_Nm", ".w-products .content form input#js-product-name", "e2"], //Products => product name
-                      ["P_Unt", ".w-products .content form input#js-product-unit", "e2"], //Products => product unit
+                      ["P_Unt", ".w-products .content form select#js-product-unit", "e15"], //Products => product unit
                       ["P_C", ".w-products .content form table#js-product-count-set", "e3"], //Products => product count set
                       ["P_Pr", ".w-products .content form table#js-product-price-set", "e3"], //Products => product price set
                       ["P_Dm", ".w-products .content form input#js-product-dimensions", "e5"], //Products => product dimensions
@@ -53,7 +53,8 @@ class CyclesOutput extends Output{
                       ["AW_kits", ".alert-window .kits .kit", "e13"],
                       ["AW_n_ths", ".alert-window input#js-is-not-this", "e10"],
                       ["AW_an_FN", ".alert-window input#js-another-full-name", "e2"],
-                      ["AW_an_Tel", ".alert-window input#js-another-telephone", "e2"]
+                      ["AW_an_Tel", ".alert-window input#js-another-telephone", "e2"],
+                      ["Cstm_ID", ".alert-window", "e14"]
                     ];
     const editors = {
                       "e1": (s, d) => {
@@ -276,7 +277,7 @@ class CyclesOutput extends Output{
 
                         var list = "";
                         for(var i = 0; i < d.length; i++){
-                          if(d[i].length == 2) list += `<option value="${d[i][0]}"${i==1?" selected":""}>${d[i][1]}</option>`;
+                          if(d[i].length == 2) list += `<option value="${d[i][0]}"${i==0?" selected":""}>${d[i][1]}</option>`;
                         }
                         this.q(s).innerHTML = list;
                       },
@@ -289,10 +290,13 @@ class CyclesOutput extends Output{
                         */
 
                         for(var k in d){
+
                           var r;
-                          if(k.substr(0,4) == "ind-") r = `<div class="kit" data-name="${k}">
+                          if(k.substr(0,4) == "ind-") r = `<div class="kit js-to-save" data-name="${k}">
                                 <h6 class="columns">
-                                  <div class="col-9">${k} - ${d[k].price} - ${d[k].weight}</div>
+                                  <div class="col-3">${k}</div>
+                                  <div class="col-3">${d[k].price}</div>
+                                  <div class="col-3">${d[k].weight}</div>
                                   <div class="col-3"><input placeholder="Count" class="form-input" type="number" value="${d[k].count}" min="0" step="1"/></div>
                                   <progress class="progress col-12" value="${d[k].progress_bars[0]}" min="0" max="100"></progress>
                                   <progress class="progress col-12" value="${d[k].progress_bars[1]}" min="0" max="100"></progress>
@@ -310,9 +314,9 @@ class CyclesOutput extends Output{
                                   })(d[k].products)}
                                 </div>
                               </div>`;
-                          else r = `<div class="kit" data-name="${k}">
+                          else r = `<div class="kit js-to-save" data-name="${k}">
                                       <h6 class="columns">
-                                        <div class="col-3">${d[k].weight} kg</div>
+                                        <div class="col-3 weight">${d[k].weight} kg</div>
                                         <div class="col-3">${d[k].pcPrice}</div>
                                         <div class="col-3"><input value="${d[k].price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
                                         <div class="col-3"><input value="${d[k].count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
@@ -338,11 +342,21 @@ class CyclesOutput extends Output{
                                         return r;
                                         })(d[k].products)}
                                       </div></div>`;
-                            //kits[k] = r;
-                            var kit = _this.q(`${s}[data-name=${k}]`);
-                            if(kit) kit.outerHTML = r
+
+                            var kit = _this.q(`${s}[data-name="${k}"]`);
+                            if(kit) kit.outerHTML = r;
                             else _this.q(`${s} span.add-kit`).parentNode.insertAdjacentHTML("beforebegin", r);
                           }
+
+                          Array.from(qa(`${s}:not(.js-to-save):not(.add)`)).forEach(k => k.outerHTML = "");
+                          Array.from(qa(`${s}.js-to-save`)).forEach(k => k.classList.remove("js-to-save"));
+                        },
+                        "e14": (s, d) => {
+                          this.q(s).setAttribute("data-customer-id", d);
+                        },
+                        "e15": (s, d) => {
+                          let sel = Array.from(this.q(s).options).find(op => op.value == d);
+                          if(sel) this.q(s).selectedIndex = sel.index;
                         }
                     };
     super(editors, outputs);

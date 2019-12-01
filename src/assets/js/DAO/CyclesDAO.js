@@ -90,17 +90,47 @@ class CyclesDAO extends DAO{
     var tableObject = {body:[]};
 
     db.load(keys, orders => {
-      for(var i = 0; i < orders.length; i++){
-        var row = [{id: orders[i]["id"], cycleID: orders[i]["cycleID"], customerID: orders[i]["customerID"]}];
-        for(var col in db.v) if(col != "id" && col != "cycleID" && col != "customerID") row[row.length] = orders[i][col];
-        tableObject.body[tableObject.body.length] = Array.from(row);
-      }
-      //tableObject.head = tableObject.foot = [Object.keys(db.v).map(col => [col, 1, 1])];
+      let columns = ["fullName", "telephone", "kits", "products", "adress", "summary", "billed", "pays", "payDates", "orderNotes", "socialMedia"];
+      var tableObject = {body:[]};
 
-      out.insertData("O_Tbl", tableObject);
+      (new CustomerTableSQL()).load(orders.map(or => or.customerID), customers => {
+        let nameMap = {};
+        customers.forEach(c => nameMap[c.id] = c.fullName);
+        orders.forEach((or, i) => orders[i].fullName = nameMap[or.customerID]);
+
+        orders.forEach(order => {
+          let row = [];
+          row[row.length] = {id: order.id};
+          for(var i = 0; i < columns.length; i++) row[row.length] = [convertField(order, columns[i]), 1, 1];
+          console.log(order);
+          tableObject.body[tableObject.body.length] = row;
+        });
+
+        out.insertData("O_Tbl", tableObject);
+      });
 
       if(cb) cb();
     });
+
+    function convertField(o, c){
+      switch(c){
+        case "kits":
+          return Object.keys(o.kits).join(", ");
+          break;
+        case "products":
+          return Object.keys(o.kits).map(kitName => kitName + ": [" + o.kits[kitName].products.map(pr => pr.name + ": " + pr.count).join(", ") + "]").join("<br>");
+          break;
+        case "pays":
+          o[c].shift();
+          return o[c].join(", ");
+        case "payDates":
+          o[c].shift();
+          return o[c].join(", ");
+        default:
+          return o[c];
+          break;
+      }
+    }
   }
 
   cleanOrdersWin(){
@@ -129,19 +159,22 @@ class CyclesDAO extends DAO{
 
   cleanKitsWin(){
     var out = new CyclesOutput();
-
+    this.cleanKitProfile();
     out.insertData("K_Tbl", {body: -1});
   }
 
   fillProductsWin(keys, cb){
     var db = new ProductTableSQL();
     var out = new CyclesOutput();
+    const cols = ["name", "unit", "count", "price", "dimensions", "weight", "description"];
     var tableObject = {body:[]};
+    console.log(db.v, cols);
 
     db.load(keys, products => {
       for(var i = 0; i < products.length; i++){
         var row = [{id: products[i]["id"], cycleID: products[i]["cycleID"]}];
-        for(var col in db.v) if(col != "id" && col != "cycleID"){
+        for(var j in cols) if(cols[j] != "id" && cols[j] != "cycleID"){j
+          const col = cols[j];
           if(col == "count" || col == "price") for(var c in products[i][col]) row[row.length] = [products[i][col][c], 1, 1];
           else if(products[i][col] == null) row[row.length] = ["", 1, 1];
           else if(typeof products[i][col] == "object") row[row.length] = [products[i][col].join(" * "), 1, 1];
@@ -158,7 +191,7 @@ class CyclesDAO extends DAO{
 
   cleanProductsWin(){
     var out = new CyclesOutput();
-
+    this.cleanProductProfile();
     out.insertData("P_Tbl", {body: -1});
   }
 
@@ -175,12 +208,12 @@ class CyclesDAO extends DAO{
       dbCustomer.load([order.customerID], customers => {
         let customer = customers[0];
 
-        console.log(customer, order, orderID);
         if(!customer){
           out.insertData("O_Tbl", {body:[[{id: orderID}]]});
           dbOrder.del([orderID]);
         }else{
           //fill fields from customer object
+          out.insertData("Cstm_ID", customer.id);
           out.insertData("AW_Nm", customer["fullName"]);
           out.insertData("AW_Pr", customer["preferences"]);
           //fill fields from customer and order objects
@@ -199,55 +232,48 @@ class CyclesDAO extends DAO{
           //clear kits
           out.insertData("AW_kits", {});
 
-          if(order["cycleID"] == -1){
-            dbCycle.select("TRUE", [], cycles => {
-              out.insertData("AW_c_id", [[-1, "Select Cycle"], ...cycles.map(cycle => [cycle["id"], cycle["name"]]) ]);
-            });
-          }else{
-            dbCycle.select("TRUE", [], cycles => {
-              var selectedCycle = cycles.filter(cycle => cycle.id == order.cycleID)[0];
-              var restCycles = cycles.filter(cycle => cycle.id != order.cycleID);
-              out.insertData("AW_c_id", [ [selectedCycle.id, selectedCycle.name], ...restCycles.map(cycle => [cycle.id, cycle.name]) ]);
+          dbCycle.select("TRUE", [], cycles => {
+            var selectedCycle = cycles.find(cycle => cycle.id == order.cycleID);
+            var restCycles = cycles.filter(cycle => cycle.id != order.cycleID);
+            out.insertData("AW_c_id", [ [selectedCycle.id, selectedCycle.name], ...restCycles.map(cycle => [cycle.id, cycle.name]) ]);
 
-              dbKit.select("cycleID = ?", [order.cycleID], kitsFromDB => {
+            dbKit.select("cycleID = ?", [order.cycleID], kitsFromDB => {
 
-                kitsFromDB.forEach((kit, i) => {
-                  var orderKit = order.kits[kit.name];
-                  console.log(orderKit, order.kits, kit, kit.name);
-                  if(!orderKit) return false;
+              kitsFromDB.forEach((kit, i) => {
+                var orderKit = order.kits[kit.name];
+                if(!orderKit) return false;
 
-                  kitsFromDB[i].count = (typeof orderKit.count == "number")?orderKit.count:0;
-                  kitsFromDB[i].price = (typeof orderKit.price == "number")?(orderKit.price):(kitsFromDB[i].price);
+                kitsFromDB[i].count = (typeof orderKit.count == "number")?orderKit.count:0;
+                kitsFromDB[i].price = (typeof orderKit.price == "number")?(orderKit.price):(kitsFromDB[i].price);
 
-                  var names = {};
-                  orderKit.products.forEach((pr, i) => names[pr.name] = i);
+                var names = {};
+                orderKit.products.forEach((pr, i) => names[pr.name] = i);
 
 
-                  kit.products.forEach((pr, i) => {
-                    console.log(pr, orderKit.products[names[pr.name].count]);
-                    if(names[pr.name] !== undefined){
-                      kit.products[i].count = orderKit.products[names[pr.name]].count;
-                      kit.products[i].price.selected = orderKit.products[names[pr.name]].price.selected;
-                    }else{
-                      kit.products[i].count = 0;
-                      kit.products[i].price.selected = "p-kt";
-                    }
-                  });
-
+                kit.products.forEach((pr, i) => {
+                  if(names[pr.name] !== undefined){
+                    kit.products[i].count = orderKit.products[names[pr.name]].count;
+                    kit.products[i].price.selected = orderKit.products[names[pr.name]].price.selected;
+                  }else{
+                    kit.products[i].count = 0;
+                    kit.products[i].price.selected = "p-kt";
+                  }
                 });
 
-                var kitsData = {};
-
-                kitsFromDB.forEach(kit => {
-                  kitsData[kit.name] = kit;
-                });
-
-                out.insertData("AW_kits", kitsData);
-                console.log(kitsData, kitsFromDB, order)
-                if(cb) cb();
               });
+
+              var kitsData = {};
+
+              kitsFromDB.forEach(kit => {
+                kitsData[kit.name] = kit;
+              });
+
+              out.insertData("AW_kits", kitsData);
+
+              if(cb) cb();
             });
-          }
+          });
+
         }
       });
     });
@@ -331,7 +357,7 @@ class CyclesDAO extends DAO{
 
   cleanProductProfile(){
     var out = new CyclesOutput();
-    var product = {id: "",name: "", unit: "", count: {}, price: {}, dimensions: [0,0,0], weight: 0, description: ""};
+    var product = {id: "",name: "", unit: "", count: {"c-st":0,"c-wh":0,"c-sh":0,"c-kt":0,"c-or":0,"c-lft":0}, price: {"p-wh":0,"p-sh":0,"p-rst":0,"p-kt":0}, dimensions: [0,0,0], weight: 0, description: ""};
 
     out.insertData("P_Nm", product["name"]);
     out.insertData("P_ID", product["id"]);
@@ -363,9 +389,9 @@ class CyclesDAO extends DAO{
     document.querySelector(".alert-window").style.display = "block";
   }
 
-  getOrderFromPage(){
+  getOrderFromPage(cb){
     var inp = new CyclesInput();
-    return [new OrderModel({
+    var order = new OrderModel({
       id: inp.takeData("AW_ID"),
       cycleID: inp.takeData("AW_c_id"),
       telephone: inp.takeData("AW_Tel"),
@@ -377,48 +403,78 @@ class CyclesDAO extends DAO{
       isNotThis: inp.takeData("AW_n_ths"),
       payDates: inp.takeData("AW_PD"),
       pays: inp.takeData("AW_Pay"),
-      customerID: inp.takeData("WP_ID"),
+      customerID: inp.takeData("Cstm_ID"),
       anotherFullName: inp.takeData("AW_an_FN"),
       anotherTelephone: inp.takeData("AW_an_Tel"),
       kits: inp.takeData("AW_kits")
-    }), {...this.getCustomerFromPage(), preferences: inp.takeData("AW_Pr")}];
+    });
+
+    const payData = inp.takeData("AW_P");
+    let pays = payData.map(data => data[0]);
+    let dates = payData.map(data => data[1]);
+
+    order.pays = pays;
+    order.payDates = dates;
+
+    (new CustomerTableSQL()).load([order.customerID], customers => {
+      if(customers[0]){
+        let customer = customers[0];
+        if(!customer.telephones.find(t => t==order.telephone[0])) customer.telephones.push(order.telephone[0]);
+        if(!customer.adresses.find(o => o==order.adress[0])) customer.adresses.push(order.adress[0]);
+        if(!customer.socialMedia.find(o => o==order.socialMedia[0])) customer.socialMedia.push(order.socialMedia[0]);
+        customer.preferences = inp.takeData("AW_Pr");
+        cb(order, customer);
+      }
+    });
   }
 
   saveOrder(order){
-    let db = OrderTableSQL();
+    this.fillOrdersWin(order["id"]);
+    (new OrderTableSQL()).save([order], () => {});
+  }
 
-    if(!order["cycleID"]){
-      let cycleID = (new CyclesInput()).takeData("C_ID");
-      if(!cycleID) throw "WTF, Why havent record been selected???";
-      order["cycleID"] = cycleID;
-    }else{
-      this.fillOrdersWin(order["id"]);
-    }
-    db.save([order]);
+  saveCustomer(customer){
+    (new CustomerTableSQL()).save([customer], () => {});
   }
 
   displayKits(cycleID){
     var out = new CyclesOutput();
     var dbCycle = new CycleTableSQL();
     var dbKit = new KitTableSQL();
-    var kits = {...dbKit.load(dbCycle.load([cycleID])[0]["kitsID"])} | {};
-    var kitsData = {};
-    if(!kits[Obj])
-    for(var k in kits){
-      kitsData[kits[k]["name"]] = Object.assign({}, kits[k]);
-    }
-    out.insertData("AW_kits", kitsData);
+
+
+    dbKit.select("cycleID = ?", [cycleID], kits => {
+      var kitsData = {};
+      for(var k in kits){
+        if(!kits[k].count) kits[k].count = 0;
+        kitsData[kits[k]["name"]] = Object.assign({}, kits[k]);
+      }
+      out.insertData("AW_kits", kitsData);
+    });
   }
 
   deleteCycle(cycleID){
     let out = new CyclesOutput();
+    let orderDB = new OrderTableSQL();
+    let kitDB = new KitTableSQL();
+    let productDB = new ProductTableSQL();
+    let cycleDB = new CycleTableSQL();
     let cycle = {};
 
     cycle[cycleID] = false;
     out.insertData("C_CL1", cycle);
     out.insertData("C_CL2", cycle);
 
-    (new CycleTableSQL()).del([cycleID]);
+    orderDB.select(`cycleID LIKE ?`, [JSON.stringify(cycleID+"")], orders => {
+      kitDB.select("cycleID = ?", [cycleID], kits => {
+        productDB.select("cycleID = ?", [cycleID], products => {
+          orderDB.del(orders.map(ord => ord.id));
+          kitDB.del(kits.map(kit => kit.id));
+          productDB.del(products.map(pr => pr.id));
+          cycleDB.del([cycleID]);
+        });
+      });
+    });
   }
 
   addToArray(inpName, emp){
@@ -465,5 +521,9 @@ class CyclesDAO extends DAO{
   getCurrentCycleID(){
     let inp = new CyclesInput();
     return inp.takeData("C_ID");
+  }
+
+  productsAutoCounting(){
+
   }
 }

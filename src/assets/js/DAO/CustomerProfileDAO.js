@@ -252,18 +252,15 @@ class CustomerProfileDAO extends DAO{
     var dbCycle = new CycleTableSQL();
     var dbKit = new KitTableSQL();
 
-    dbCycle.load([cycleID], cycles => {
-      if(cycles.length > 0){
-        dbKit.load(cycles[0]["kitsID"], kits => {
-          var kitsData = {};
-          for(var k in kits){
-            if(!kits[k].count) kits[k].count = 0;
-            kitsData[kits[k]["name"]] = Object.assign({}, kits[k]);
-          }
-          out.insertData("AW_kits", kitsData);
-        });
-      }else out.insertData("AW_kits", {});
+    dbKit.select("cycleID = ?", [cycleID], kits => {
+      var kitsData = {};
+      for(var k in kits){
+        if(!kits[k].count) kits[k].count = 0;
+        kitsData[kits[k]["name"]] = Object.assign({}, kits[k]);
+      }
+      out.insertData("AW_kits", kitsData);
     });
+
   }
 
   deleteCustomer(customerID){

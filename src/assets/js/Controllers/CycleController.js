@@ -95,10 +95,11 @@ class CycleController{
 
   saveOrder(e){
     let _this = g.Controller.Cycles.instance;
-    let r = _this.dao.getOrderFromPage();
-    var order = r[0];
-    var customer = r[1];
-    _this.dao.saveOrder(order);
+    _this.dao.getOrderFromPage((order, customer) => {
+      _this.dao.saveOrder(order);
+      _this.dao.saveCustomer(customer);
+      _this.dao.closeOrderCreatingWindow();
+    });
   }
 
   displayKitsOnCycleSelect(e){
@@ -143,10 +144,19 @@ class CycleController{
 
   saveProduct(e, cb){
     let _this = g.Controller.Cycles.instance;
+    let out = new CyclesOutput();
     var product = _this.dao.takeProductFromPage();
     const id = product["id"] + 1;
     var db = new ProductTableSQL();
     var dbCycle = new CycleTableSQL();
+
+    if(e.path[4].id == "js-product-count-set"){
+      console.log(product);
+      product.count["c-kt"] = product.count["c-st"] - product.count["c-wh"] - product.count["c-sh"];
+      product.count["c-lft"] = product.count["c-kt"] - product.count["c-or"];
+
+      out.insertData("P_C", product.count);
+    }
 
     db.save([product], products => {
       if(products[0]["id"] != id - 1){
