@@ -109,8 +109,8 @@ class CustomerProfileController{
     let _this = g.Controller.CustomerProfile.instance;
     let customer = _this.dao.getCustomerFromPage();
     let out = new CustomerProfileOutput();
-
-    _this.dao.saveCustomer(customer, customer => {
+    
+    if(!(customer.fullName=="" && customer.id == -1)) _this.dao.saveCustomer(customer, customer => {
       if(customer) out.insertData("WP_ID", customer["id"]);
       out.insertData("WP_Tbl", {body:[[{id: customer["id"], class: "selected"}, [customer["fullName"], 1, 1], [JSON.stringify(customer["telephones"]).slice(4, -1).split("\",\"").join("<br>").replace(/\"/g, ""), 1, 1]]]});
 
@@ -184,6 +184,12 @@ class CustomerProfileController{
     if(fillProfile != undefined) fillProfile(e, cb);
   }
 
+  updateOrderForm(e){
+    let _this = g.Controller.CustomerProfile.instance;
+    let kits = _this.dao.getOrderFromPage(undefined,1);
+    _this.dao.updateOrderForm(kits);
+  }
+
   //function to delete:
   fillDatabase(cb){
     const c = new CycleTableSQL(),
@@ -192,13 +198,13 @@ class CustomerProfileController{
 
     c.load([1,2], cycles => {
       if(cycles[1] && cycles[0].name == "cycle00" && cycles[1].name == "cycle01"){
-        if(confirm("Do you want to clean cycles, products and kits tables?")){
+        /*if(confirm("Do you want to clean cycles, products and kits tables?")){
           let ids = [];
           (Array(160).join(",").split(",")).map(k => 1).forEach((k, i) => ids[i]=i);
           c.del(ids);
           p.del(ids);
           k.del(ids);
-        }
+        }*/
         return false;
       }
 
@@ -210,7 +216,7 @@ class CustomerProfileController{
         new CycleModel({name: "cycle02"}),
         new CycleModel({name: "cycle03"}),
       ], ()=>{
-        for(var i = 0; i< 20; i++) p.save([
+        for(var i = 0; i < 1; i++) p.save([
           new ProductModel({cycleID: 1, name: "product00", unit: "kg", price: {"p-wh": 25, "p-sh": 25, "p-rst": 30, "p-kt": 50}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.0, description: "Some description about product00"}),
           new ProductModel({cycleID: 1, name: "product01", unit: "g", price: {"p-wh": 22, "p-sh": 28, "p-rst": 30, "p-kt": 30}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.1, description: "Some description about product01"}),
           new ProductModel({cycleID: 1, name: "product02", unit: "kg", price: {"p-wh": 55, "p-sh": 27, "p-rst": 30, "p-kt": 76}, count: {"c-st":90,"c-wh":30,"c-sh":20,"c-kt":20,"c-or":10,"c-lft":20}, dimensions: [0.3, 0.3, 0.2], weight: 1.2, description: "Some description about product02"}),

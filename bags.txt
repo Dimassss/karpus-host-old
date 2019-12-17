@@ -1,3 +1,12 @@
 -customerProfile.html
-  deleting of customer left an empty line in nav table
   searching of orders
+  update table order
+
+-cycles.html
+  searching
+
+
+-обфускация кода
+-data encription
+-long password file
+-framework to encrypt http://bitwiseshiftleft.github.io/sjcl/

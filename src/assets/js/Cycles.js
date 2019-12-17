@@ -29,6 +29,23 @@ function run(){
   e.bind(".cycles-container .w-kits .content .form-input:not(.js-isArray)", "change", c.saveKit, [trBindRecords]);
   e.bind("body > header div.drop a:nth-child(5)", "click", c.createKit);
   e.bind("body > header div.drop a:nth-child(6)", "click", c.createProduct);
+  e.bind("#js-search-field-orders, #js-search-field-kits, #js-search-field-products", "change", c.search);
+
+  e.watch(".cycles-container .w-kits .content .kits", {childList: true, attributes:true, subtree:true, characterData:true, characterDataOldValue: false}, data => {
+    data.some((d, i) => {
+      let id = data.length - i - 1;
+      if(d.type == "childList" && d.addedNodes[id] && d.addedNodes[id].querySelectorAll(".kit div.products-container input").length > 0){
+        e.bind(".cycles-container .w-kits .content .kits .kit div.products-container input, .cycles-container .w-kits .content .kits .kit div.products-container select", "change", c.saveKit, [trBindRecords, 1]);
+        return true;
+      }
+    });
+  });
+
+  e.watch("section.alert-window div.kits", {childList: true, attributes:true, subtree:true, characterData:true, characterDataOldValue: false}, data => {
+    if(data.filter(d => !(d.type == "attributes" && d.attributeName == "class")).length > 0){
+      e.bind("section.alert-window div.kits .kit input, section.alert-window div.kits .kit select", "change", c.updateOrderForm);
+    }
+  });
 
   function q(s){
     return document.querySelector(s);

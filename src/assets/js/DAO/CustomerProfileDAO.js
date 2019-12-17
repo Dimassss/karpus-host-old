@@ -54,7 +54,7 @@ class CustomerProfileDAO extends DAO{
     var tableObject = {body:[]};
 
     db.select(where, data, customers => {
-      console.log(customers);
+
       customers.forEach(customer => {
         let row = [];
         row[row.length] = {id: customer.id};
@@ -117,7 +117,6 @@ class CustomerProfileDAO extends DAO{
                           g.Controller.CustomerProfile.orderNavTableCountToSelect
                         ],
                         orders => {
-                          console.log(orders);
                           if(orders.length > 0){
                             let columns;
                             var tableObject = {body:[]};
@@ -128,7 +127,6 @@ class CustomerProfileDAO extends DAO{
                                 for(var i = 0; i < columns.length; i++) row[row.length] = [convertField(order, columns[i]), 1, 1];
                                 tableObject.body[tableObject.body.length] = row;
                               });
-                              console.log(tableObject);
                             out.insertData("WO_Tbl", tableObject);
                             g.Controller.CustomerProfile.orderNavTableScrollCounter++;
                           }else g.Controller.CustomerProfile.orderNavTableScrollCounter = -1;
@@ -163,87 +161,116 @@ class CustomerProfileDAO extends DAO{
                     });
   }
 
-  fillOrderCreatingWin(customerID, orderID, cb){
+  fillOrderCreatingWin(customerID,orderID, cb){
     var dbOrder = new OrderTableSQL();
     var dbCustomer = new CustomerTableSQL();
     var dbCycle = new CycleTableSQL();
     var dbKit = new KitTableSQL();
     var out = new CustomerProfileOutput();
-    var ordersF = customer => {
-      dbOrder.load([orderID], orders => {
-        var order = orders[0];
-        order = order?order:{id: -1, telephone: [""], socialMedia: [""], adress: [""], orderNotes: "", summary: 0, billed: false, isNotThis: false, payDates: [""], pays: [""], cycleID: -1, customerID: customerID};
 
-        out.insertData("AW_Opn", true);
+    dbOrder.load([orderID], orders => {
+      var order = orders[0];
+      if(!order) order = {id: -1, telephone: [""], socialMedia: [""], adress: [""], orderNotes: "", summary: 0, billed: false, isNotThis: false, payDates: [""], pays: [""], cycleID: -1, customerID: customerID};
 
-        //fill fields from customer object
-        out.insertData("AW_Nm", customer["fullName"]);
-        out.insertData("AW_Pr", customer["preferences"]);
-        //fill fields from customer and order objects
-        out.insertData("AW_Tel", [order["telephone"][0], ...customer["telephones"].filter(tel => tel != order["telephone"][0])]);
-        out.insertData("AW_SM", [order["socialMedia"][0], ...customer["socialMedia"].filter(media => media != order["socialMedia"][0])]);
-        out.insertData("AW_Adr", [order["adress"][0], ...customer["adresses"].filter(adress => adress != order["adress"][0])]);
-        //fill fields from order object
-        out.insertData("AW_ID", order["id"]);
-        out.insertData("AW_ON", order["orderNotes"]);
-        out.insertData("AW_Sum", order["summary"]);
-        out.insertData("AW_Bill", order["billed"] == "true");
-        out.insertData("AW_n_ths", order["isNotThis"] == "true");
-        out.insertData("AW_an_FN", order["isNotThis"] == "true"?order["anotherFullName"]:"");
-        out.insertData("AW_an_Tel", order["isNotThis"] == "true"?order["anotherTelephone"]:"");
-        out.insertData("AW_P", order["payDates"].map((d, i) => [d, order["pays"][i]]));
-        //clear kits
-        out.insertData("AW_kits", {});
+      dbCustomer.load([customerID], customers => {
+        let customer = customers[0];
 
-        if(order["cycleID"] == -1){
-          dbCycle.select("TRUE", [], cycles => {
-            out.insertData("AW_c_id", [[-1, "Select Cycle"], ...cycles.map(cycle => [cycle["id"], cycle["name"]]) ]);
-          });
+        if(!customer){
+          out.insertData("O_Tbl", {body:[[{id: orderID}]]});
+          dbOrder.del([orderID]);
         }else{
-          dbCycle.select("TRUE", [], cycles => {
-            var selectedCycle = cycles.filter(cycle => cycle.id == order.cycleID)[0];
+          out.insertData("AW_Opn", true);
+
+          //fill fields from customer object
+          out.insertData("AW_Nm", customer["fullName"]);
+          out.insertData("AW_Pr", customer["preferences"]);
+          //fill fields from customer and order objects
+          out.insertData("AW_Tel", [order["telephone"][0], ...customer["telephones"].filter(tel => tel != order["telephone"][0])]);
+          out.insertData("AW_SM", [order["socialMedia"][0], ...customer["socialMedia"].filter(media => media != order["socialMedia"][0])]);
+          out.insertData("AW_Adr", [order["adress"][0], ...customer["adresses"].filter(adress => adress != order["adress"][0])]);
+          //fill fields from order object
+          out.insertData("AW_ID", order["id"]);
+          out.insertData("AW_ON", order["orderNotes"]);
+          out.insertData("AW_Sum", order["summary"]);
+          out.insertData("AW_Bill", order["billed"] == "true");
+          out.insertData("AW_n_ths", order["isNotThis"] == "true");
+          out.insertData("AW_an_FN", order["isNotThis"] == "true"?order["anotherFullName"]:"");
+          out.insertData("AW_an_Tel", order["isNotThis"] == "true"?order["anotherTelephone"]:"");
+          out.insertData("AW_P", order["payDates"].map((d, i) => [order["pays"][i], d]));
+          //clear kits
+          out.insertData("AW_kits", {});
+
+          if(order["cycleID"] == -1){
+            dbCycle.select("TRUE", [], cycles => {
+              out.insertData("AW_c_id", [[-1, "Select Cycle"], ...cycles.map(cycle => [cycle["id"], cycle["name"]]) ]);
+            });
+          }else dbCycle.select("TRUE", [], cycles => {
+            var selectedCycle = cycles.find(cycle => cycle.id == order.cycleID);
             var restCycles = cycles.filter(cycle => cycle.id != order.cycleID);
             out.insertData("AW_c_id", [ [selectedCycle.id, selectedCycle.name], ...restCycles.map(cycle => [cycle.id, cycle.name]) ]);
 
-            dbKit.load(selectedCycle["kitsID"], kitsFromDB => {
+            dbKit.select("cycleID = ?", [order.cycleID], kitsFromDB => {
+              (new ProductTableSQL()).select("cycleID = ?", [order.cycleID], products => {
+                kitsFromDB.forEach((kit, i) => {
+                  let idMap = {};
+                  kitsFromDB[i].products.forEach((pr, i) => idMap[pr.name] = i);
+                  kitsFromDB[i].products = products.map(pr => {
+                    if(typeof idMap[pr.name] != "undefined"){
+                      let kPr = kitsFromDB[i].products[idMap[pr.name]];
+                      pr.price.selected = kPr.price.selected;
+                      pr.count = kPr.count;
+                    }else{
+                      pr.price.selected = pr.price["p-kt"];
+                      pr.count = 0;
+                    }
+                    return JSON.parse(JSON.stringify(pr));
+                  });
 
-              kitsFromDB.forEach((kit, i) => {
-                var orderKit = order.kits[kit.name];
-                if(!orderKit) return false;
+                  var orderKit = order.kits[kit.name];
+                  if(!orderKit) return false;
 
-                kitsFromDB[i].count = (typeof orderKit.count == "number")?orderKit.count:0;
-                kitsFromDB[i].price = (typeof orderKit.price == "number")?(orderKit.price):(kitsFromDB[i].price);
+                  kitsFromDB[i].count = (typeof orderKit.count == "number")?orderKit.count:0;
+                  kitsFromDB[i].price = (typeof orderKit.price == "number")?(orderKit.price):(kitsFromDB[i].price);
 
-                var names = {};
-                orderKit.products.forEach((pr, i) => names[pr.name] = i);
+                  var names = {};
+                  orderKit.products.forEach((pr, i) => names[pr.name] = i);
+                  let pcPrice = 0;
+                  let pcWeight = 0;
 
-                if(JSON.stringify(names) != "{}"){
                   kit.products.forEach((pr, i) => {
                     if(names[pr.name] !== undefined){
-                      kit.products[i].count = orderKit.products[names[pr.name]].count;
-                      kit.products[i].price.selected = orderKit.products[names[pr.name]].price.selected;
+                      pr.count = orderKit.products[names[pr.name]].count;
+                      pr.price.selected = orderKit.products[names[pr.name]].price.selected;
+                      if(pr.count > 0){
+                        pcPrice += pr.count*pr.price[pr.price.selected];
+                        pcWeight += pr.weight*pr.count;
+                      }
+                    }else{
+                      pr.count = 0;
+                      pr.price.selected = "p-kt";
                     }
+                    kit.products[i] = Object.assign({}, pr);
                   });
-                }
+
+                  kit.pcPrice = pcPrice;
+                  kit.pcWeight = pcWeight;
+                  console.log(kit, pcPrice, pcWeight);
+                });
+
+                var kitsData = {};
+
+                kitsFromDB.forEach(kit => {
+                  kitsData[kit.name] = JSON.parse(JSON.stringify(kit));
+                });
+
+                out.insertData("AW_kits", kitsData);
+                out.insertData("AW_SumPC", (kitsFromDB.filter(kit => kit.count > 0).map(kit => kit.count*(kit.price?kit.price:kit.pcPrice)).reduce((a, b) => a + b, 0)) + " uah");
+                if(cb) cb();
               });
-
-              var kitsData = {};
-
-              kitsFromDB.forEach(kit => {
-                kitsData[kit.name] = kit;
-              });
-              console.log(order.kits, kitsData, kitsFromDB);
-              out.insertData("AW_kits", kitsData);
-
-              if(cb) cb();
             });
           });
         }
       });
-    };
-
-    dbCustomer.load([customerID], customers => {
-      ordersF(customers[0]);
     });
   }
 
@@ -252,15 +279,35 @@ class CustomerProfileDAO extends DAO{
     var dbCycle = new CycleTableSQL();
     var dbKit = new KitTableSQL();
 
+
     dbKit.select("cycleID = ?", [cycleID], kits => {
       var kitsData = {};
-      for(var k in kits){
-        if(!kits[k].count) kits[k].count = 0;
-        kitsData[kits[k]["name"]] = Object.assign({}, kits[k]);
-      }
-      out.insertData("AW_kits", kitsData);
-    });
 
+      (new ProductTableSQL()).select("cycleID = ?", [cycleID], products => {
+        for(var k in kits){
+          let kit = kits[k];
+
+          let idMap = {};
+          kit.products.forEach((pr, i) => idMap[pr.name] = i);
+          kit.products = products.map(pr => {
+            if(typeof idMap[pr.name] != "undefined"){
+              let kPr = kit.products[idMap[pr.name]];
+              pr.price.selected = kPr.selected;
+              pr.count = kPr.count;
+            }else{
+              pr.price.selected = pr.price["p-kt"];
+              pr.count = 0;
+            }
+            return pr;
+          });
+
+          if(!kits[k].count) kits[k].count = 0;
+          kitsData[kits[k]["name"]] = JSON.parse(JSON.stringify(kit));
+        }
+
+        out.insertData("AW_kits", kitsData);
+      });
+    });
   }
 
   deleteCustomer(customerID){
@@ -270,6 +317,7 @@ class CustomerProfileDAO extends DAO{
     if(_in.takeData("WP_ID") == customerID) this.fillCustomerWin(-1);
     out.insertData("WP_Tbl_CD", customerID);
     db.del([customerID]);
+    console.log(customerID);
   }
 
   deleteOrder(orderID){
@@ -295,7 +343,7 @@ class CustomerProfileDAO extends DAO{
     });
   }
 
-  getOrderFromPage(){
+  getOrderFromPage(a, returnOnlyKits){
     let inp = new CustomerProfileInput();
     let order = new OrderModel({
       id: inp.takeData("AW_ID"),
@@ -312,6 +360,7 @@ class CustomerProfileDAO extends DAO{
       anotherTelephone: inp.takeData("AW_an_Tel"),
       kits: inp.takeData("AW_kits")
     });
+    if(returnOnlyKits) return order.kits;
     let customer = this.getCustomerFromPage();
     customer.preferences = inp.takeData("AW_Pr");
     if(!customer.telephones.find(t => t==order.telephone)) customer.telephones.push(order.telephone[0]);
@@ -369,6 +418,19 @@ class CustomerProfileDAO extends DAO{
       if(hasSearched) tr.style.display = "table-row";
       else tr.style.display = "none";
     });
+  }
+
+
+  updateOrderForm(kits){
+    let out = new CustomerProfileOutput();
+    for(var k in kits) kits[k].name = k;
+    let data = Object.values(kits).filter(kit => kit.count > 0).map(kit => [kit.count*(kit.price?kit.price:kit.pcPrice), kit.name]);
+
+    out.insertData("AW_SumPC", (data.map(e => e[0]).reduce((a, b) => a + b, 0)) + " uah");
+    data.forEach(d => {
+      out.insertData("AW_KtPC", [kits[d[1]].pcPrice, kits[d[1]].pcWeight, d[1]]);
+    });
+
   }
 
 }

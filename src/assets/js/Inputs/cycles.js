@@ -22,7 +22,7 @@ class CyclesInput extends Input{
 
       name = r(kit.getAttribute("data-name"));
       if(kit.querySelector("h6 input[placeholder='Price']").value) price = parseFloat(r(kit.querySelector("h6 input[placeholder='Price']").value));
-      else price = parseFloat(r(kit.querySelector("h6 div:nth-child(2)").innerHTML));
+      else price = 0;
       weight = parseFloat(r(kit.querySelector("h6 .weight").innerHTML));
       pr_bar = [parseInt(kit.querySelectorAll("h6 progress")[0].value), parseInt(kit.querySelectorAll("h6 progress")[1].value)];
       var products_html = Array.from(kit.querySelectorAll(".products-container .product"));
@@ -44,11 +44,11 @@ class CyclesInput extends Input{
         p_weight = parseFloat(r(product_html.querySelector("div:nth-child(2)").getAttribute("data-weight")));
 
         products[products.length] = {name: p_name, unit: p_unit, price: p_price, count: p_count, weight: p_weight};
-        pcPrice += typeof p_price == "object"?p_price[p_price.selected]: p_price;
-        pcWeight += p_weight;
+        pcPrice += (typeof p_price == "object"?p_price[p_price.selected]: p_price)*p_count;
+        pcWeight += p_weight*p_count;
       }
 
-      return Object.assign({}, {price: price, pcPrice:pcPrice, weight: weight, pcWeight: pcWeight, count: count, products: products, progress_bars: pr_bar});
+      return Object.assign({}, {price: price, pcPrice:Number((pcPrice).toFixed(2)), weight: weight, pcWeight: Number((pcWeight).toFixed(2)), count: count, products: products, progress_bars: pr_bar});
     }
 
     if(g["Input"]["cycles"]) return g["Input"]["cycles"];
@@ -138,8 +138,8 @@ class CyclesInput extends Input{
 
                         products[products.length] = {name: p_name, unit: p_unit, price: p_price, count: p_count, weight: p_weight};
 
-                        pcPrice += p_price[p_price["selected"]] | p_price;
-                        pcWeight += p_weight;
+                        pcPrice += (p_price[p_price["selected"]] | p_price)*p_count;
+                        pcWeight += p_weight*p_count;
                       }
 
                       return Object.assign({}, {pcPrice:pcPrice, pcWeight: pcWeight, products: products, progress_bars: pr_bar});

@@ -45,6 +45,7 @@ class CyclesOutput extends Output{
                       ["AW_Pr", ".alert-window textarea#js-order-preferences", "e2"],
                       ["AW_Adr", ".alert-window input#js-addresses", "e9"],
                       ["AW_Sum", ".alert-window input#js-summary", "e2"],
+                      ["AW_SumPC", ".alert-window label#js-summary-pc", "e2"],
                       ["AW_Bill", ".alert-window input#js-is-billed", "e10"],
                       ["AW_Pay", ".alert-window input#js-order-paid", "e2"],
                       ["AW_P", ".alert-window input#js-order-pay-date, .alert-window input#js-order-paid", "e11"],
@@ -54,6 +55,7 @@ class CyclesOutput extends Output{
                       ["AW_n_ths", ".alert-window input#js-is-not-this", "e10"],
                       ["AW_an_FN", ".alert-window input#js-another-full-name", "e2"],
                       ["AW_an_Tel", ".alert-window input#js-another-telephone", "e2"],
+                      ["AW_KtPC", ".alert-window .kits .kit[data-name='?'] h6 ", "e16"],
                       ["Cstm_ID", ".alert-window", "e14"]
                     ];
     const editors = {
@@ -145,7 +147,9 @@ class CyclesOutput extends Output{
                           @param d {String|Float}
                           @do take %d varialbe and paste it needed place of %s element
                         */
+
                         q(s).value = d;
+                        q(s).innerText = d;
                       },
                       "e3": (s, d) => {
                         /**
@@ -169,14 +173,14 @@ class CyclesOutput extends Output{
 
                         q(s).outerHTML = `<div class="kit" style="margin-top: .5rem">
                                   <h6 class="columns">
-                                    <div class="col-12" style="padding-bottom:.3rem">Kit creating</div>
+                                    <div class="col-12" style="padding-bottom:.3rem" onclick="Array.from(this.parentNode.parentNode.querySelectorAll('.products-container div.product input')).forEach(inp => {if(!parseInt(inp.value)) inp.parentNode.parentNode.style.display = inp.parentNode.parentNode.style.display=='none'?'flex':'none'})">Kit creating</div>
                                     <progress class="progress col-12" value="${d.progress_bars[0]}" min="0" max="100"></progress>
                                     <progress class="progress col-12" value="${d.progress_bars[1]}" min="0" max="100"></progress>
                                   </h6>
                                   <div class="products-container unique-scroll">
                                     ${(ps => {
                                       var r = "";
-                                      for(var i = 0; i < ps.length; i++) r += `<div class="product columns">
+                                      for(var i = 0; i < ps.length; i++) r += `<div class="product columns" ${(ps[i].count>0)?"":'style="display:none"'}>
                                                                                 <div class="col-5">${ps[i].name}</div>
                                                                                 <div class="col-1" data-weight="${ps[i].weight}">${ps[i].unit}</div>
                                                                                 <div class="col-3">
@@ -316,7 +320,7 @@ class CyclesOutput extends Output{
                               </div>`;
                           else r = `<div class="kit js-to-save" data-name="${k}">
                                       <h6 class="columns">
-                                        <div class="col-3 weight">${d[k].weight} kg</div>
+                                        <div class="col-3 weight">${Number((d[k].pcWeight).toFixed(2))} kg</div>
                                         <div class="col-3">${d[k].pcPrice}</div>
                                         <div class="col-3"><input value="${d[k].price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
                                         <div class="col-3"><input value="${d[k].count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
@@ -351,13 +355,17 @@ class CyclesOutput extends Output{
                           Array.from(qa(`${s}:not(.js-to-save):not(.add)`)).forEach(k => k.outerHTML = "");
                           Array.from(qa(`${s}.js-to-save`)).forEach(k => k.classList.remove("js-to-save"));
                         },
-                        "e14": (s, d) => {
-                          this.q(s).setAttribute("data-customer-id", d);
-                        },
-                        "e15": (s, d) => {
-                          let sel = Array.from(this.q(s).options).find(op => op.value == d);
-                          if(sel) this.q(s).selectedIndex = sel.index;
-                        }
+                      "e14": (s, d) => {
+                        this.q(s).setAttribute("data-customer-id", d);
+                      },
+                      "e15": (s, d) => {
+                        let sel = Array.from(this.q(s).options).find(op => op.value == d);
+                        if(sel) this.q(s).selectedIndex = sel.index;
+                      },
+                      "e16": (s, d) => {
+                        q(s.replace("?", d[2]) + "div:nth-child(1)").innerHTML = d[1] + " kg";
+                        q(s.replace("?", d[2]) + "div:nth-child(2)").innerHTML = d[0];
+                      }
                     };
     super(editors, outputs);
     _this = this;

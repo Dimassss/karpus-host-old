@@ -125,7 +125,9 @@ class TableSQL{
   }
 
   del(keys){
+    keys = keys.map(key => parseInt(key));
     var k = this.k, table = this.table;
+    
     for(var i = 0; i < keys.length; i++) if(keys[i]) websql.process({
       "sql": `DELETE FROM ${table} WHERE ${k} = ?`,
       "data": [keys[i]]

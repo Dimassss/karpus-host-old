@@ -173,24 +173,20 @@ class CycleController{
 
   }
 
-  saveKit(e, cb){
+  saveKit(e, cb, t){
     let _this = g.Controller.Cycles.instance;
     var kit = _this.dao.takeKitFromPage();
     const id = kit["id"] + 1;
     var db = new KitTableSQL();
-    var dbCycle = new CycleTableSQL();
 
     db.save([kit], kits => {
+      let out = new CyclesOutput();
       if(kits[0]["id"] != id - 1){
-        dbCycle.load([kits[0]["cycleID"]], cycles => {
-          if(cycles[0]){
-            cycles[0]["kitsID"][cycles[0]["kitsID"].length] = kits[0]["id"];
-            dbCycle.save(cycles, () => {})
-          }
-        });
-        (new CyclesOutput()).insertData("K_ID", kits[0]["id"]);
+        out.insertData("K_ID", kits[0]["id"]);
       }
       _this.dao.fillKitsWin([kits[0]["id"]], cb);
+      out.insertData("K_PcPr", Number((kits[0].pcPrice).toFixed(2)));
+      out.insertData("K_PcW", Number((kits[0].pcWeight).toFixed(2)));
     });
   }
 
@@ -210,7 +206,13 @@ class CycleController{
     let _this = g.Controller.Cycles.instance;
     let table = e.target.parentNode.querySelector("table");
     let str = e.target.value;
-    let s = (str=="")?(() => true):(tr => Array.from(tr).fillter(td => td.innerHTML.search(str) > -1).length > 0);
-    Array.from(table.querySelector("tr")).forEach(tr => tr.style.display = s(tr)?"none":"table-row");
+    let s = (str==="")?(() => true):(tr => Array.from(tr.querySelectorAll("td")).filter(td => td.innerHTML.search(str) > -1).length > 0);
+    Array.from(table.querySelectorAll("tbody tr")).forEach(tr => tr.style.display = s(tr)?"table":"none");
+  }
+
+  updateOrderForm(e){
+    let _this = g.Controller.Cycles.instance;
+    let kits = _this.dao.getOrderFromPage(undefined,1);
+    _this.dao.updateOrderForm(kits);
   }
 }

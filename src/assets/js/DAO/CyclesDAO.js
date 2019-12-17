@@ -173,7 +173,7 @@ class CyclesDAO extends DAO{
     db.load(keys, products => {
       for(var i = 0; i < products.length; i++){
         var row = [{id: products[i]["id"], cycleID: products[i]["cycleID"]}];
-        for(var j in cols) if(cols[j] != "id" && cols[j] != "cycleID"){j
+        for(var j in cols) if(cols[j] != "id" && cols[j] != "cycleID"){
           const col = cols[j];
           if(col == "count" || col == "price") for(var c in products[i][col]) row[row.length] = [products[i][col][c], 1, 1];
           else if(products[i][col] == null) row[row.length] = ["", 1, 1];
@@ -238,45 +238,80 @@ class CyclesDAO extends DAO{
             out.insertData("AW_c_id", [ [selectedCycle.id, selectedCycle.name], ...restCycles.map(cycle => [cycle.id, cycle.name]) ]);
 
             dbKit.select("cycleID = ?", [order.cycleID], kitsFromDB => {
+              (new ProductTableSQL()).select("cycleID = ?", [order.cycleID], products => {
+                kitsFromDB.forEach((kit, i) => {
+                  let idMap = {};
+                  kitsFromDB[i].products.forEach((pr, i) => idMap[pr.name] = i);
+                  kitsFromDB[i].products = products.map(pr => {
+                    if(typeof idMap[pr.name] != "undefined"){
+                      let kPr = kitsFromDB[i].products[idMap[pr.name]];
+                      pr.price.selected = kPr.price.selected;
+                      pr.count = kPr.count;
+                    }else{
+                      pr.price.selected = pr.price["p-kt"];
+                      pr.count = 0;
+                    }
+                    return JSON.parse(JSON.stringify(pr));
+                  });
 
-              kitsFromDB.forEach((kit, i) => {
-                var orderKit = order.kits[kit.name];
-                if(!orderKit) return false;
+                  var orderKit = order.kits[kit.name];
+                  if(!orderKit) return false;
 
-                kitsFromDB[i].count = (typeof orderKit.count == "number")?orderKit.count:0;
-                kitsFromDB[i].price = (typeof orderKit.price == "number")?(orderKit.price):(kitsFromDB[i].price);
+                  kitsFromDB[i].count = (typeof orderKit.count == "number")?orderKit.count:0;
+                  kitsFromDB[i].price = (typeof orderKit.price == "number")?(orderKit.price):(kitsFromDB[i].price);
 
-                var names = {};
-                orderKit.products.forEach((pr, i) => names[pr.name] = i);
+                  var names = {};
+                  orderKit.products.forEach((pr, i) => names[pr.name] = i);
+                  let pcPrice = 0;
+                  let pcWeight = 0;
 
-
-                kit.products.forEach((pr, i) => {
-                  if(names[pr.name] !== undefined){
-                    kit.products[i].count = orderKit.products[names[pr.name]].count;
-                    kit.products[i].price.selected = orderKit.products[names[pr.name]].price.selected;
-                  }else{
-                    kit.products[i].count = 0;
-                    kit.products[i].price.selected = "p-kt";
-                  }
+                  kit.products.forEach((pr, i) => {
+                    if(names[pr.name] !== undefined){
+                      pr.count = orderKit.products[names[pr.name]].count;
+                      pr.price.selected = orderKit.products[names[pr.name]].price.selected;
+                      if(pr.count > 0){
+                        pcPrice += pr.count*pr.price[pr.price.selected];
+                        pcWeight += pr.weight*pr.count;
+                      }
+                    }else{
+                      pr.count = 0;
+                      pr.price.selected = "p-kt";
+                    }
+                    kit.products[i] = Object.assign({}, pr);
+                  });
+                  console.log(kit, pcPrice, pcWeight);
+                  kit.pcPrice = pcPrice;
+                  kit.pcWeight = pcWeight;
                 });
 
+                var kitsData = {};
+
+                kitsFromDB.forEach(kit => {
+                  console.log(kit);
+                  kitsData[kit.name] = JSON.parse(JSON.stringify(kit));
+                });
+
+                out.insertData("AW_kits", kitsData);
+                out.insertData("AW_SumPC", (kitsFromDB.filter(kit => kit.count > 0).map(kit => kit.count*(kit.price?kit.price:kit.pcPrice)).reduce((a, b) => a + b, 0)) + " uah");
+                if(cb) cb();
               });
-
-              var kitsData = {};
-
-              kitsFromDB.forEach(kit => {
-                kitsData[kit.name] = kit;
-              });
-
-              out.insertData("AW_kits", kitsData);
-
-              if(cb) cb();
             });
           });
-
         }
       });
     });
+  }
+
+  updateOrderForm(kits){
+    let out = new CyclesOutput();
+    for(var k in kits) kits[k].name = k;
+    let data = Object.values(kits).filter(kit => kit.count > 0).map(kit => [kit.count*(kit.price?kit.price:kit.pcPrice), kit.name]);
+
+    out.insertData("AW_SumPC", (data.map(e => e[0]).reduce((a, b) => a + b, 0)) + " uah");
+    data.forEach(d => {
+      out.insertData("AW_KtPC", [kits[d[1]].pcPrice, kits[d[1]].pcWeight, d[1]]);
+    });
+
   }
 
   fillKitProfile(kitID, cycleID){
@@ -286,12 +321,12 @@ class CyclesDAO extends DAO{
       out.insertData("K_ID", kit["id"]);
       out.insertData("K_Nm", kit["name"]);
       out.insertData("K_Pr", kit["price"]);
-      out.insertData("K_PcPr", kit["pcPrice"]);
+      out.insertData("K_PcPr", Number((kit["pcPrice"]).toFixed(2)));
       out.insertData("K_Tp", kit["type"]);
       out.insertData("K_Sz", kit["size"]);
       out.insertData("K_Dm", kit["dimensions"]);
       out.insertData("K_W", kit["weight"]);
-      out.insertData("K_PcW", kit["pcWeight"]);
+      out.insertData("K_PcW", Number((kit["pcWeight"]).toFixed(2)));
       out.insertData("K_D", kit["description"]);
       out.insertData("K_Cr", kit);
     };
@@ -389,7 +424,7 @@ class CyclesDAO extends DAO{
     document.querySelector(".alert-window").style.display = "block";
   }
 
-  getOrderFromPage(cb){
+  getOrderFromPage(cb, returnOnlyKits){
     var inp = new CyclesInput();
     var order = new OrderModel({
       id: inp.takeData("AW_ID"),
@@ -408,6 +443,8 @@ class CyclesDAO extends DAO{
       anotherTelephone: inp.takeData("AW_an_Tel"),
       kits: inp.takeData("AW_kits")
     });
+
+    if(returnOnlyKits) return order.kits;
 
     const payData = inp.takeData("AW_P");
     let pays = payData.map(data => data[0]);
@@ -445,11 +482,31 @@ class CyclesDAO extends DAO{
 
     dbKit.select("cycleID = ?", [cycleID], kits => {
       var kitsData = {};
-      for(var k in kits){
-        if(!kits[k].count) kits[k].count = 0;
-        kitsData[kits[k]["name"]] = Object.assign({}, kits[k]);
-      }
-      out.insertData("AW_kits", kitsData);
+
+      (new ProductTableSQL()).select("cycleID = ?", [cycleID], products => {
+        for(var k in kits){
+          let kit = kits[k];
+
+          let idMap = {};
+          kit.products.forEach((pr, i) => idMap[pr.name] = i);
+          kit.products = products.map(pr => {
+            if(typeof idMap[pr.name] != "undefined"){
+              let kPr = kit.products[idMap[pr.name]];
+              pr.price.selected = kPr.selected;
+              pr.count = kPr.count;
+            }else{
+              pr.price.selected = pr.price["p-kt"];
+              pr.count = 0;
+            }
+            return pr;
+          });
+
+          if(!kits[k].count) kits[k].count = 0;
+          kitsData[kits[k]["name"]] = JSON.parse(JSON.stringify(kit));
+        }
+
+        out.insertData("AW_kits", kitsData);
+      });
     });
   }
 
@@ -521,9 +578,5 @@ class CyclesDAO extends DAO{
   getCurrentCycleID(){
     let inp = new CyclesInput();
     return inp.takeData("C_ID");
-  }
-
-  productsAutoCounting(){
-
   }
 }

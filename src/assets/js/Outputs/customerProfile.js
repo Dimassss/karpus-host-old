@@ -41,7 +41,9 @@ class CustomerProfileOutput extends Output{
                       ["AW_kits", ".alert-window .kits .kit", "e8"],
                       ["AW_n_ths", ".alert-window input#js-is-not-this", "e5"],
                       ["AW_an_FN", ".alert-window input#js-another-full-name", "e2"],
-                      ["AW_an_Tel", ".alert-window input#js-another-telephone", "e2"]
+                      ["AW_an_Tel", ".alert-window input#js-another-telephone", "e2"],
+                      ["AW_SumPC", ".alert-window label#js-summary-pc", "e9"],
+                      ["AW_KtPC", ".alert-window .kits .kit[data-name='?'] h6 ", "e12"]
                     ];
     const editors = {
                       "e1": (s, d) => {
@@ -200,7 +202,7 @@ class CustomerProfileOutput extends Output{
                         for(var i = 1; i < d.length; i++){
                           if(d[i] && d[i][0] && d[i][1]) htmlArray += `<span class="chip">
                                           <chip>${d[i][0]} - ${d[i][1]}</chip>
-                                          <a href="#" class="btn btn-clear" id="close-${Math.random()}" aria-label="Close" role="button"></a>
+                                          <a href="#" class="btn btn-clear" onclick="this.parentNode.outerHTML = ''" aria-label="Close" role="button"></a>
                                         </span>`;
                         }
 
@@ -255,7 +257,7 @@ class CustomerProfileOutput extends Output{
                               </div>`;
                           else r = `<div class="kit js-to-save" data-name="${k}">
                                       <h6 class="columns">
-                                        <div class="col-3 weight">${d[k].weight} kg</div>
+                                        <div class="col-3 weight">${Number((d[k].pcWeight).toFixed(2))} kg</div>
                                         <div class="col-3">${d[k].pcPrice}</div>
                                         <div class="col-3"><input value="${d[k].price}" placeholder="Price" class="form-input" type="number" min="0"/></div>
                                         <div class="col-3"><input value="${d[k].count}" placeholder="Count" class="form-input" type="number" min="0" step="1"/></div>
@@ -298,6 +300,10 @@ class CustomerProfileOutput extends Output{
                       },
                       "e11": (s, d) => {
                         this.q(s.replace("?", d)).remove();
+                      },
+                      "e12": (s, d) => {
+                        q(s.replace("?", d[2]) + "div:nth-child(1)").innerHTML = d[1] + " kg";
+                        q(s.replace("?", d[2]) + "div:nth-child(2)").innerHTML = d[0];
                       }
                     };
     super(editors, outputs);

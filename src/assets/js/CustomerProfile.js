@@ -41,6 +41,12 @@ function run(){
     }
   });
 
+  e.watch("section.alert-window div.kits", {childList: true, attributes:true, subtree:true, characterData:true, characterDataOldValue: false}, data => {
+    if(data.filter(d => !(d.type == "attributes" && d.attributeName == "class")).length > 0){
+      e.bind("section.alert-window div.kits .kit input, section.alert-window div.kits .kit select", "change", c.updateOrderForm);
+    }
+  });
+
   function q(s){
     return document.querySelector(s);
   }
