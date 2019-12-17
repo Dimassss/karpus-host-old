@@ -147,8 +147,11 @@ class CyclesDAO extends DAO{
     db.load(keys, kits => {
       for(var i = 0; i < kits.length; i++){
         var row = [{id: kits[i]["id"], cycleID: kits[i]["cycleID"]}];
-        for(var col in db.v) if(col != "id" && col != "cycleID") if(col == "name" || col == "type" || col == "price") row[row.length] = [kits[i][col], 1, 1];
-        tableObject.body[tableObject.body.length] = Array.from(row);
+        for(var col in db.v) if(col != "id" && col != "cycleID") if(col == "name" || col == "type" || col == "price"){
+          if(col == "price") row[row.length] = [kits[i][col] != null?kits[i][col]:kits[i].pcPrice, 1, 1];
+          else row[row.length] = [kits[i][col], 1, 1];
+          tableObject.body[tableObject.body.length] = Array.from(row);
+        }
       }
 
       out.insertData("K_Tbl", tableObject);
