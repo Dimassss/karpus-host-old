@@ -386,12 +386,12 @@
                           <td title="Count left">c-lft</td>
                         </tr>
                         <tr>
-                          <td title="Count start"><input data-type="c-st" class="form-input" value="0" type="number"/></td>
-                          <td title="Count wholesale"><input data-type="c-wh" class="form-input" value="0" type="number"/></td>
-                          <td title="Count shops"><input data-type="c-sh" class="form-input" value="0" type="number"/></td>
-                          <td title="Count start for kits"><input data-type="c-kt" class="form-input" value="0" type="number"/></td>
-                          <td title="Count from orders"><input data-type="c-or" class="form-input" value="0" type="number"/></td>
-                          <td title="Count left"><input data-type="c-lft" class="form-input" value="0" type="number"/></td>
+                          <td title="Count start"><input data-type="c-st" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Count wholesale"><input data-type="c-wh" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Count shops"><input data-type="c-sh" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Count start for kits"><input data-type="c-kt" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Count from orders"><input data-type="c-or" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Count left"><input data-type="c-lft" class="form-input" value="0" type="number" min="0"/></td>
                         </tr>
                       </table>
                     </div>
@@ -409,10 +409,10 @@
                           <td title="Price for kits">p-kt</td>
                         </tr>
                         <tr>
-                          <td title="Price for wholesale"><input data-type="p-wh" class="form-input" value="0" type="number"/></td>
-                          <td title="Price for shops"><input data-type="p-sh" class="form-input" value="0" type="number"/></td>
-                          <td title="Price for restaurants"><input data-type="p-rst" class="form-input" value="0" type="number"/></td>
-                          <td title="Price for kits"><input data-type="p-kt" class="form-input" value="0" type="number"/></td>
+                          <td title="Price for wholesale"><input data-type="p-wh" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Price for shops"><input data-type="p-sh" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Price for restaurants"><input data-type="p-rst" class="form-input" value="0" type="number" min="0"/></td>
+                          <td title="Price for kits"><input data-type="p-kt" class="form-input" value="0" type="number" min="0"/></td>
                         </tr>
                       </table>
                     </div>
@@ -535,7 +535,7 @@
                 <label class="form-label" id="js-summary-pc">Sum-pc</label>
               </div>
               <div class="col-2 col-sm-8">
-                <input class="form-input" type="number" id="js-summary" placeholder="Summary" autocomplete="off">
+                <input class="form-input" type="number" min="0" id="js-summary" placeholder="Summary" autocomplete="off">
               </div>
             </div>
             <div class="form-group">

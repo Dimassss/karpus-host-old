@@ -278,7 +278,7 @@ class CustomerProfileOutput extends Output{
                                                                                         <option value="p-rst" title="restaurant"${ps[i].price.selected == "p-rst"?" selected":""}>r-${ps[i].price["p-rst"]}</option>
                                                                                       </select>
                                                                                     </div>
-                                                                                    <div class="col-3"><input value="${ps[i].count}" placeholder="Count" class="form-input" type="number"/></div>
+                                                                                    <div class="col-3"><input value="${ps[i].count}" min="0" placeholder="Count" class="form-input" type="number"/></div>
                                                                                   </div>`;
                                         return r;
                                         })(d[k].products)}
