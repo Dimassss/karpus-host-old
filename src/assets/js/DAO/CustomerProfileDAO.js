@@ -333,8 +333,8 @@ class CustomerProfileDAO extends DAO{
     return new CustomerModel({
       id: inp.takeData("WP_ID"),
       fullName: inp.takeData("WP_Nm"),
-      telephones: inp.takeData("WP_Tel"),
-      adresses: inp.takeData("WP_Adr"),
+      telephones: ["", ...inp.takeData("WP_Tel").filter(el => el)],
+      adresses: ["", ...inp.takeData("WP_Adr").filter(el => el)],
       email: inp.takeData("WP_E-m"),
       notes: inp.takeData("WP_Nt"),
       preferences: inp.takeData("WP_Pr"),
@@ -363,9 +363,11 @@ class CustomerProfileDAO extends DAO{
     if(returnOnlyKits) return order.kits;
     let customer = this.getCustomerFromPage();
     customer.preferences = inp.takeData("AW_Pr");
-    if(!customer.telephones.find(t => t==order.telephone)) customer.telephones.push(order.telephone[0]);
-    if(!customer.adresses.find(o => o==order.adress)) customer.adresses.push(order.adress[0]);
-    if(!customer.socialMedia.find(o => o==order.socialMedia)) customer.socialMedia.push(order.socialMedia[0]);
+
+    let [t,a,s] = [customer.telephones.find(t => t==order.telephone), customer.adresses.find(o => o==order.adress), customer.socialMedia.find(o => o==order.socialMedia)]
+    if(!t && ) customer.telephones.push(b);
+    if(!a)) customer.adresses.push(a);
+    if(!s) customer.socialMedia.push(s);
 
     const payData = inp.takeData("AW_P");
     let pays = payData.map(data => data[0]);

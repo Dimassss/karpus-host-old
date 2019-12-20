@@ -152,6 +152,9 @@ class CycleController{
 
     if(e.path[4].id == "js-product-count-set"){
       console.log(product);
+      Object.keys(product.count).forEach(k => {
+        if(!product.count[k]) product.count[k] = 0;
+      });
       product.count["c-kt"] = product.count["c-st"] - product.count["c-wh"] - product.count["c-sh"];
       product.count["c-lft"] = product.count["c-kt"] - product.count["c-or"];
 

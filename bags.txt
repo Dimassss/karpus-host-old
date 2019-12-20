@@ -1,9 +1,13 @@
 -customerProfile.html
   searching of orders
   update table order
+  update customer table after order creating
 
 -cycles.html
   searching
+
+-problem of empty fields
+-fast order creating
 
 
 -обфускация кода
