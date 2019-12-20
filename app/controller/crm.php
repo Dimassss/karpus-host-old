@@ -42,6 +42,7 @@ class crm extends Controller{
   public function showPage(){
     $pageName = $this->f3->get("PARAMS.pageName");
     $fileName = "main.html";
+
     switch($pageName){
       case "customerProfile":
         $fileName = "customerProfile.html";

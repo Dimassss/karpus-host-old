@@ -1,0 +1,2 @@
+class DAO{constructor(){}}
+//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkRBTy9EQU8uanMiXSwibmFtZXMiOlsiREFPIiwiW29iamVjdCBPYmplY3RdIl0sIm1hcHBpbmdzIjoiQUFBQSxNQUFNQSxJQUNKQyIsImZpbGUiOiJEQU8vREFPLmpzIiwic291cmNlc0NvbnRlbnQiOlsiY2xhc3MgREFPe1xyXG4gIGNvbnN0cnVjdG9yKCl7fVxyXG59XHJcbiJdfQ==
