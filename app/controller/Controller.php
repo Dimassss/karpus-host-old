@@ -29,6 +29,10 @@ class Controller{
 		$view = new Template;
     echo $view->render("error.htm", "text/html");
 	}
+
+	public function convertMD5(){
+		echo md5($this->f3->get("GET.q"));
+	}
 }
 
 ?>
