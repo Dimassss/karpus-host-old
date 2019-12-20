@@ -1,0 +1,14 @@
+id
+customer_id
+delivery_choise
+order_source
+price
+isPaid
+payDate
+isBilled
+notes
+products[product_id]
+date
+box_number
+isCorrect
+

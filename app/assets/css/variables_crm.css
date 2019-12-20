@@ -1,0 +1,14 @@
+:root{
+  --background-color: #333;
+  --background-color-header1: linear-gradient(to bottom, #333 , #111);
+  --font-color: #aaa;
+  --header-arrow-color: #fa1;
+  --header-height: 1.5em;
+  --header-shadow: 2px solid #445;
+  --header-nav-menu-background-color: #344;
+  --header-nav-menu-font-color: #dcc;
+  --header-nav-menu-border-left-hover: 2px solid #fac;
+  --header-nav-menu-border-left: 2px solid black;
+  --page-inner-menu-btn-height: 4em;
+  --table-thead-height: 1.6em;
+}
