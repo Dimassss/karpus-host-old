@@ -50,6 +50,26 @@ class crm extends Controller{
       case "cycles":
         $fileName = "cycles.html";
         break;
+      case "msg":
+        $html = "<table><thead><tr>name<th>telephone</th><th>email</th><th>message</th><th>date</th></tr></thead><tbody>";
+
+        $msgs = (new Mail($this->db))->getBySelector("1=1");
+
+        foreach($msgs as $msg){
+          $html .= "<tr>";
+          $html .= "<td>".$msg->name."</td>";
+          $html .= "<td>".$msg->telephone."</td>";
+          $html .= "<td>".$msg->email."</td>";
+          $html .= "<td>".$msg->message."</td>";
+          $html .= "<td>".$msg->date."</td>";
+          $html .= "</tr>";
+        }
+
+        $html .= "</tbody></table>";
+
+        echo $html;
+        return 0;
+        break;
     }
 
     $page = new Template;
