@@ -1,8 +1,0 @@
-id
-products[]
-size
-type
-wieght
-price
-description
-hasOptions
