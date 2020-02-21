@@ -364,10 +364,14 @@ class CustomerProfileDAO extends DAO{
     let customer = this.getCustomerFromPage();
     customer.preferences = inp.takeData("AW_Pr");
 
-    let [t,a,s] = [customer.telephones.find(t => t==order.telephone), customer.adresses.find(o => o==order.adress), customer.socialMedia.find(o => o==order.socialMedia)]
-    if(!t && ) customer.telephones.push(b);
-    if(!a)) customer.adresses.push(a);
-    if(!s) customer.socialMedia.push(s);
+    let [tels,adrs,socs] = [
+                  customer.telephones.find(t => t==order.telephone),
+                  customer.adresses.find(o => o==order.adress),
+                  customer.socialMedia.find(o => o==order.socialMedia)
+                ];
+    if(!tels) customer.telephones.push(order.telephone);
+    if(!adrs) customer.adresses.push(order.adress);
+    if(!socs) customer.socialMedia.push(order.socialMedia);
 
     const payData = inp.takeData("AW_P");
     let pays = payData.map(data => data[0]);
