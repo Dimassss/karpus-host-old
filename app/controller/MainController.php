@@ -80,7 +80,8 @@ class MainController extends Controller{
       if($this->db !== false) $mailTable->create();
 
 	    $body = "\nTelephone of ".$name." is ".$telephone."\nEmail of ".$name." is ".$email."\n\n\n".$message;
-	    sendMail('smtp.gmail.com', 587, 'TLS', $smtpmail, $smtppass, $smtpname, $email, $body, "Filled form from site", $name);
+	    //sendMail('smtp.gmail.com', 587, 'TLS', $smtpmail, $smtppass, $smtpname, $email, $body, "Filled form from site", $name);
+	    sendMail('mail.karpus.com.ua', 587, 'TLS', $smtpmail, $smtppass, $smtpname, $email, $body, "Filled form from site", $name);
     }else{
       $this->f3->set("SESSION.name", $name);
       $this->f3->set("SESSION.telephone", $telephone);
