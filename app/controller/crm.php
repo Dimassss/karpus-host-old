@@ -75,6 +75,16 @@ class crm extends Controller{
     $page = new Template;
     echo $page->render($fileName);
   }
+
+//["/crm/load"(keys, cb),"/crm/save"(records, cb),"/crm/del"(keys),"/crm/select"(where, data, cb)]
+
+  public function load(){
+    $keys = [];
+    $table = ""
+    $k = "";
+
+    
+  }
 }
 
 ?>
