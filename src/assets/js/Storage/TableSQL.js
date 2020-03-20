@@ -29,18 +29,19 @@ class TableSQL{
     _this.k = k;
     _this.table = table;
     _this.v = v;
+    //_this.DBAccess = new DBaccess():
 
-    websql.process(`CREATE TABLE IF NOT EXISTS ${table}(${(function(){
+    /*this.DBAccess.createTableIfNotExist(`CREATE TABLE IF NOT EXISTS ${table}(${(function(){
       var columns = ""
       for(var c in v){
         columns += v[c] + ",";
       }
       return columns.slice(0, -1);
-    })()})`);
+    })()})`);*/
 
   }
 
-  l(keys, cb){
+  /*l(keys, cb){
     let _this = this;
     var records = [];
     var processDATA = [];
@@ -64,11 +65,18 @@ class TableSQL{
       };
     }
 
-    if(processDATA.length > 0) websql.process(processDATA, () => {cb(records)});
+    if(processDATA.length > 0) this.DBAccess.load(processDATA, cb, records);
     else cb(records);
+  }*/
+  l(keys, cb){
+    let _this = this;
+
+    $.post("/crm/load", {keys:keys, table: _this.table, k: _this.k}).done((data) => {
+      cb(data);
+    });
   }
 
-  save(records, cb){
+  /*save(records, cb){
     var k = this.k, table = this.table, v = this.v, forI = [], counter = 0;
     var processDATA = [];
 
@@ -120,23 +128,35 @@ class TableSQL{
                             };
     }
 
-    if(processDATA.length > 0) websql.process(processDATA, () => {cb(records)});
+    if(processDATA.length > 0) this.DBAccess.save(processDATA, () => {cb(records)});
     else cb(records);
-  }
+  }*/
+  save(records, cb){
+    let _this = this;
 
-  del(keys){
-    keys = keys.map(key => parseInt(key));
-    var k = this.k, table = this.table;
-    
-    for(var i = 0; i < keys.length; i++) if(keys[i]) websql.process({
-      "sql": `DELETE FROM ${table} WHERE ${k} = ?`,
-      "data": [keys[i]]
+    $.post("/crm/save", {records: records, table: _this.table, k: _this.k, v: _this.v}).done((data) => {
+      cb(data);
     });
   }
 
-  sl(where, data, cb){
+  /*del(keys){
+    keys = keys.map(key => parseInt(key));
+    var k = this.k, table = this.table;
+
+    for(var i = 0; i < keys.length; i++) if(keys[i]) this.DBAccess.delete({
+      "sql": `DELETE FROM ${table} WHERE ${k} = ?`,
+      "data": [keys[i]]
+    });
+  }*/
+  del(keys){
+    let _this = this;
+
+    $.post("/crm/del", {keys: keys, table: _this.table, k: _this.k})
+  }
+
+  /*sl(where, data, cb){
     var records = [], forI = [], counter = 0;
-    websql.process({
+    this.DBAccess.select({
       "sql": `SELECT * FROM ${this.table} WHERE ${where}`,
       "data": data,
       "success": (tr, r) => {
@@ -149,5 +169,12 @@ class TableSQL{
         }
       }
     }, () => cb(records));
+  }*/
+  sl(where, data, cb){
+    let _this = this;
+
+    $.post("/crm/select", {where: where, table: _this.table, data: data}).done((data) => {
+      cb(data);
+    });
   }
 }
