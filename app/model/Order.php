@@ -7,6 +7,7 @@ class Order extends DB\SQL\Mapper{
   public function create($order){
 		$this->copyfrom($order);
 		$this->save();
+		return $this->id;
 	}
 
 	public function edit($fields ,$id){

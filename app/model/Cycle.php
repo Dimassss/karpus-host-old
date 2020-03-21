@@ -7,6 +7,7 @@ class Cycle extends DB\SQL\Mapper{
   public function create($cycle){
 		$this->copyfrom($cycle);
 		$this->save();
+		return $this->id;
 	}
 
 	public function edit($fields ,$id){

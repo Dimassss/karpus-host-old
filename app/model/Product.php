@@ -7,6 +7,7 @@ class Product extends DB\SQL\Mapper{
   public function create($product){
 		$this->copyfrom($product);
 		$this->save();
+		return $this->id;
 	}
 
 	public function edit($fields ,$id){

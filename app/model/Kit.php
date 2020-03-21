@@ -7,6 +7,7 @@ class Kit extends DB\SQL\Mapper{
   public function create($kit){
 		$this->copyfrom($kit);
 		$this->save();
+		return $this->id;
 	}
 
 	public function edit($fields ,$id){

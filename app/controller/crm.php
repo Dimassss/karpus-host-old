@@ -82,8 +82,53 @@ class crm extends Controller{
     $keys = [];
     $table = ""
     $k = "";
+    $selector = "";
+    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
 
-    
+    foreach($keys as $k) $selector.="?,";
+
+    if(array_key_exists($table, $db)) echo json_stringify($db[$table]->getBySelector(array($k.' in ('.rtrim($selector, ",").')', $keys)));
+  }
+
+  public function select(){
+    $data = [];
+    $table = ""
+    $where = "";
+    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
+
+    array_unshift($data, $where);
+    if(array_key_exists($table, $db)) echo json_stringify($db[$table]->getBySelector($data);
+  }
+
+  public function del(){
+    $keys = [];
+    $table = ""
+    $k = "";
+    $selector = "";
+    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
+
+    foreach($keys as $k) $selector.="?,";
+
+    if(array_key_exists($table, $db)) foreach($keys as $key) $db[$table]->remove($key);
+  }
+
+  public function save(){
+    $records = [];
+    $table = ""
+    $k = "";
+    $v = "";
+    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
+    $return = array();
+
+    foreach($records as $rec){
+      if(array_key_exists($k, $rec)){
+        $db[$table]->edit($rec,$rec[$k]);
+      }else{
+        $return[$db[$table]->create($rec)] = $rec;
+      }
+    }
+
+    echo $return;
   }
 }
 

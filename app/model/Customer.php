@@ -7,6 +7,7 @@ class Mail extends DB\SQL\Mapper{
   public function create($customer){
 		$this->copyfrom($customer);
 		$this->save();
+		return $this->id;
 	}
 
 	public function edit($fields ,$id){
