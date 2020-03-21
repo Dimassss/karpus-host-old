@@ -76,12 +76,11 @@ class crm extends Controller{
     echo $page->render($fileName);
   }
 
-//["/crm/load"(keys, cb),"/crm/save"(records, cb),"/crm/del"(keys),"/crm/select"(where, data, cb)]
 
   public function load(){
-    $keys = [];
-    $table = ""
-    $k = "";
+    $keys = $this->f3->get("POST.keys");;
+    $table = $this->f3->get("POST.table");
+    $k = $this->f3->get("POST.k");
     $selector = "";
     $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
 
@@ -91,9 +90,9 @@ class crm extends Controller{
   }
 
   public function select(){
-    $data = [];
-    $table = ""
-    $where = "";
+    $data = $this->f3->get("POST.data");
+    $table = $this->f3->get("POST.table");
+    $where = $this->f3->get("POST.where");;
     $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
 
     array_unshift($data, $where);
@@ -101,9 +100,9 @@ class crm extends Controller{
   }
 
   public function del(){
-    $keys = [];
-    $table = ""
-    $k = "";
+    $keys = $this->f3->get("POST.keys");
+    $table = $this->f3->get("POST.table");
+    $k = $this->f3->get("POST.k");
     $selector = "";
     $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
 
@@ -113,22 +112,20 @@ class crm extends Controller{
   }
 
   public function save(){
-    $records = [];
-    $table = ""
-    $k = "";
-    $v = "";
+    $records = $this->f3->get("POST.records");
+    $table = $this->f3->get("POST.table");
     $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
     $return = array();
 
     foreach($records as $rec){
       if(array_key_exists($k, $rec)){
-        $db[$table]->edit($rec,$rec[$k]);
+        $db[$table]->edit($rec,$rec['id']);
       }else{
         $return[$db[$table]->create($rec)] = $rec;
       }
     }
 
-    echo $return;
+    echo json_stringify($return);
   }
 }
 
