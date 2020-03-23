@@ -106,7 +106,6 @@ class crm extends Controller{
       return (int)$n;
     }
     echo json_encode($this->f3->get("POST.data"));
-    echo "\n";
     return;
     $data = array_map('toNum', $this->f3->get("POST.data"));
     $table = $this->f3->get("POST.table");
