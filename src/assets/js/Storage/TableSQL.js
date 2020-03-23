@@ -39,6 +39,14 @@ class TableSQL{
       return columns.slice(0, -1);
     })()})`);*/
 
+    /*console.log(`CREATE TABLE IF NOT EXISTS ${table}(${(function(){
+      var columns = ""
+      for(var c in v){
+        columns += v[c] + ",";
+      }
+      return columns.slice(0, -1);
+    })()})`);*/
+
   }
 
   /*l(keys, cb){
