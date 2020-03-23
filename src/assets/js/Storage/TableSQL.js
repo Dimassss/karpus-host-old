@@ -80,7 +80,7 @@ class TableSQL{
     let _this = this;
 
     $.post("/crm/load", {keys:keys, table: _this.table, k: _this.k}).done((data) => {
-      cb(data);
+      cb(JSON.parse(data));
     });
   }
 
@@ -143,7 +143,7 @@ class TableSQL{
     let _this = this;
 
     $.post("/crm/save", {records: records, table: _this.table, k: _this.k, v: _this.v}).done((data) => {
-      cb(data);
+      cb(JSON.parse(data));
     });
   }
 
@@ -182,7 +182,7 @@ class TableSQL{
     let _this = this;
 
     $.post("/crm/select", {where: where, table: _this.table, data: data}).done((data) => {
-      cb(data);
+      cb(JSON.parse(data));
     });
   }
 }
