@@ -1,4 +1,10 @@
 <?php
+define('__ROOT__', dirname(dirname(__FILE__)));
+require_once(__ROOT__."../model/Customer.php");
+require_once(__ROOT__."../model/Cycle.php");
+require_once(__ROOT__."../model/Kit.php");
+require_once(__ROOT__."../model/Order.php");
+require_once(__ROOT__."../model/Product.php");
 
 class crm extends Controller{
   protected $tables;
@@ -78,33 +84,48 @@ class crm extends Controller{
 
 
   public function load(){
-    $keys = $this->f3->get("POST.keys");;
+    function toNum($n){
+      return (int)$n;
+    }
+    $keys = array_map('toNum', $this->f3->get("POST.keys"));
     $table = $this->f3->get("POST.table");
     $k = $this->f3->get("POST.k");
+
+    /*echo json_encode($this->f3->get("POST"));
+    return;*/
     $selector = "";
-    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
+    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
 
     foreach($keys as $k) $selector.="?,";
 
-    if(array_key_exists($table, $db)) echo json_stringify($db[$table]->getBySelector(array($k.' in ('.rtrim($selector, ",").')', $keys)));
+    if(array_key_exists($table, $db)) echo json_encode($db[$table]->getBySelector(array($k.' in ('.rtrim($selector, ",").')', $keys)));
   }
 
   public function select(){
-    $data = $this->f3->get("POST.data");
+    function toNum($n){
+      return (int)$n;
+    }
+    echo json_encode($this->f3->get("POST.data"));
+    echo "\n";
+    return;
+    $data = array_map('toNum', $this->f3->get("POST.data"));
     $table = $this->f3->get("POST.table");
-    $where = $this->f3->get("POST.where");;
-    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
+    $where = $this->f3->get("POST.where");
+    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
 
     array_unshift($data, $where);
-    if(array_key_exists($table, $db)) echo json_stringify($db[$table]->getBySelector($data);
+    if(array_key_exists($table, $db)) echo json_encode($db[$table]->getBySelector($data));
   }
 
   public function del(){
-    $keys = $this->f3->get("POST.keys");
+    function toNum($n){
+      return (int)$n;
+    }
+    $keys = array_map('toNum', $this->f3->get("POST.keys"));
     $table = $this->f3->get("POST.table");
     $k = $this->f3->get("POST.k");
     $selector = "";
-    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
+    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
 
     foreach($keys as $k) $selector.="?,";
 
@@ -114,7 +135,7 @@ class crm extends Controller{
   public function save(){
     $records = $this->f3->get("POST.records");
     $table = $this->f3->get("POST.table");
-    $db = array("CUSTOMERS" => new Customer, "CYCLES" => new Cycle, "KITS" => new Kit, "ORDERS" => new Order, "PRODUCTS" => new Product);
+    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
     $return = array();
 
     foreach($records as $rec){
@@ -125,7 +146,7 @@ class crm extends Controller{
       }
     }
 
-    echo json_stringify($return);
+    echo json_encode($return);
   }
 }
 
