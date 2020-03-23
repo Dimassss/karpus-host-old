@@ -105,9 +105,8 @@ class crm extends Controller{
     function toNum($n){
       return (int)$n;
     }
-    echo json_encode($this->f3->get("POST.data"));
-    return;
-    $data = array_map('toNum', $this->f3->get("POST.data"));
+    //if('["0","40"]' != json_encode($this->f3->get("POST.data"))) echo json_encode($this->f3->get("POST.data"));
+    $data = array_map('toNum', $this->f3->get("POST.data")?$this->f3->get("POST.data"):[]);
     $table = $this->f3->get("POST.table");
     $where = $this->f3->get("POST.where");
     $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
@@ -120,7 +119,7 @@ class crm extends Controller{
     function toNum($n){
       return (int)$n;
     }
-    $keys = array_map('toNum', $this->f3->get("POST.keys"));
+    $keys = array_map('toNum', $this->f3->get("POST.keys")?$this->f3->get("POST.keys"):[]);
     $table = $this->f3->get("POST.table");
     $k = $this->f3->get("POST.k");
     $selector = "";
@@ -134,10 +133,10 @@ class crm extends Controller{
   public function save(){
     $records = $this->f3->get("POST.records");
     $table = $this->f3->get("POST.table");
-    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
     $return = array();
 
     foreach($records as $rec){
+      $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
       if(array_key_exists($k, $rec)){
         $db[$table]->edit($rec,$rec['id']);
       }else{

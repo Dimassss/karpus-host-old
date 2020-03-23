@@ -23,7 +23,9 @@ class Mail extends DB\SQL\Mapper{
 	public function getBySelector($selector){
     //$selector is an array as - array('userID=? AND password=?','cheetah','ch1mp')
     $this->load($selector);
-    return $this->query;
+		$res = array();
+		foreach($this->query as $q) $res[] = $q->cast();
+    return $res;
 	}
 }
 
