@@ -56,7 +56,7 @@ class CyclesDAO extends DAO{
   fillCycleWindows(cycleID, cb){
     var db = new CycleTableSQL();
     var _this = this;
-    _this.cleanCycleWindows();
+    _this.cleanCycleWindows(cycleID);
 
     db.load([cycleID], cycles => {
       let cycle = cycles[0];
@@ -77,10 +77,10 @@ class CyclesDAO extends DAO{
     });
   }
 
-  cleanCycleWindows(){
+  cleanCycleWindows(cycleID){
     (new CyclesOutput()).insertData("C_ID", "-1");
     this.cleanOrdersWin();
-    this.cleanKitsWin();
+    this.cleanKitsWin(cycleID);
     this.cleanProductsWin()
   }
 
@@ -160,9 +160,9 @@ class CyclesDAO extends DAO{
     });
   }
 
-  cleanKitsWin(){
+  cleanKitsWin(cycleID){
     var out = new CyclesOutput();
-    this.cleanKitProfile();
+    this.cleanKitProfile(cycleID);
     out.insertData("K_Tbl", {body: -1});
   }
 
