@@ -142,7 +142,7 @@ class TableSQL{
   save(records, cb){
     let _this = this;
 
-    $.post("/crm/save", {records: records, table: _this.table, k: _this.k, v: _this.v}).done((data) => {
+    $.post("/crm/save", {records: records.map(rec => rec.toDB()), table: _this.table, k: _this.k, v: _this.v}).done((data) => {
       cb(JSON.parse(data));
     });
   }
