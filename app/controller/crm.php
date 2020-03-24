@@ -12,14 +12,17 @@ class crm extends Controller{
 
   public function __construct(){
     parent::__construct();
+    $this->cache = \Cache::instance();
 	}
 
   public function beforeRoute(){
-    if(!$this->f3->exists("SESSION.username") && $this->f3->get("PATH") !== "/crm/functions/startSession") $this->f3->reroute("/crm");
+    if(!$this->cache->exists("username") && $this->f3->get("PATH") !== "/crm/functions/startSession") $this->f3->reroute("/crm");
+    //if(!$this->f3->exists("SESSION.username") && $this->f3->get("PATH") !== "/crm/functions/startSession") $this->f3->reroute("/crm");
   }
 
   public function endSession(){
-    $this->f3->clear("SESSION.username");
+    //$this->f3->clear("SESSION.username");
+    $this->cache->clear("username");
     $this->f3->reroute("/crm");
   }
 
@@ -36,7 +39,8 @@ class crm extends Controller{
     while(@$this->f3->exists("a".$i)){
       echo $this->f3->get("a".$i)." ".$this->f3->get("p".$i);
       if($username == $this->f3->get("a".$i) && $pass == $this->f3->get("p".$i)){
-        $this->f3->set("SESSION.username", $username);
+        //$this->f3->set("SESSION.username", $username);
+        $this->cache->set("username", $username);
         $i = -1;
       }else $i++;
     }
@@ -87,7 +91,7 @@ class crm extends Controller{
     function toNum($n){
       return (int)$n;
     }
-    $keys = array_map('toNum', $this->f3->get("POST.keys"));
+    $keys = array_map('toNum', $this->f3->get("POST.keys")?$this->f3->get("POST.keys"):[]);
     $table = $this->f3->get("POST.table");
     $k = $this->f3->get("POST.k");
 
@@ -96,9 +100,12 @@ class crm extends Controller{
     $selector = "";
     $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
 
-    foreach($keys as $k) $selector.="?,";
+    foreach($keys as $p){
+      $selector.="?,";
+    }
 
-    if(array_key_exists($table, $db)) echo json_encode($db[$table]->getBySelector(array($k.' in ('.rtrim($selector, ",").')', $keys)));
+    if(array_key_exists($table, $db) && sizeof($keys) > 0) echo json_encode($db[$table]->getBySelector(array($k.' IN ('.rtrim($selector, ",").')', $keys)));
+    else echo "[]";
   }
 
   public function select(){

@@ -3,9 +3,14 @@ require_once("MailSender.php");
 
 class MainController extends Controller{
 
+  public function __construct(){
+    parent::__construct();
+    $this->cache = \Cache::instance();
+  }
+
   public function showLoginPage(){
-    if($this->f3->exists("SESSION.username")) $this->f3->reroute("/crm/main");
-    $nameTable = $this->f3->get("PARAMS.nameTable");
+    //if($this->f3->exists("SESSION.username")) $this->f3->reroute("/crm/main");
+    if($this->cache->exists("username")) $this->f3->reroute("/crm/main");
 
     $page = new Template;
     echo $page->render("devlogin.htm");
