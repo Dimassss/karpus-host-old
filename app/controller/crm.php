@@ -1,4 +1,5 @@
 <?php
+//7023467386910531779
 define('__ROOT__', dirname(dirname(__FILE__)));
 require_once(__ROOT__."../model/Customer.php");
 require_once(__ROOT__."../model/Cycle.php");
@@ -140,14 +141,18 @@ class crm extends Controller{
   public function save(){
     $records = $this->f3->get("POST.records");
     $table = $this->f3->get("POST.table");
+    $k = $this->f3->get("POST.k");
     $return = array();
 
     foreach($records as $rec){
       $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
-      if(array_key_exists($k, $rec)){
-        $db[$table]->edit($rec,$rec['id']);
+      if(isset($rec[$k])){
+        $rec['id'] = (int) $rec['id'];
+        $db[$table]->edit($rec, $rec['id']);
+        $return[] = $rec;
       }else{
-        $return[$db[$table]->create($rec)] = $rec;
+        $rec["id"] = $db[$table]->create($rec);
+        $return[] = $rec;
       }
     }
 

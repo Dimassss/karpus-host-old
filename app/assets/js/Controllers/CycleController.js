@@ -1,2 +1,222 @@
-class CycleController{constructor(){return g.Controller.Cycles.instance?g.Controller.Cycles.instance:(this.dao=new CyclesDAO,this.in=new CyclesInput,g.Controller.Cycles.instance=this)}addCyclesToNavBar(e,t){g.Controller.Cycles.instance.dao.dispalyCycles("TRUE ORDER BY id DESC LIMIT ?, ?",[g.Controller.Cycles.cyclesNavBarScrollCounter*g.Controller.Cycles.cyclesNavBarCountToSelect,g.Controller.Cycles.cyclesNavBarCountToSelect],t)}scrollNavBarLeft(e){g.Controller.Cycles.toScroll=setInterval(()=>document.querySelector(".cycles-tab-container .cycles").scrollBy(-3,0),6)}scrollNavBarRight(e){g.Controller.Cycles.toScroll=setInterval(()=>document.querySelector(".cycles-tab-container .cycles").scrollBy(3,0),6)}endScroll(e){clearInterval(g.Controller.Cycles.toScroll),g.Controller.Cycles.toScroll=void 0}createCycle(e){let t=g.Controller.Cycles.instance;var l=t.in.takeData("add_c");""!=l&&t.dao.createCycle(-1,l,l=>{t.dao.dispalyCycles("id = ?",[l],()=>{t.selectCycle(e,l)})})}selectCycle(e,t,l){let r=g.Controller.Cycles.instance;t=void 0!==t?t:e.target.getAttribute("for").split("-")[1],r.dao.fillCycleWindows(t,l)}editOrder(e){let t=g.Controller.Cycles.instance;t.dao.openOrderCreatingWindow(),t.dao.fillOrderCreatingWin(parseInt(e.target.parentNode.getAttribute("data-id")))}closeOrder(e){g.Controller.Cycles.instance.dao.closeOrderCreatingWindow()}saveOrder(e){let t=g.Controller.Cycles.instance;t.dao.getOrderFromPage((e,l)=>{t.dao.saveOrder(e),t.dao.saveCustomer(l),t.dao.closeOrderCreatingWindow()})}displayKitsOnCycleSelect(e){let t=g.Controller.Cycles.instance;t.dao.displayKits(t.in.takeData("AW_c_id"))}deleteCycle(e){let t=g.Controller.Cycles.instance,l=t.in.takeData("C_ID");t.dao.cleanCycleWindows(l),t.dao.deleteCycle(l)}deleteRecord(e){let t=g.Controller.Cycles.instance.in.takeData("Tbl_Slct"),l={orders:new OrderTableSQL,products:new ProductTableSQL,kits:new KitTableSQL}[t[0]];new CycleTableSQL;(new CyclesOutput).insertData(t[0][0].toUpperCase()+"_Tbl",{body:[[{id:t[1]}]]}),l.del([t[1]])}selectRecord(e){let t=g.Controller.Cycles.instance,l=t.in.takeData("Tbl_Slct");l[2]&&l[2].classList.remove("selected"),e.target.parentNode.classList.add("selected"),l=t.in.takeData("Tbl_Slct");let r={orders:void 0,products:t.dao.fillProductProfile,kits:t.dao.fillKitProfile}[l[0]];null!=r&&r(l[1],t.in.takeData("C_ID"))}addToArray(e){g.Controller.Cycles.instance.dao.addToArray(...{Paid:["AW_P",["",""]],Date:["AW_P",["",""]]}[e.target.parentNode.querySelector("input").getAttribute("placeholder")])}saveProduct(e,t){let l=g.Controller.Cycles.instance,r=new CyclesOutput;var o=l.dao.takeProductFromPage();const c=o.id+1;var a=new ProductTableSQL,n=new CycleTableSQL;"js-product-count-set"==e.path[4].id&&(console.log(o),Object.keys(o.count).forEach(e=>{o.count[e]||(o.count[e]=0)}),o.count["c-kt"]=o.count["c-st"]-o.count["c-wh"]-o.count["c-sh"],o.count["c-lft"]=o.count["c-kt"]-o.count["c-or"],r.insertData("P_C",o.count)),a.save([o],e=>{e[0].id!=c-1&&(n.load([e[0].cycleID],t=>{t[0]&&(t[0].productsID[t[0].productsID.length]=e[0].id,n.save(t,()=>{}))}),(new CyclesOutput).insertData("P_ID",e[0].id)),l.dao.fillProductsWin([e[0].id],t)})}saveKit(e,t,l){let r=g.Controller.Cycles.instance;var o=r.dao.takeKitFromPage();const c=o.id+1;(new KitTableSQL).save([o],e=>{let l=new CyclesOutput;e[0].id!=c-1&&l.insertData("K_ID",e[0].id),r.dao.fillKitsWin([e[0].id],t),l.insertData("K_PcPr",Number(e[0].pcPrice.toFixed(2))),l.insertData("K_PcW",Number(e[0].pcWeight.toFixed(2)))})}createKit(e){let t=g.Controller.Cycles.instance;Array.from(document.querySelectorAll("table .selected")).forEach(e=>e.classList.remove("selected")),t.dao.cleanKitProfile(t.in.takeData("C_ID"))}createProduct(e){let t=g.Controller.Cycles.instance;Array.from(document.querySelectorAll("table .selected")).forEach(e=>e.classList.remove("selected")),t.dao.cleanProductProfile()}search(e){g.Controller.Cycles.instance;let t=e.target.parentNode.querySelector("table"),l=e.target.value,r=""===l?()=>!0:e=>Array.from(e.querySelectorAll("td")).filter(e=>e.innerHTML.search(l)>-1).length>0;Array.from(t.querySelectorAll("tbody tr")).forEach(e=>e.style.display=r(e)?"table":"none")}updateOrderForm(e){let t=g.Controller.Cycles.instance,l=t.dao.getOrderFromPage(void 0,1);t.dao.updateOrderForm(l)}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkNvbnRyb2xsZXJzL0N5Y2xlQ29udHJvbGxlci5qcyJdLCJuYW1lcyI6WyJDeWNsZUNvbnRyb2xsZXIiLCJbb2JqZWN0IE9iamVjdF0iLCJnIiwiQ29udHJvbGxlciIsIkN5Y2xlcyIsImluc3RhbmNlIiwidGhpcyIsImRhbyIsIkN5Y2xlc0RBTyIsImluIiwiQ3ljbGVzSW5wdXQiLCJlIiwiY2IiLCJkaXNwYWx5Q3ljbGVzIiwiY3ljbGVzTmF2QmFyU2Nyb2xsQ291bnRlciIsImN5Y2xlc05hdkJhckNvdW50VG9TZWxlY3QiLCJ0b1Njcm9sbCIsInNldEludGVydmFsIiwiZG9jdW1lbnQiLCJxdWVyeVNlbGVjdG9yIiwic2Nyb2xsQnkiLCJjbGVhckludGVydmFsIiwidW5kZWZpbmVkIiwiX3RoaXMiLCJjeWNsZU5hbWUiLCJ0YWtlRGF0YSIsImNyZWF0ZUN5Y2xlIiwiY3ljbGVJRCIsInNlbGVjdEN5Y2xlIiwiaWQiLCJ0YXJnZXQiLCJnZXRBdHRyaWJ1dGUiLCJzcGxpdCIsImZpbGxDeWNsZVdpbmRvd3MiLCJvcGVuT3JkZXJDcmVhdGluZ1dpbmRvdyIsImZpbGxPcmRlckNyZWF0aW5nV2luIiwicGFyc2VJbnQiLCJwYXJlbnROb2RlIiwiY2xvc2VPcmRlckNyZWF0aW5nV2luZG93IiwiZ2V0T3JkZXJGcm9tUGFnZSIsIm9yZGVyIiwiY3VzdG9tZXIiLCJzYXZlT3JkZXIiLCJzYXZlQ3VzdG9tZXIiLCJkaXNwbGF5S2l0cyIsImNsZWFuQ3ljbGVXaW5kb3dzIiwiZGVsZXRlQ3ljbGUiLCJzbCIsImRiIiwib3JkZXJzIiwiT3JkZXJUYWJsZVNRTCIsInByb2R1Y3RzIiwiUHJvZHVjdFRhYmxlU1FMIiwia2l0cyIsIktpdFRhYmxlU1FMIiwiQ3ljbGVUYWJsZVNRTCIsIkN5Y2xlc091dHB1dCIsImluc2VydERhdGEiLCJ0b1VwcGVyQ2FzZSIsImJvZHkiLCJkZWwiLCJjbGFzc0xpc3QiLCJyZW1vdmUiLCJhZGQiLCJmaWxsUHJvZmlsZSIsImZpbGxQcm9kdWN0UHJvZmlsZSIsImZpbGxLaXRQcm9maWxlIiwiYWRkVG9BcnJheSIsIlBhaWQiLCJEYXRlIiwib3V0IiwicHJvZHVjdCIsInRha2VQcm9kdWN0RnJvbVBhZ2UiLCJkYkN5Y2xlIiwicGF0aCIsImNvbnNvbGUiLCJsb2ciLCJPYmplY3QiLCJrZXlzIiwiY291bnQiLCJmb3JFYWNoIiwiayIsInNhdmUiLCJsb2FkIiwiY3ljbGVzIiwibGVuZ3RoIiwiZmlsbFByb2R1Y3RzV2luIiwidCIsImtpdCIsInRha2VLaXRGcm9tUGFnZSIsImZpbGxLaXRzV2luIiwiTnVtYmVyIiwidG9GaXhlZCIsIkFycmF5IiwiZnJvbSIsInF1ZXJ5U2VsZWN0b3JBbGwiLCJzIiwiY2xlYW5LaXRQcm9maWxlIiwiY2xlYW5Qcm9kdWN0UHJvZmlsZSIsInRhYmxlIiwic3RyIiwidmFsdWUiLCJ0ciIsImZpbHRlciIsInRkIiwiaW5uZXJIVE1MIiwic2VhcmNoIiwic3R5bGUiLCJkaXNwbGF5IiwidXBkYXRlT3JkZXJGb3JtIl0sIm1hcHBpbmdzIjoiQUFtQ0EsTUFBTUEsZ0JBQ0pDLGNBQ0UsT0FBR0MsRUFBRUMsV0FBV0MsT0FBT0MsU0FBaUJILEVBQUVDLFdBQVdDLE9BQU9DLFVBQzVEQyxLQUFLQyxJQUFNLElBQUlDLFVBQ2ZGLEtBQUtHLEdBQUssSUFBSUMsWUFDUFIsRUFBRUMsV0FBV0MsT0FBT0MsU0FBV0MsTUFHeENMLGtCQUFrQlUsRUFBR0MsR0FDUFYsRUFBRUMsV0FBV0MsT0FBT0MsU0FDMUJFLElBQUlNLGNBQWMsbUNBQW9DLENBQ3BEWCxFQUFFQyxXQUFXQyxPQUFPVSwwQkFBNEJaLEVBQUVDLFdBQVdDLE9BQU9XLDBCQUNwRWIsRUFBRUMsV0FBV0MsT0FBT1csMkJBQ25CSCxHQUdYWCxpQkFBaUJVLEdBQ2ZULEVBQUVDLFdBQVdDLE9BQU9ZLFNBQVdDLFlBQVksSUFBTUMsU0FBU0MsY0FBYyxpQ0FBaUNDLFVBQVUsRUFBRyxHQUFJLEdBRzVIbkIsa0JBQWtCVSxHQUNoQlQsRUFBRUMsV0FBV0MsT0FBT1ks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R2YsT0FBUyxFQUNsSVEsTUFBTUMsS0FBS0ssRUFBTUosaUJBQWlCLGFBQWFmLFFBQVFzQixHQUFNQSxFQUFHSyxNQUFNQyxRQUFVWixFQUFFTSxHQUFJLFFBQVEsUUFHaEdyRyxnQkFBZ0JVLEdBQ2QsSUFBSVksRUFBUXJCLEVBQUVDLFdBQVdDLE9BQU9DLFNBQzVCZ0QsRUFBTzlCLEVBQU1oQixJQUFJZ0Msc0JBQWlCakIsRUFBVSxHQUNoREMsRUFBTWhCLElBQUlzRyxnQkFBZ0J4RCIsImZpbGUiOiJDb250cm9sbGVycy9DeWNsZUNvbnRyb2xsZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKipcclxuQGNsYXNzIEN1c3RvbWVyUHJvZmlsZUNvbnRyb2xsZXJcclxuXHJcbkBtZXRob2RzXHJcbiAgQG1ldGhvZCBhZGRDeWNsZXNUb05hdkJhclxyXG4gICAgQHBhcmFtIHtFdmVudH0gZVxyXG4gICAgQGRvIG9uIHNjcm9sbCBpbiBjeWNsZXMgbmF2IGJhcnMgaXQgYWRkIG5ldyBjeWNsZXMgbmFtZXMgdG8gdGhhdCBuYXYgYmFyc1xyXG4gIEBtZXRob2Qgc2Nyb2xsTmF2QmFyTGVmdFxyXG4gICAgQHBhcmFtIHtFdmVudH0gZVxyXG4gICAgQGRvIHNjcm9sbCBuYXYgYmFyIG9mIGN5Y2xlcyB0byBsZWZ0IHNpZGUgb24gY2xpY2sgb24gbGVmdCBzaWRlIGFycm93XHJcbiAgQG1ldGhvZCBzY3JvbGxOYXZCYXJSaWdodFxyXG4gICAgQHBhcmFtIHtFdmVudH0gZVxyXG4gICAgQGRvIHNjcm9sbCBuYXYgYmFyIG9mIGN5Y2xlcyB0byByaWdodCBzaWRlIG9uIGNsaWNrIG9uIHJpZ2h0IHNpZGUgYXJyb3dcclxuICBAbWV0aG9kIGVuZFNjcm9sbFxyXG4gICAgQHBhcmFtIHtFdmVudH0gZVxyXG4gICAgQGRvIHNldCBnLkNvbnRyb2xsZXIuQ3ljbGVzLnRvU2Nyb2xsID0gZmFsc2UgdG8gc3RvcCBzY3JvbGxpbmcgaW4gLmN5Y2xlcyBjb250YWluZXJcclxuICBAbWV0aG9kIGNyZWF0ZUN5Y2xlXHJcbiAgICBAcGFyYW0ge0V2ZW50fSBlXHJcbiAgICBAZG8gb24gY2xpY2sgb24gXCJ0aWNrXCIgc2F2ZSBidXR0b24gaW4gY3ljbGVzLWZvb3RlciB0byBjcmVhdGUgY3ljbGUgaXQgdGFrZSB2YWx1ZSBmcm9tIGZpZWxkIGFuZCBhZGQgaXQgdG8gZGIgYW5kIHNlbGVjdCBuYXYgYmFyc1xyXG4gIEBtZXRob2Qgc2VsZWN0Q3ljbGVcclxuICAgIEBwYXJhbSB7RXZlbnR9IGVcclxuICAgIEBkbyBvbiBjbGljayBvbiBjeWNsZSBuYW1lIGluIGN5Y2xlcyBuYXYgYmFyIGl0IGxvYWQgY3ljbGUncyBvcmRlcnMsIGtpdHMgYW5kIHByb2RjdHMgdG8gdGhlIHdpbmRvd3NcclxuICBAbWV0aG9kIGVkaXRPcmRlclxyXG4gICAgQHBhcmFtIHtFdmVudH0gZVxyXG4gICAgQGRvIG9uIGRvdWJsZSBjbGljayBvbiBvcmRlciByb3cgaXQgc2hvd3MgYWxlcnRXaW5kb3csIHdoZXJlIGZpZWxkcyBhcmUgZmlsbGVkIG91dCB3aXRoIHZhbHVlcyBvZiBjdXJyZW50IG9yZGVyXHJcbiAgQG1ldGhvZCBzYXZlT3JkZXJcclxuICAgIEBwYXJhbSB7RXZlbnR9IGVcclxuICAgIEBkbyBvbiBjbGljayBvbiBcInRpY2tcIiBzYXZlIGJ1dHRvbiBpbiBhbGVydFdpbmRvdyBpdCB0YWtlIGFsbCBkYXRhIGZyb20gYWxlcnRXaW5kb3cgYW5kIHNhdmUgaXQgYXMgb3JkZXIgdG8gZGIgYW5kIGNoYW5nZSBkYXRhIGluIG9yZGVycyBuYXYgdGFibGUgaWYgaXQgaXMgbmVlZGVkXHJcbiAgQG1ldGhvZCBkZWxldGVSZWNvcmRcclxuICAgIEBwYXJhbSB7RXZlbnR9IGVcclxuICAgIEBkbyBkZWxldGUgc2VsZWN0ZWQgcmVjb3JkIGZyb20gZGIgYW5kIGZyb20gbmF2IHRhYmxlXHJcbiAgQG1ldGhvZCBkaXNwbGF5S2l0c09uQ3ljbGVTZWxlY3RcclxuICAgIEBwYXJhbSB7RXZlbnR9IGVcclxuICAgIEBkbyB3aGVuIHVzZXIgc2VsZWN0IGN5Y2xlIGluIGFsZXJ0V2luZG93IGluIGRpc3BsYXkgYWxsIGtpdHMgZnJvbSB0aGF0IGN5Y2xlIGluIGtpdHMtY29udGFpbmVyXHJcbiovXHJcbmNsYXNzIEN5Y2xlQ29udHJvbGxlcntcclxuICBjb25zdHJ1Y3Rvcigpe1xyXG4gICAgaWYoZy5Db250cm9sbGVyLkN5Y2xlcy5pbnN0YW5jZSkgcmV0dXJuIGcuQ29udHJvbGxlci5DeWNsZXMuaW5zdGFuY2U7XHJcbiAgICB0aGlzLmRhbyA9IG5ldyBDeWNsZXNEQU8oKTtcclxuICAgIHRoaXMuaW4gPSBuZXcgQ3ljbGVzSW5wdXQoKTtcclxuICAgIHJldHVybiBnLkNvbnRyb2xsZXIuQ3ljbGVzLmluc3RhbmNlID0gdGhpcztcclxuICB9XHJcblxyXG4gIGFkZEN5Y2xlc1RvTmF2QmFyKGUsIGNiKXtcclxuICAgIGxldCBfdGhpcyA9IGcuQ29udHJvbGxlci5DeWNsZXMuaW5zdGFuY2U7XHJcbiAgICBfdGhpcy5kYW8uZGlzcGFseUN5Y2xlcygnVFJVRSBPUkRFUiBCWSBpZCBERVNDIExJTUlUID8sID8nLCBbXHJcbiAgICAgICAgICAgIGcuQ29udHJvbGxlci5DeWNsZXMuY3ljbGVzTmF2QmFyU2Nyb2xsQ291bnRlciAqIGcuQ29udHJvbGxlci5DeWNsZXMuY3ljbGVzTmF2QmFyQ291bnRUb1NlbGVjdCxcclxuICAgICAgICAgICAgZy5Db250cm9sbGVyLkN5Y2xlcy5jeWNsZXNOYXZCYXJDb3VudFRvU2VsZWN0XHJcbiAgICAgICAgICBdLCBjYik7XHJcbiAgfVxyXG5cclxuICBzY3JvbGxOYXZCYXJMZWZ0KGUpe1xyXG4gICAgZy5Db250cm9sbGVyLkN5Y2xlcy50b1Njcm9sbCA9IHNldEludGVydmFsKCgpID0+IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIuY3ljbGVzLXRhYi1jb250YWluZXIgLmN5Y2xlc1wiKS5zY3JvbGxCeSgtMywgMCksIDYpO1xyXG4gIH1cclxuXHJcbiAgc2Nyb2xsTmF2QmFyUmlnaHQoZSl7XHJcbiAgICBnLkNvbnRyb2xsZXIuQ3ljbGVzLnRvU2Nyb2xsID0gc2V0SW50ZXJ2YWwoKCkgPT4gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5jeWNsZXMtdGFiLWNvbnRhaW5lciAuY3ljbGVzXCIpLnNjcm9sbEJ5KDMsIDApLCA2KTtcclxuICB9XHJcblxyXG4gIGVuZFNjcm9sbChlKXtcclxuICAgIGNsZWFySW50ZXJ2YWwoZy5Db250cm9sbGVyLkN5Y2xlcy50b1Njcm9sbCk7XHJcbiAgICBnLkNvbnRyb2xsZXIuQ3ljbGVzLnRvU2Nyb2xsID0gdW5kZWZpbmVkO1xyXG4gIH1cclxuXHJcbiAgY3JlYXRlQ3ljbGUoZSl7XHJcbiAgICBsZXQgX3RoaXMgPSBnLkNvbnRyb2xsZXIuQ3ljbGVzLmluc3RhbmNlO1xyXG5cclxuICAgIHZhciBjeWNsZU5hbWUgPSBfdGhpcy5pbi50YWtlRGF0YShcImFkZF9jXCIpO1xyXG4gICAgaWYoY3ljbGVOYW1lICE9IFwiXCIpe1xyXG4gICAgICBfdGhpcy5kYW8uY3JlYXRlQ3ljbGUoZmFsc2U/X3RoaXMuaW4udGFrZURhdGEoXCJDX0lEXCIpOi0xLCBjeWNsZU5hbWUsIGN5Y2xlSUQgPT4ge1xyXG4gICAgICAgIF90aGlzLmRhby5kaXNwYWx5Q3ljbGVzKCdpZCA9ID8nLCBbY3ljbGVJRF0sICgpID0+IHtcclxuICAgICAgICAgIF90aGlzLnNlbGVjdEN5Y2xlKGUsIGN5Y2xlSUQpO1xyXG4gICAgICAgIH0pO1xyXG4gICAgICB9KTtcclxuICAgIH1cclxuXHJcbiAgfVxyXG5cclxuICBzZWxlY3RDeWNsZShlLCBpZCwgY2Ipe1xyXG4gICAgbGV0IF90aGlzID0gZy5Db250cm9sbGVyLkN5Y2xlcy5pbnN0YW5jZTtcclxuICAgIGlkID0gdHlwZW9mIGlkICE9PSBcInVuZGVmaW5lZFwiP2lkOmUudGFyZ2V0LmdldEF0dHJpYnV0ZShcImZvclwiKS5zcGxpdChcIi1cIilbMV07XHJcbiAgICBfdGhpcy5kYW8uZmlsbEN5Y2xlV2luZG93cyhpZCwgY2IpO1xyXG4gIH1cclxuXHJcbiAgZWRpdE9yZGVyKGUpe1xyXG4gICAgbGV0IF90aGlzID0gZy5Db250cm9sbGVyLkN5Y2xlcy5pbnN0YW5jZTtcclxuICAgIF90aGlzLmRhby5vcGVuT3JkZXJDcmVhdGluZ1dpbmRvdygpO1xyXG4gICAgX3RoaXMuZGFvLmZpbGxPcmRlckNyZWF0aW5nV2luKHBhcnNlSW50KGUudGFyZ2V0LnBhcmVudE5vZGUuZ2V0QXR0cmlidXRlKFwiZGF0YS1pZFwiKSkpO1xyXG4gIH1cclxuXHJcbiAgY2xvc2VPcmRlcihlKXtcclxuICAgIGxldCBfdGhpcyA9IGcuQ29udHJvbGxlci5DeWNsZXMuaW5zdGFuY2U7XHJcbiAgICBfdGhpcy5kYW8uY2xvc2VPcmRlckNyZWF0aW5nV2luZG93KCk7XHJcbiAgfVxyXG5cclxuICBzYXZlT3JkZXIoZSl7XHJcbiAgICBsZXQgX3RoaXMgPSBnLkNvbnRyb2xsZXIuQ3ljbGVzLmluc3RhbmNlO1xyXG4gICAgX3RoaXMuZGFvLmdldE9yZGVyRnJvbVBhZ2UoKG9yZGVyLCBjdXN0b21lcikgPT4ge1xyXG4gICAgICBfdGhpcy5kYW8uc2F2ZU9yZGVyKG9yZGVyKTtcclxuICAgICAgX3RoaXMuZGFvLnNhdmVDdXN0b21lcihjdXN0b21lcik7XHJcbiAgICAgIF90aGlzLmRhby5jbG9zZU9yZGVyQ3JlYXRpbmdXaW5kb3coKTtcclxuICAgIH0pO1xyXG4gIH1cclxuXHJcbiAgZGlzcGxheUtpdHNPbkN5Y2xlU2VsZWN0KGUpe1xyXG4gICAgbGV0IF90aGlzID0gZy5Db250cm9sbGVyLkN5Y2xlcy5pbnN0YW5jZTtcclxuICAgIF90aGlzLmRhby5kaXNwbGF5S2l0cyhfdGhpcy5pbi50YWtlRGF0YShcIkFXX2NfaWRcIikpO1xyXG4gIH1cclxuXHJcbiAgZGVsZXRlQ3ljbGUoZSl7XHJcbiAgICBsZXQgX3RoaXMgPSBnLkNvbnRyb2xsZXIuQ3ljbGVzLmluc3RhbmNlO1xyXG4gICAgbGV0IGN5Y2xlSUQgPSBfdGhpcy5pbi50YWtlRGF0YShcIkNfSURcIik7XHJcbiAgICBfdGhpcy5kYW8uY2xlYW5DeWNsZVdpbmRvd3MoY3ljbGVJRCk7XHJcbiAgICBfdGhpcy5kYW8uZGVsZXRlQ3ljbGUoY3ljbGVJRClcclxuICB9XHJcblxyXG4gIGRlbGV0ZVJlY29yZChlKXtcclxuICAgIGxldCBfdGhpcyA9IGcuQ29udHJvbGxlci5DeWNsZXMuaW5zdGFuY2U7XHJcbiAgICBsZXQgc2wgPSBfdGhpcy5pbi50YWtlRGF0YShcIlRibF9TbGN0XCIpO1xyXG4gICAgbGV0IGRiID0gKHtcIm9yZGVyc1wiOiBuZXcgT3JkZXJUYWJsZVNRTCgpLCBcInByb2R1Y3RzXCI6IG5ldyBQcm9kdWN0VGFibGVTUUwoKSwgXCJraXRzXCI6IG5ldyBLaXRUYWJsZVNRTCgpfSlbc2xbMF1dO1xyXG4gICAgbGV0IGRiQ3ljbGUgPSBuZXcgQ3ljbGVUYWJsZVNRTCgpO1xyXG5cclxuICAgIChuZXcgQ3ljbGVzT3V0cHV0KCkpLmluc2VydERhdGEoc2xbMF1bMF0udG9VcHBlckNhc2UoKSArIFwiX1RibFwiLCB7Ym9keTpbW3tpZDogc2xbMV19XV19KTtcclxuICAgIGRiLmRlbChbc2xbMV1dKTtcclxuICB9XHJcblxyXG4gIHNlbGVjdFJlY29yZChlKXtcclxuICAgIGxldCBfdGhpcyA9IGcuQ29udHJvbGxlci5DeWNsZXMuaW5zdGFuY2U7XHJcbiAgICBsZXQgc2wgPSBfdGhpcy5pbi50YWtlRGF0YShcIlRibF9TbGN0XCIpO1xyXG4gICAgaWYoc2xbMl0pIHNsWzJdLmNsYXNzTGlzdC5yZW1vdmUoXCJzZWxlY3RlZFwiKTtcclxuICAgIGUudGFyZ2V0LnBhcmVudE5vZGUuY2xhc3NMaXN0LmFkZChcInNlbGVjdGVkXCIpO1xyXG4gICAgc2wgPSBfdGhpcy5pbi50YWtlRGF0YShcIlRibF9TbGN0XCIpO1xyXG4gICAgbGV0IGZpbGxQcm9maWxlID0gKHtcIm9yZGVyc1wiOiB1bmRlZmluZWQsIFwicHJvZHVjdHNcIjogX3RoaXMuZGFvLmZpbGxQcm9kdWN0UHJvZmlsZSwgXCJraXRzXCI6IF90aGlzLmRhby5maWxsS2l0UHJvZmlsZX0pW3NsWzBdXTtcclxuICAgIGlmKGZpbGxQcm9maWxlICE9IHVuZGVmaW5lZCkgZmlsbFByb2ZpbGUoc2xbMV0sIF90aGlzLmluLnRha2VEYXRhKFwiQ19JRFwiKSk7XHJcbiAgfVxyXG5cclxuICBhZGRUb0FycmF5KGUpe1xyXG4gICAgbGV0IF90aGlzID0gZy5Db250cm9sbGVyLkN5Y2xlcy5pbnN0YW5jZTtcclxuICAgIF90aGlzLmRhby5hZGRUb0FycmF5KC4uLih7XHJcbiAgICAgICAgICAgICAgXCJQYWlkXCI6W1wiQVdfUFwiLCBbXCJcIiwgXCJcIl1dLFxyXG4gICAgICAgICAgICAgIFwiRGF0ZVwiOltcIkFXX1BcIiwgW1wiXCIsIFwiXCJdXVxyXG4gICAgICAgICAgICB9KVtlLnRhcmdldC5wYXJlbnROb2RlLnF1ZXJ5U2VsZWN0b3IoXCJpbnB1dFwiKS5nZXRBdHRyaWJ1dGUoXCJwbGFjZWhvbGRlclwiKV0pO1xyXG4gIH1cclxuXHJcbiAgc2F2ZVByb2R1Y3QoZSwgY2Ipe1xyXG4gICAgbGV0IF90aGlzID0gZy5Db250cm9sbGVyLkN5Y2xlcy5pbnN0YW5jZTtcclxuICAgIGxldCBvdXQgPSBuZXcgQ3ljbGVzT3V0cHV0KCk7XHJcbiAgICB2YXIgcHJvZHVjdCA9IF90aGlzLmRhby50YWtlUHJvZHVjdEZyb21QYWdlKCk7XHJcbiAgICBjb25zdCBpZCA9IHByb2R1Y3RbXCJpZFwiXSArIDE7XHJcbiAgICB2YXIgZGIgPSBuZXcgUHJvZHVjdFRhYmxlU1FMKCk7XHJcbiAgICB2YXIgZGJDeWNsZSA9IG5ldyBDeWNsZVRhYmxlU1FMKCk7XHJcblxyXG4gICAgaWYoZS5wYXRoWzRdLmlkID09IFwianMtcHJvZHVjdC1jb3VudC1zZXRcIil7XHJcbiAgICAgIGNvbnNvbGUubG9nKHByb2R1Y3QpO1xyXG4gICAgICBPYmplY3Qua2V5cyhwcm9kdWN0LmNvdW50KS5mb3JFYWNoKGsgPT4ge1xyXG4gICAgICAgIGlmKCFwcm9kdWN0LmNvdW50W2tdKSBwcm9kdWN0LmNvdW50W2tdID0gMDtcclxuICAgICAgfSk7XHJcbiAgICAgIHByb2R1Y3QuY291bnRbXCJjLWt0XCJdID0gcHJvZHVjdC5jb3VudFtcImMtc3RcIl0gLSBwcm9kdWN0LmNvdW50W1wiYy13aFwiXSAtIHByb2R1Y3QuY291bnRbXCJjLXNoXCJdO1xyXG4gICAgICBwcm9kdWN0LmNvdW50W1wiYy1sZnRcIl0gPSBwcm9kdWN0LmNvdW50W1wiYy1rdFwiXSAtIHByb2R1Y3QuY291bnRbXCJjLW9yXCJdO1xyXG5cclxuICAgICAgb3V0Lmluc2VydERhdGEoXCJQX0NcIiwgcHJvZHVjdC5jb3VudCk7XHJcbiAgICB9XHJcblxyXG4gICAgZGIuc2F2ZShbcHJvZHVjdF0sIHByb2R1Y3RzID0+IHtcclxuICAgICAgaWYocHJvZHVjdHNbMF1bXCJpZFwiXSAhPSBpZCAtIDEpe1xyXG4gICAgICAgIGRiQ3ljbGUubG9hZChbcHJvZHVjdHNbMF1bXCJjeWNsZUlEXCJdXSwgY3ljbGVzID0+IHtcclxuICAgICAgICAgIGlmKGN5Y2xlc1swXSl7XHJcbiAgICAgICAgICAgIGN5Y2xlc1swXVtcInByb2R1Y3RzSURcIl1bY3ljbGVzWzBdW1wicHJvZHVjdHNJRFwiXS5sZW5ndGhdID0gcHJvZHVjdHNbMF1bXCJpZFwiXTtcclxuICAgICAgICAgICAgZGJDeWNsZS5zYXZlKGN5Y2xlcywgKCkgPT4ge30pO1xyXG4gICAgICAgICAgfVxyXG4gICAgICAgIH0pO1xyXG4gICAgICAgIChuZXcgQ3ljbGVzT3V0cHV0KCkpLmluc2VydERhdGEoXCJQX0lEXCIsIHByb2R1Y3RzWzBdW1wiaWRcIl0pO1xyXG4gICAgICB9XHJcbiAgICAgIF90aGlzLmRhby5maWxsUHJvZHVjdHNXaW4oW3Byb2R1Y3RzWzBdW1wiaWRcIl1dLCBjYik7XHJcbiAgICB9KTtcclxuXHJcbiAgfVxyXG5cclxuICBzYXZlS2l0KGUsIGNiLCB0KXtcclxuICAgIGxldCBfdGhpcyA9IGcuQ29udHJvbGxlci5DeWNsZXMuaW5zdGFuY2U7XHJcbiAgICB2YXIga2l0ID0gX3RoaXMuZGFvLnRha2VLaXRGcm9tUGFnZSgpO1xyXG4gICAgY29uc3QgaWQgPSBraXRbXCJpZFwiXSArIDE7XHJcbiAgICB2YXIgZGIgPSBuZXcgS2l0VGFibGVTUUwoKTtcclxuXHJcbiAgICBkYi5zYXZlKFtraXRdLCBraXRzID0+IHtcclxuICAgICAgbGV0IG91dCA9IG5ldyBDeWNsZXNPdXRwdXQoKTtcclxuICAgICAgaWYoa2l0c1swXVtcImlkXCJdICE9IGlkIC0gMSl7XHJcbiAgICAgICAgb3V0Lmluc2VydERhdGEoXCJLX0lEXCIsIGtpdHNbMF1bXCJpZFwiXSk7XHJcbiAgICAgIH1cclxuICAgICAgX3RoaXMuZGFvLmZpbGxLaXRzV2luKFtraXRzWzBdW1wiaWRcIl1dLCBjYik7XHJcbiAgICAgIG91dC5pbnNlcnREYXRhKFwiS19QY1ByXCIsIE51bWJlcigoa2l0c1swXS5wY1ByaWNlKS50b0ZpeGVkKDIpKSk7XHJcbiAgICAgIG91dC5pbnNlcnREYXRhKFwiS19QY1dcIiwgTnVtYmVyKChraXRzWzBdLnBjV2VpZ2h0KS50b0ZpeGVkKDIpKSk7XHJcbiAgICB9KTtcclxuICB9XHJcblxyXG4gIGNyZWF0ZUtpdChlKXtcclxuICAgIGxldCBfdGhpcyA9IGcuQ29udHJvbGxlci5DeWNsZXMuaW5zdGFuY2U7XHJcbiAgICBBcnJheS5mcm9tKGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCJ0YWJsZSAuc2VsZWN0ZWRcIikpLmZvckVhY2gocyA9PiBzLmNsYXNzTGlzdC5yZW1vdmUoXCJzZWxlY3RlZFwiKSk7XHJcbiAgICBfdGhpcy5kYW8uY2xlYW5LaXRQcm9maWxlKF90aGlzLmluLnRha2VEYXRhKFwiQ19JRFwiKSk7XHJcbiAgfVxyXG5cclxuICBjcmVhdGVQcm9kdWN0KGUpe1xyXG4gICAgbGV0IF90aGlzID0gZy5Db250cm9sbGVyLkN5Y2xlcy5pbnN0YW5jZTtcclxuICAgIEFycmF5LmZyb20oZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbChcInRhYmxlIC5zZWxlY3RlZFwiKSkuZm9yRWFjaChzID0+IHMuY2xhc3NMaXN0LnJlbW92ZShcInNlbGVjdGVkXCIpKTtcclxuICAgIF90aGlzLmRhby5jbGVhblByb2R1Y3RQcm9maWxlKCk7XHJcbiAgfVxyXG5cclxuICBzZWFyY2goZSl7XHJcbiAgICBsZXQgX3RoaXMgPSBnLkNvbnRyb2xsZXIuQ3ljbGVzLmluc3RhbmNlO1xyXG4gICAgbGV0IHRhYmxlID0gZS50YXJnZXQucGFyZW50Tm9kZS5xdWVyeVNlbGVjdG9yKFwidGFibGVcIik7XHJcbiAgICBsZXQgc3RyID0gZS50YXJnZXQudmFsdWU7XHJcbiAgICBsZXQgcyA9IChzdHI9PT1cIlwiKT8oKCkgPT4gdHJ1ZSk6KHRyID0+IEFycmF5LmZyb20odHIucXVlcnlTZWxlY3RvckFsbChcInRkXCIpKS5maWx0ZXIodGQgPT4gdGQuaW5uZXJIVE1MLnNlYXJjaChzdHIpID4gLTEpLmxlbmd0aCA+IDApO1xyXG4gICAgQXJyYXkuZnJvbSh0YWJsZS5xdWVyeVNlbGVjdG9yQWxsKFwidGJvZHkgdHJcIikpLmZvckVhY2godHIgPT4gdHIuc3R5bGUuZGlzcGxheSA9IHModHIpP1widGFibGVcIjpcIm5vbmVcIik7XHJcbiAgfVxyXG5cclxuICB1cGRhdGVPcmRlckZvcm0oZSl7XHJcbiAgICBsZXQgX3RoaXMgPSBnLkNvbnRyb2xsZXIuQ3ljbGVzLmluc3RhbmNlO1xyXG4gICAgbGV0IGtpdHMgPSBfdGhpcy5kYW8uZ2V0T3JkZXJGcm9tUGFnZSh1bmRlZmluZWQsMSk7XHJcbiAgICBfdGhpcy5kYW8udXBkYXRlT3JkZXJGb3JtKGtpdHMpO1xyXG4gIH1cclxufVxyXG4iXX0=
+/**
+@class CustomerProfileController
+
+@methods
+  @method addCyclesToNavBar
+    @param {Event} e
+    @do on scroll in cycles nav bars it add new cycles names to that nav bars
+  @method scrollNavBarLeft
+    @param {Event} e
+    @do scroll nav bar of cycles to left side on click on left side arrow
+  @method scrollNavBarRight
+    @param {Event} e
+    @do scroll nav bar of cycles to right side on click on right side arrow
+  @method endScroll
+    @param {Event} e
+    @do set g.Controller.Cycles.toScroll = false to stop scrolling in .cycles container
+  @method createCycle
+    @param {Event} e
+    @do on click on "tick" save button in cycles-footer to create cycle it take value from field and add it to db and select nav bars
+  @method selectCycle
+    @param {Event} e
+    @do on click on cycle name in cycles nav bar it load cycle's orders, kits and prodcts to the windows
+  @method editOrder
+    @param {Event} e
+    @do on double click on order row it shows alertWindow, where fields are filled out with values of current order
+  @method saveOrder
+    @param {Event} e
+    @do on click on "tick" save button in alertWindow it take all data from alertWindow and save it as order to db and change data in orders nav table if it is needed
+  @method deleteRecord
+    @param {Event} e
+    @do delete selected record from db and from nav table
+  @method displayKitsOnCycleSelect
+    @param {Event} e
+    @do when user select cycle in alertWindow in display all kits from that cycle in kits-container
+*/
+class CycleController{
+  constructor(){
+    if(g.Controller.Cycles.instance) return g.Controller.Cycles.instance;
+    this.dao = new CyclesDAO();
+    this.in = new CyclesInput();
+    return g.Controller.Cycles.instance = this;
+  }
+
+  addCyclesToNavBar(e, cb){
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.dispalyCycles('TRUE ORDER BY id DESC LIMIT ?, ?', [
+            g.Controller.Cycles.cyclesNavBarScrollCounter * g.Controller.Cycles.cyclesNavBarCountToSelect,
+            g.Controller.Cycles.cyclesNavBarCountToSelect
+          ], cb);
+  }
+
+  scrollNavBarLeft(e){
+    g.Controller.Cycles.toScroll = setInterval(() => document.querySelector(".cycles-tab-container .cycles").scrollBy(-3, 0), 6);
+  }
+
+  scrollNavBarRight(e){
+    g.Controller.Cycles.toScroll = setInterval(() => document.querySelector(".cycles-tab-container .cycles").scrollBy(3, 0), 6);
+  }
+
+  endScroll(e){
+    clearInterval(g.Controller.Cycles.toScroll);
+    g.Controller.Cycles.toScroll = undefined;
+  }
+
+  createCycle(e){
+    let _this = g.Controller.Cycles.instance;
+
+    var cycleName = _this.in.takeData("add_c");
+    if(cycleName != ""){
+      _this.dao.createCycle(false?_this.in.takeData("C_ID"):-1, cycleName, cycleID => {
+        _this.dao.dispalyCycles('id = ?', [cycleID], () => {
+          _this.selectCycle(e, cycleID);
+        });
+      });
+    }
+
+  }
+
+  selectCycle(e, id, cb){
+    let _this = g.Controller.Cycles.instance;
+    id = typeof id !== "undefined"?id:e.target.getAttribute("for").split("-")[1];
+    _this.dao.fillCycleWindows(id, cb);
+  }
+
+  editOrder(e){
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.openOrderCreatingWindow();
+    _this.dao.fillOrderCreatingWin(parseInt(e.target.parentNode.getAttribute("data-id")));
+  }
+
+  closeOrder(e){
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.closeOrderCreatingWindow();
+  }
+
+  saveOrder(e, cb){
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.getOrderFromPage((order, customer) => {
+      _this.dao.saveOrder(order, cb);
+      _this.dao.saveCustomer(customer);
+      _this.dao.closeOrderCreatingWindow();
+
+    });
+  }
+
+  displayKitsOnCycleSelect(e){
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.displayKits(_this.in.takeData("AW_c_id"));
+  }
+
+  deleteCycle(e){
+    let _this = g.Controller.Cycles.instance;
+    let cycleID = _this.in.takeData("C_ID");
+    _this.dao.cleanCycleWindows(cycleID);
+    _this.dao.deleteCycle(cycleID)
+  }
+
+  deleteRecord(e){
+    let _this = g.Controller.Cycles.instance;
+    let sl = _this.in.takeData("Tbl_Slct");
+    let db = ({"orders": new OrderTableSQL(), "products": new ProductTableSQL(), "kits": new KitTableSQL()})[sl[0]];
+    let dbCycle = new CycleTableSQL();
+
+    (new CyclesOutput()).insertData(sl[0][0].toUpperCase() + "_Tbl", {body:[[{id: sl[1]}]]});
+    db.del([sl[1]]);
+  }
+
+  selectRecord(e){
+    let _this = g.Controller.Cycles.instance;
+    let sl = _this.in.takeData("Tbl_Slct");
+    if(sl[2]) sl[2].classList.remove("selected");
+    e.target.parentNode.classList.add("selected");
+    sl = _this.in.takeData("Tbl_Slct");
+    let fillProfile = ({"orders": undefined, "products": _this.dao.fillProductProfile, "kits": _this.dao.fillKitProfile})[sl[0]];
+    if(fillProfile != undefined) fillProfile(sl[1], _this.in.takeData("C_ID"));
+  }
+
+  addToArray(e){
+    let _this = g.Controller.Cycles.instance;
+    _this.dao.addToArray(...({
+              "Paid":["AW_P", ["", ""]],
+              "Date":["AW_P", ["", ""]]
+            })[e.target.parentNode.querySelector("input").getAttribute("placeholder")]);
+  }
+
+  saveProduct(e, cb){
+    let _this = g.Controller.Cycles.instance;
+    let out = new CyclesOutput();
+    var product = _this.dao.takeProductFromPage();
+    const id = product["id"] + 1;
+    var db = new ProductTableSQL();
+    var dbCycle = new CycleTableSQL();
+
+    if(e.path[4].id == "js-product-count-set"){
+      Object.keys(product.count).forEach(k => {
+        if(!product.count[k]) product.count[k] = 0;
+      });
+      product.count["c-kt"] = product.count["c-st"] - product.count["c-wh"] - product.count["c-sh"];
+      product.count["c-lft"] = product.count["c-kt"] - product.count["c-or"];
+
+      out.insertData("P_C", product.count);
+    }
+
+    db.save([product], products => {
+      if(products[0]["id"] != id - 1){
+        dbCycle.load([products[0]["cycleID"]], cycles => {
+          if(cycles[0]){
+            cycles[0]["productsID"][cycles[0]["productsID"].length] = products[0]["id"];
+            dbCycle.save(cycles, () => {});
+          }
+        });
+        (new CyclesOutput()).insertData("P_ID", products[0]["id"]);
+      }
+      _this.dao.fillProductsWin([products[0]["id"]], cb);
+    });
+
+  }
+
+  saveKit(e, cb, t){
+    let _this = g.Controller.Cycles.instance;
+    var kit = _this.dao.takeKitFromPage();
+    const id = kit["id"] + 1;
+    var db = new KitTableSQL();
+
+    db.save([kit], kits => {
+      let out = new CyclesOutput();
+      if(kits[0]["id"] != id - 1){
+        out.insertData("K_ID", kits[0]["id"]);
+      }
+      _this.dao.fillKitsWin([kits[0]["id"]], cb);
+
+      out.insertData("K_PcPr", parseFloat(kits[0].pcPrice).toFixed(2));
+      out.insertData("K_PcW", parseFloat(kits[0].pcWeight).toFixed(2));
+    });
+  }
+
+  createKit(e){
+    let _this = g.Controller.Cycles.instance;
+    Array.from(document.querySelectorAll("table .selected")).forEach(s => s.classList.remove("selected"));
+    _this.dao.cleanKitProfile(_this.in.takeData("C_ID"));
+  }
+
+  createProduct(e){
+    let _this = g.Controller.Cycles.instance;
+    Array.from(document.querySelectorAll("table .selected")).forEach(s => s.classList.remove("selected"));
+    _this.dao.cleanProductProfile();
+  }
+
+  search(e){
+    let _this = g.Controller.Cycles.instance;
+    let table = e.target.parentNode.querySelector("table");
+    let str = e.target.value;
+    let s = (str==="")?(() => true):(tr => Array.from(tr.querySelectorAll("td")).filter(td => td.innerHTML.search(str) > -1).length > 0);
+    Array.from(table.querySelectorAll("tbody tr")).forEach(tr => tr.style.display = s(tr)?"table":"none");
+  }
+
+  updateOrderForm(e){
+    let _this = g.Controller.Cycles.instance;
+    let kits = _this.dao.getOrderFromPage(undefined,1);
+    _this.dao.updateOrderForm(kits);
+  }
+}
