@@ -1,2 +1,12 @@
-class ProductModel extends Model{constructor(e){super(e)}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIk1vZGVsL1Byb2R1Y3RNb2RlbC5qcyJdLCJuYW1lcyI6WyJQcm9kdWN0TW9kZWwiLCJNb2RlbCIsIltvYmplY3QgT2JqZWN0XSIsImRhdGEiLCJzdXBlciJdLCJtYXBwaW5ncyI6IkFBT0EsTUFBTUEscUJBQXFCQyxNQUN6QkMsWUFBWUMsR0FDVkMsTUFBTUQiLCJmaWxlIjoiTW9kZWwvUHJvZHVjdE1vZGVsLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXHJcbkBjbGFzcyBQcm9kdWN0TW9kZWxcclxuQHBhcmFtc1xyXG4gIEBwYXJhbSB7T2JqZWN0fSBkYXRhID0+IGFsbCBmaWVsZHMgdG8gc2V0IGluIGN1cnJlbnQgb2JqZWN0XHJcblxyXG5AY29uc3RydWN0b3Ige2lkLCBjeWNsZUlELCBuYW1lLCB1bml0LCBwcmljZTp7a2l0LCB3aG9sZXNhbGUsIHNob3AsIHJlc3RhdXJhbnR9LCBjb3VudCwgZGltZW5zaW9ucywgd2VpZ2h0LCBkZXNjcmlwdGlvbn1cclxuKi9cclxuY2xhc3MgUHJvZHVjdE1vZGVsIGV4dGVuZHMgTW9kZWx7XHJcbiAgY29uc3RydWN0b3IoZGF0YSl7XHJcbiAgICBzdXBlcihkYXRhKTtcclxuICB9XHJcbn1cclxuIl19
+/**
+@class ProductModel
+@params
+  @param {Object} data => all fields to set in current object
+
+@constructor {id, cycleID, name, unit, price:{kit, wholesale, shop, restaurant}, count, dimensions, weight, description}
+*/
+class ProductModel extends Model{
+  constructor(data){
+    super(data);
+  }
+}

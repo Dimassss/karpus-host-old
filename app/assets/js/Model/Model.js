@@ -40,7 +40,6 @@ class Model{
         }
       }
     }
-
     return this;
   }
 }

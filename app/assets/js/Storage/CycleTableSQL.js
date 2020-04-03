@@ -1,2 +1,23 @@
-class CycleTableSQL extends TableSQL{constructor(){return g.Storage.CycleTableSQL?g.Storage.CycleTableSQL:(super("id","CYCLES",{id:"`id` INTEGER PRIMARY KEY",name:"`name` VARCHAR(80) NOT NULL",kitsID:"`kitsID` TEXT",productsID:"`productsID` TEXT",ordersID:"`ordersID` TEXT"}),g.Storage.CycleTableSQL=this)}load(e,l){this.l(e,e=>{const t=[];for(var r=0;r<e.length;r++)t[t.length]=(new CycleModel).fromDB(e[r]);l(t)})}select(e,l,t){this.sl(e,l,e=>{const l=[];for(var r=0;r<e.length;r++)l[l.length]=(new CycleModel).fromDB(e[r]);t(l)})}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlN0b3JhZ2UvQ3ljbGVUYWJsZVNRTC5qcyJdLCJuYW1lcyI6WyJDeWNsZVRhYmxlU1FMIiwiVGFibGVTUUwiLCJbb2JqZWN0IE9iamVjdF0iLCJnIiwic3VwZXIiLCJpZCIsIm5hbWUiLCJraXRzSUQiLCJwcm9kdWN0c0lEIiwib3JkZXJzSUQiLCJ0aGlzIiwia2V5cyIsImNiIiwibCIsInJlY29yZHMiLCJjeWNsZXMiLCJpIiwibGVuZ3RoIiwiQ3ljbGVNb2RlbCIsImZyb21EQiIsIndoZXJlIiwiZGF0YSIsInNsIl0sIm1hcHBpbmdzIjoiQUFBQSxNQUFNQSxzQkFBc0JDLFNBQzFCQyxjQUNFLE9BQUdDLEVBQVcsUUFBaUIsY0FBVUEsRUFBVyxRQUFpQixlQUNyRUMsTUFBTSxLQUFNLFNBQVUsQ0FBQ0MsR0FBTSwyQkFBNEJDLEtBQVEsOEJBQStCQyxPQUFVLGdCQUFpQkMsV0FBYyxvQkFBcUJDLFNBQVksb0JBQ25LTixFQUFXLFFBQWlCLGNBQUlPLE1BR3pDUixLQUFLUyxFQUFNQyxHQUNURixLQUFLRyxFQUFFRixFQUFNRyxJQUNYLE1BQU1DLEVBQVMsR0FDZixJQUFJLElBQUlDLEVBQUksRUFBR0EsRUFBSUYsRUFBUUcsT0FBUUQsSUFBS0QsRUFBT0EsRUFBT0UsU0FBVSxJQUFLQyxZQUFjQyxPQUFPTCxFQUFRRSxJQUNsR0osRUFBR0csS0FJUGIsT0FBT2tCLEVBQU9DLEVBQU1ULEdBQ2xCRixLQUFLWSxHQUFHRixFQUFPQyxFQUFNUCxJQUNuQixNQUFNQyxFQUFTLEdBQ2YsSUFBSSxJQUFJQyxFQUFJLEVBQUdBLEVBQUlGLEVBQVFHLE9BQVFELElBQUtELEVBQU9BLEVBQU9FLFNBQVUsSUFBS0MsWUFBY0MsT0FBT0wsRUFBUUUsSUFDbEdKLEVBQUdHIiwiZmlsZSI6IlN0b3JhZ2UvQ3ljbGVUYWJsZVNRTC5qcyIsInNvdXJjZXNDb250ZW50IjpbImNsYXNzIEN5Y2xlVGFibGVTUUwgZXh0ZW5kcyBUYWJsZVNRTHtcclxuICBjb25zdHJ1Y3Rvcigpe1xyXG4gICAgaWYoZ1tcIlN0b3JhZ2VcIl1bXCJDeWNsZVRhYmxlU1FMXCJdKSByZXR1cm4gZ1tcIlN0b3JhZ2VcIl1bXCJDeWNsZVRhYmxlU1FMXCJdO1xyXG4gICAgc3VwZXIoXCJpZFwiLCBcIkNZQ0xFU1wiLCB7XCJpZFwiOiAnYGlkYCBJTlRFR0VSIFBSSU1BUlkgS0VZJywgXCJuYW1lXCI6ICdgbmFtZWAgVkFSQ0hBUig4MCkgTk9UIE5VTEwnLCBcImtpdHNJRFwiOiAnYGtpdHNJRGAgVEVYVCcsIFwicHJvZHVjdHNJRFwiOiAnYHByb2R1Y3RzSURgIFRFWFQnLCBcIm9yZGVyc0lEXCI6ICdgb3JkZXJzSURgIFRFWFQnfSk7XHJcbiAgICByZXR1cm4gZ1tcIlN0b3JhZ2VcIl1bXCJDeWNsZVRhYmxlU1FMXCJdID0gdGhpcztcclxuICB9XHJcblxyXG4gIGxvYWQoa2V5cywgY2Ipe1xyXG4gICAgdGhpcy5sKGtleXMsIHJlY29yZHMgPT4ge1xyXG4gICAgICBjb25zdCBjeWNsZXMgPSBbXTtcclxuICAgICAgZm9yKHZhciBpID0gMDsgaSA8IHJlY29yZHMubGVuZ3RoOyBpKyspIGN5Y2xlc1tjeWNsZXMubGVuZ3RoXSA9IChuZXcgQ3ljbGVNb2RlbCgpKS5mcm9tREIocmVjb3Jkc1tpXSk7XHJcbiAgICAgIGNiKGN5Y2xlcyk7XHJcbiAgICB9KTtcclxuICB9XHJcblxyXG4gIHNlbGVjdCh3aGVyZSwgZGF0YSwgY2Ipe1xyXG4gICAgdGhpcy5zbCh3aGVyZSwgZGF0YSwgcmVjb3JkcyA9PiB7XHJcbiAgICAgIGNvbnN0IGN5Y2xlcyA9IFtdO1xyXG4gICAgICBmb3IodmFyIGkgPSAwOyBpIDwgcmVjb3Jkcy5sZW5ndGg7IGkrKykgY3ljbGVzW2N5Y2xlcy5sZW5ndGhdID0gKG5ldyBDeWNsZU1vZGVsKCkpLmZyb21EQihyZWNvcmRzW2ldKTtcclxuICAgICAgY2IoY3ljbGVzKTtcclxuICAgIH0pO1xyXG4gIH1cclxufVxyXG4iXX0=
+class CycleTableSQL extends TableSQL{
+  constructor(){
+    if(g["Storage"]["CycleTableSQL"]) return g["Storage"]["CycleTableSQL"];
+    super("id", "CYCLES", {"id": '`id` INTEGER PRIMARY KEY', "name": '`name` VARCHAR(80) NOT NULL', "kitsID": '`kitsID` TEXT', "productsID": '`productsID` TEXT', "ordersID": '`ordersID` TEXT'});
+    return g["Storage"]["CycleTableSQL"] = this;
+  }
+
+  load(keys, cb){
+    this.l(keys, records => {
+      const cycles = [];
+      for(var i = 0; i < records.length; i++) cycles[cycles.length] = (new CycleModel()).fromDB(records[i]);
+      cb(cycles);
+    });
+  }
+
+  select(where, data, cb){
+    this.sl(where, data, records => {
+      const cycles = [];
+      for(var i = 0; i < records.length; i++) cycles[cycles.length] = (new CycleModel()).fromDB(records[i]);
+      cb(cycles);
+    });
+  }
+}

@@ -1,2 +1,23 @@
-class ProductTableSQL extends TableSQL{constructor(){return g.Storage.ProductTableSQL?g.Storage.ProductTableSQL:(super("id","PRODUCTS",{id:"`id` INTEGER PRIMARY KEY",cycleID:"`cycleID` INT",name:"`name` VARCHAR(80)",unit:"`unit` VARCHAR(80)",price:"`price` TEXT",count:"`count` TEXT",dimensions:"`dimensions` VARCHAR(20)",weight:"`weight` INT",description:"`description` TEXT"}),g.Storage.ProductTableSQL=this)}load(e,t){this.l(e,e=>{const o=[];for(var r=0;r<e.length;r++)o[o.length]=(new ProductModel).fromDB(e[r]);t(o)})}select(e,t,o){this.sl(e,t,e=>{const t=[];for(var r=0;r<e.length;r++)t[t.length]=(new ProductModel).fromDB(e[r]);o(t)})}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlN0b3JhZ2UvUHJvZHVjdFRhYmxlU1FMLmpzIl0sIm5hbWVzIjpbIlByb2R1Y3RUYWJsZVNRTCIsIlRhYmxlU1FMIiwiW29iamVjdCBPYmplY3RdIiwiZyIsInN1cGVyIiwiaWQiLCJjeWNsZUlEIiwibmFtZSIsInVuaXQiLCJwcmljZSIsImNvdW50IiwiZGltZW5zaW9ucyIsIndlaWdodCIsImRlc2NyaXB0aW9uIiwidGhpcyIsImtleXMiLCJjYiIsImwiLCJyZWNvcmRzIiwicHJvZHVjdHMiLCJpIiwibGVuZ3RoIiwiUHJvZHVjdE1vZGVsIiwiZnJvbURCIiwid2hlcmUiLCJkYXRhIiwic2wiXSwibWFwcGluZ3MiOiJBQUFBLE1BQU1BLHdCQUF3QkMsU0FDNUJDLGNBQ0UsT0FBR0MsRUFBVyxRQUFtQixnQkFBVUEsRUFBVyxRQUFtQixpQkFDekVDLE1BQU0sS0FBTSxXQUFZLENBQUNDLEdBQU0sMkJBQTRCQyxRQUFXLGdCQUFpQkMsS0FBUSxxQkFBc0JDLEtBQVEscUJBQXNCQyxNQUFTLGVBQWdCQyxNQUFTLGVBQWdCQyxXQUFjLDJCQUE0QkMsT0FBVSxlQUFnQkMsWUFBZSx1QkFDalJWLEVBQVcsUUFBbUIsZ0JBQUlXLE1BRzNDWixLQUFLYSxFQUFNQyxHQUNURixLQUFLRyxFQUFFRixFQUFNRyxJQUNYLE1BQU1DLEVBQVcsR0FDakIsSUFBSSxJQUFJQyxFQUFJLEVBQUdBLEVBQUlGLEVBQVFHLE9BQVFELElBQUtELEVBQVNBLEVBQVNFLFNBQVUsSUFBS0MsY0FBZ0JDLE9BQU9MLEVBQVFFLElBQ3hHSixFQUFHRyxLQUlQakIsT0FBT3NCLEVBQU9DLEVBQU1ULEdBQ2xCRixLQUFLWSxHQUFHRixFQUFPQyxFQUFNUCxJQUNuQixNQUFNQyxFQUFXLEdBQ2pCLElBQUksSUFBSUMsRUFBSSxFQUFHQSxFQUFJRixFQUFRRyxPQUFRRCxJQUFLRCxFQUFTQSxFQUFTRSxTQUFVLElBQUtDLGNBQWdCQyxPQUFPTCxFQUFRRSxJQUN4R0osRUFBR0ciLCJmaWxlIjoiU3RvcmFnZS9Qcm9kdWN0VGFibGVTUUwuanMiLCJzb3VyY2VzQ29udGVudCI6WyJjbGFzcyBQcm9kdWN0VGFibGVTUUwgZXh0ZW5kcyBUYWJsZVNRTHtcclxuICBjb25zdHJ1Y3Rvcigpe1xyXG4gICAgaWYoZ1tcIlN0b3JhZ2VcIl1bXCJQcm9kdWN0VGFibGVTUUxcIl0pIHJldHVybiBnW1wiU3RvcmFnZVwiXVtcIlByb2R1Y3RUYWJsZVNRTFwiXTtcclxuICAgIHN1cGVyKFwiaWRcIiwgXCJQUk9EVUNUU1wiLCB7XCJpZFwiOiAnYGlkYCBJTlRFR0VSIFBSSU1BUlkgS0VZJywgXCJjeWNsZUlEXCI6ICdgY3ljbGVJRGAgSU5UJywgXCJuYW1lXCI6ICdgbmFtZWAgVkFSQ0hBUig4MCknLCBcInVuaXRcIjogJ2B1bml0YCBWQVJDSEFSKDgwKScsIFwicHJpY2VcIjogJ2BwcmljZWAgVEVYVCcsIFwiY291bnRcIjogJ2Bjb3VudGAgVEVYVCcsIFwiZGltZW5zaW9uc1wiOiAnYGRpbWVuc2lvbnNgIFZBUkNIQVIoMjApJywgXCJ3ZWlnaHRcIjogJ2B3ZWlnaHRgIElOVCcsIFwiZGVzY3JpcHRpb25cIjogJ2BkZXNjcmlwdGlvbmAgVEVYVCd9KTtcclxuICAgIHJldHVybiBnW1wiU3RvcmFnZVwiXVtcIlByb2R1Y3RUYWJsZVNRTFwiXSA9IHRoaXM7XHJcbiAgfVxyXG5cclxuICBsb2FkKGtleXMsIGNiKXtcclxuICAgIHRoaXMubChrZXlzLCByZWNvcmRzID0+IHtcclxuICAgICAgY29uc3QgcHJvZHVjdHMgPSBbXTtcclxuICAgICAgZm9yKHZhciBpID0gMDsgaSA8IHJlY29yZHMubGVuZ3RoOyBpKyspIHByb2R1Y3RzW3Byb2R1Y3RzLmxlbmd0aF0gPSAobmV3IFByb2R1Y3RNb2RlbCgpKS5mcm9tREIocmVjb3Jkc1tpXSk7XHJcbiAgICAgIGNiKHByb2R1Y3RzKTtcclxuICAgIH0pO1xyXG4gIH1cclxuXHJcbiAgc2VsZWN0KHdoZXJlLCBkYXRhLCBjYil7XHJcbiAgICB0aGlzLnNsKHdoZXJlLCBkYXRhLCByZWNvcmRzID0+IHtcclxuICAgICAgY29uc3QgcHJvZHVjdHMgPSBbXTtcclxuICAgICAgZm9yKHZhciBpID0gMDsgaSA8IHJlY29yZHMubGVuZ3RoOyBpKyspIHByb2R1Y3RzW3Byb2R1Y3RzLmxlbmd0aF0gPSAobmV3IFByb2R1Y3RNb2RlbCgpKS5mcm9tREIocmVjb3Jkc1tpXSk7XHJcbiAgICAgIGNiKHByb2R1Y3RzKTtcclxuICAgIH0pO1xyXG4gIH1cclxufVxyXG4iXX0=
+class ProductTableSQL extends TableSQL{
+  constructor(){
+    if(g["Storage"]["ProductTableSQL"]) return g["Storage"]["ProductTableSQL"];
+    super("id", "PRODUCTS", {"id": '`id` INTEGER PRIMARY KEY', "cycleID": '`cycleID` INT', "name": '`name` VARCHAR(80)', "unit": '`unit` VARCHAR(80)', "price": '`price` TEXT', "count": '`count` TEXT', "dimensions": '`dimensions` VARCHAR(20)', "weight": '`weight` INT', "description": '`description` TEXT'});
+    return g["Storage"]["ProductTableSQL"] = this;
+  }
+
+  load(keys, cb){
+    this.l(keys, records => {
+      const products = [];
+      for(var i = 0; i < records.length; i++) products[products.length] = (new ProductModel()).fromDB(records[i]);
+      cb(products);
+    });
+  }
+
+  select(where, data, cb){
+    this.sl(where, data, records => {
+      const products = [];
+      for(var i = 0; i < records.length; i++) products[products.length] = (new ProductModel()).fromDB(records[i]);
+      cb(products);
+    });
+  }
+}

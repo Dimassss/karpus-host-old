@@ -1,2 +1,78 @@
-class DBAccess{constructor(){return g.Storage.DBAccess?g.Storage.DBAccess:g.Storage.DBAccess=this}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIlN0b3JhZ2UvREJBY2NzZXNzLmpzIl0sIm5hbWVzIjpbIkRCQWNjZXNzIiwiW29iamVjdCBPYmplY3RdIiwiZyIsInRoaXMiXSwibWFwcGluZ3MiOiJBQUFBLE1BQU1BLFNBQ0pDLGNBQ0UsT0FBR0MsRUFBVyxRQUFZLFNBQVVBLEVBQVcsUUFBWSxTQUNwREEsRUFBVyxRQUFZLFNBQUlDIiwiZmlsZSI6IlN0b3JhZ2UvREJBY2NzZXNzLmpzIiwic291cmNlc0NvbnRlbnQiOlsiY2xhc3MgREJBY2Nlc3N7XHJcbiAgY29uc3RydWN0b3IoKXtcclxuICAgIGlmKGdbXCJTdG9yYWdlXCJdW1wiREJBY2Nlc3NcIl0pIHJldHVybiBnW1wiU3RvcmFnZVwiXVtcIkRCQWNjZXNzXCJdO1xyXG4gICAgcmV0dXJuIGdbXCJTdG9yYWdlXCJdW1wiREJBY2Nlc3NcIl0gPSB0aGlzO1xyXG4gIH1cclxuXHJcbiAgLypjcmVhdGVUYWJsZUlmTm90RXhpc3Qoc3FsKXtcclxuICAgIHdlYnNxbC5wcm9jZXNzKHNxbCk7XHJcbiAgfVxyXG5cclxuICBsb2FkKHByb2Nlc3NEQVRBLCBjYiwgcmVjb3Jkcyl7XHJcbiAgICB3ZWJzcWwucHJvY2Vzcyhwcm9jZXNzREFUQSwgY2IpO1xyXG5cclxuICAgICQuYWpheCh7dXJsOlwiZXhhbXBsZS5waHBcIixcclxuICAgICAgICAgICAgZGF0YTogcHJvY2Vzc0RBVEEufSlcclxuICAgICAgLmRvbmUoZnVuY3Rpb24oZGF0YSkge1xyXG4gICAgICAgIGRhdGEgPSBKU09OLnBhcnNlKGRhdGEpO1xyXG4gICAgICAgIHZhciBzcWwgPSBkYXRhLnNxbDtcclxuICAgICAgICBjYihkYXRhLnJlc3BvbnNlKTtcclxuICAgICAgICB3ZWJzcWwucHJvY2VzcyhzcWwsXHJcbiAgICAgICAgICAoKSA9PiB7XHJcbiAgICAgICAgICAgICQuYWpheChcImFsbEdvb2RcIiwgKTtcclxuICAgICAgICAgIH0sXHJcbiAgICAgICAgICAoZXJyb3IsIHN0YXRlbWVudCkgPT4ge1xyXG4gICAgICAgICAgICBjb25zb2xlLmVycm9yKFwiRXJyb3I6IFwiICsgZXJyb3IubWVzc2FnZSArIFwiIHdoZW4gcHJvY2Vzc2luZyBcIiArIHN0YXRlbWVudCk7XHJcbiAgICAgICAgICB9KTtcclxuICAgICAgfSlcclxuICAgICAgLmZhaWwoZnVuY3Rpb24oKSB7XHJcbiAgICAgICAgd2Vic3FsLnByb2Nlc3Moc3FsLCAoKSA9PiB7Y2IocmVjb3Jkcyl9KTtcclxuICAgICAgfSk7XHJcbiAgfVxyXG5cclxuICBzYXZlKHByb2Nlc3NEQVRBLCBjYil7XHJcbiAgICB3ZWJzcWwucHJvY2Vzcyhwcm9jZXNzREFUQSwgY2IpO1xyXG5cclxuICAgICQuYWpheCggXCJleGFtcGxlLnBocFwiIClcclxuICAgICAgLmRvbmUoZnVuY3Rpb24oKSB7XHJcbiAgICAgICAgYWxlcnQoIFwic3VjY2Vzc1wiICk7XHJcbiAgICAgIH0pXHJcbiAgICAgIC5mYWlsKGZ1bmN0aW9uKCkge1xyXG4gICAgICAgIHdlYnNxbC5wcm9jZXNzKHNxbCk7XHJcbiAgICAgIH0pXHJcbiAgICAgIC5hbHdheXMoZnVuY3Rpb24oKSB7XHJcbiAgICAgICAgYWxlcnQoIFwiY29tcGxldGVcIiApO1xyXG4gICAgICB9KTtcclxuICB9XHJcblxyXG4gIGRlbGV0ZShwcm9jZXNzREFUQSl7XHJcbiAgICB3ZWJzcWwucHJvY2Vzcyhwcm9jZXNzREFUQSk7XHJcblxyXG4gICAgJC5hamF4KCBcImV4YW1wbGUucGhwXCIgKVxyXG4gICAgICAuZG9uZShmdW5jdGlvbigpIHtcclxuICAgICAgICBhbGVydCggXCJzdWNjZXNzXCIgKTtcclxuICAgICAgfSlcclxuICAgICAgLmZhaWwoZnVuY3Rpb24oKSB7XHJcbiAgICAgICAgd2Vic3FsLnByb2Nlc3Moc3FsKTtcclxuICAgICAgfSlcclxuICAgICAgLmFsd2F5cyhmdW5jdGlvbigpIHtcclxuICAgICAgICBhbGVydCggXCJjb21wbGV0ZVwiICk7XHJcbiAgICAgIH0pO1xyXG4gIH1cclxuXHJcbiAgc2VsZWN0KHByb2Nlc3NEQVRBKXtcclxuICAgIHdlYnNxbC5wcm9jZXNzKHByb2Nlc3NEQVRBKTtcclxuXHJcbiAgICAkLmFqYXgoIFwiZXhhbXBsZS5waHBcIiApXHJcbiAgICAgIC5kb25lKGZ1bmN0aW9uKCkge1xyXG4gICAgICAgIGFsZXJ0KCBcInN1Y2Nlc3NcIiApO1xyXG4gICAgICB9KVxyXG4gICAgICAuZmFpbChmdW5jdGlvbigpIHtcclxuICAgICAgICB3ZWJzcWwucHJvY2VzcyhzcWwpO1xyXG4gICAgICB9KVxyXG4gICAgICAuYWx3YXlzKGZ1bmN0aW9uKCkge1xyXG4gICAgICAgIGFsZXJ0KCBcImNvbXBsZXRlXCIgKTtcclxuICAgICAgfSk7XHJcbiAgfSovXHJcbiAgXHJcbn1cclxuIl19
+class DBAccess{
+  constructor(){
+    if(g["Storage"]["DBAccess"]) return g["Storage"]["DBAccess"];
+    return g["Storage"]["DBAccess"] = this;
+  }
+
+  /*createTableIfNotExist(sql){
+    websql.process(sql);
+  }
+
+  load(processDATA, cb, records){
+    websql.process(processDATA, cb);
+
+    $.ajax({url:"example.php",
+            data: processDATA.})
+      .done(function(data) {
+        data = JSON.parse(data);
+        var sql = data.sql;
+        cb(data.response);
+        websql.process(sql,
+          () => {
+            $.ajax("allGood", );
+          },
+          (error, statement) => {
+            console.error("Error: " + error.message + " when processing " + statement);
+          });
+      })
+      .fail(function() {
+        websql.process(sql, () => {cb(records)});
+      });
+  }
+
+  save(processDATA, cb){
+    websql.process(processDATA, cb);
+
+    $.ajax( "example.php" )
+      .done(function() {
+        alert( "success" );
+      })
+      .fail(function() {
+        websql.process(sql);
+      })
+      .always(function() {
+        alert( "complete" );
+      });
+  }
+
+  delete(processDATA){
+    websql.process(processDATA);
+
+    $.ajax( "example.php" )
+      .done(function() {
+        alert( "success" );
+      })
+      .fail(function() {
+        websql.process(sql);
+      })
+      .always(function() {
+        alert( "complete" );
+      });
+  }
+
+  select(processDATA){
+    websql.process(processDATA);
+
+    $.ajax( "example.php" )
+      .done(function() {
+        alert( "success" );
+      })
+      .fail(function() {
+        websql.process(sql);
+      })
+      .always(function() {
+        alert( "complete" );
+      });
+  }*/
+  
+}

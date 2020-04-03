@@ -1,2 +1,12 @@
-class CycleModel extends Model{constructor(e){super(e)}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIk1vZGVsL0N5Y2xlTW9kZWwuanMiXSwibmFtZXMiOlsiQ3ljbGVNb2RlbCIsIk1vZGVsIiwiW29iamVjdCBPYmplY3RdIiwiZGF0YSIsInN1cGVyIl0sIm1hcHBpbmdzIjoiQUFPQSxNQUFNQSxtQkFBbUJDLE1BQ3ZCQyxZQUFZQyxHQUNWQyxNQUFNRCIsImZpbGUiOiJNb2RlbC9DeWNsZU1vZGVsLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXHJcbkBjbGFzcyBDeWNsZU1vZGVsXHJcbkBwYXJhbXNcclxuICBAcGFyYW0ge09iamVjdH0gZGF0YSA9PiBhbGwgZmllbGRzIHRvIHNldCBpbiBjdXJyZW50IG9iamVjdFxyXG5cclxuQGNvbnN0cnVjdG9yIHtpZDogMCwgbmFtZTogXCJcIiwga2l0c0lEOiBbXSwgcHJvZHVjdHNJRDogW10sIG9yZGVyc0lEOiBbXX1cclxuKi9cclxuY2xhc3MgQ3ljbGVNb2RlbCBleHRlbmRzIE1vZGVse1xyXG4gIGNvbnN0cnVjdG9yKGRhdGEpe1xyXG4gICAgc3VwZXIoZGF0YSk7XHJcbiAgfVxyXG59XHJcbiJdfQ==
+/**
+@class CycleModel
+@params
+  @param {Object} data => all fields to set in current object
+
+@constructor {id: 0, name: "", kitsID: [], productsID: [], ordersID: []}
+*/
+class CycleModel extends Model{
+  constructor(data){
+    super(data);
+  }
+}

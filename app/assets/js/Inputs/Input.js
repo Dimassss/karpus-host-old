@@ -1,2 +1,155 @@
-class Input{constructor(t,e,s){this.takes=t,this.validators=e,this.inputs={},this.addInputs(s)}takeData(t){for(var e=this.inputs,s=0;s<t.length;s++)e=e[t[s]];return this.takes[e.take_name](e.css_selector,this.validators[e.validator_name],t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&apos;"))}addTakes(t){this.takes={...this.takes,...t}}deleteTakes(t){var e=this;t.forEach(t=>delete e.takes[t])}getTakes(){return Object.assign({},this.takes)}addValidators(t){this.validators={...this.validators,...t}}deleteValidators(t){var e=this;t.forEach(t=>delete e.validators[t])}getValidators(){return Object.assign({},this.validators)}addInputs(t){function e(t,s,a,r,i){return t[s[0]]||(t[s[0]]={}),s.length<=1?(a.split("?").length<=1&&(document.querySelector(a)||console.warn("Invalid css selector for Input: "+a)),t[s].css_selector=a,t[s].validator_name=r,t[s].take_name=i):t[s[0]]=e(t[s[0]],s.slice(1),a,r,i),t}for(var s=0;s<t.length;s++)this.inputs=e(this.inputs,t[s][0],t[s][1],t[s][2],t[s][3])}deleteInputs(t){function e(t,s){return Object.keys(t[s[0]]).filter(t=>1==t.length&&t!=s[1])[0]?t[s[0]]=e(t[s[0]],s.slice(1)):delete t[s[0]],t}for(var s=0;s<t.length;s++)this.inputs=e(this.inputs,t[s])}getInputs(){return JSON.parse(JSON.stringify(this.inputs))}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIklucHV0cy9JbnB1dC5qcyJdLCJuYW1lcyI6WyJJbnB1dCIsIltvYmplY3QgT2JqZWN0XSIsInRha2VzIiwidmFsaWRhdG9ycyIsImlucHV0cyIsInRoaXMiLCJhZGRJbnB1dHMiLCJzaG9ydF9uYW1lIiwiaW5wdXQiLCJpIiwibGVuZ3RoIiwidGFrZV9uYW1lIiwiY3NzX3NlbGVjdG9yIiwidmFsaWRhdG9yX25hbWUiLCJzdHIiLCJTdHJpbmciLCJyZXBsYWNlIiwidGFrZXNfbmFtZXMiLCJfdGhpcyIsImZvckVhY2giLCJPYmplY3QiLCJhc3NpZ24iLCJ2YWxpZGF0b3JzX25hbWVzIiwiZ2VuZXJhdGVUcmVlIiwic3BsaXQiLCJkb2N1bWVudCIsInF1ZXJ5U2VsZWN0b3IiLCJjb25zb2xlIiwid2FybiIsInNsaWNlIiwiZGVsZXRlRnJvbVRyZWUiLCJrZXlzIiwiZmlsdGVyIiwiayIsIkpTT04iLCJwYXJzZSIsInN0cmluZ2lmeSJdLCJtYXBwaW5ncyI6IkFBOERBLE1BQU1BLE1BQ0pDLFlBQVlDLEVBQU9DLEVBQVlDLEdBRTdCQyxLQUFLSCxNQUFRQSxFQUNiRyxLQUFLRixXQUFhQSxFQUNsQkUsS0FBS0QsT0FBUyxHQUNkQyxLQUFLQyxVQUFVRixHQUdqQkgsU0FBU00sR0FHUCxJQUZBLElBQ0lDLEVBRFFILEtBQ01ELE9BQ1ZLLEVBQUksRUFBR0EsRUFBSUYsRUFBV0csT0FBUUQsSUFDcENELEVBQVFBLEVBQU1ELEVBQVdFLElBRTNCLE9BTFlKLEtBS0NILE1BQU1NLEVBQU1HLFdBQVdILEVBQU1JLGFBTDlCUCxLQUtrREYsV0FBV0ssRUFBTUssZ0JBQWlCQyxHQUFPQyxPQUFPRCxHQUFLRSxRQUFRLEtBQU0sU0FDOUJBLFFBQVEsS0FBTSxRQUNkQSxRQUFRLEtBQU0sUUFDZEEsUUFBUSxLQUFNLFVBQ2RBLFFBQVEsS0FBTSxXQUluSGYsU0FBU0MsR0FFUEcsS0FBS0gsTUFBUSxJQURERyxLQUNXSCxTQUFVQSxHQUduQ0QsWUFBWWdCLEdBQ1YsSUFBSUMsRUFBUWIsS0FDWlksRUFBWUUsUUFBUVIsVUFBb0JPLEVBQU1oQixNQUFNUyxJQUd0RFYsV0FFRSxPQUFPbUIsT0FBT0MsT0FBTyxHQURUaEIsS0FDbUJILE9BSWpDRCxjQUFjRSxHQUVaRSxLQUFLRixXQUFhLElBRE5FLEtBQ2dCRixjQUFlQSxHQUc3Q0YsaUJBQWlCcUIsR0FDZixJQUFJSixFQUFRYixLQUNaaUIsRUFBaUJILFFBQVFOLFVBQXlCSyxFQUFNZixXQUFXVSxJQUdyRVosZ0JBRUUsT0FBT21CLE9BQU9DLE9BQU8sR0FEVGhCLEtBQ21CRixZQUdqQ0YsVUFBVUcsR0FJUixTQUFTbUIsRUFBYW5CLEVBQVFHLEVBQVlLLEVBQWNDLEVBQWdCRixHQVV0RSxPQVRJUCxFQUFPRyxFQUFXLE1BQUtILEVBQU9HLEVBQVcsSUFBTSxJQUNoREEsRUFBV0csUUFBVSxHQUNuQkUsRUFBYVksTUFBTSxLQUFLZCxRQUFVLElBQU9lLFNBQVNDLGNBQWNkLElBQWVlLFFBQVFDLEtBQUssbUNBQXFDaEIsSUFDcElSLEVBQU9HLEdBQVlLLGFBQWVBLEVBQ2xDUixFQUFPRyxHQUFZTSxlQUFpQkEsRUFDcENULEVBQU9HLEdBQVlJLFVBQVlBLEdBRS9CUCxFQUFPRyxFQUFXLElBQU1nQixFQUFhbkIsRUFBT0csRUFBVyxJQUFLQSxFQUFXc0IsTUFBTSxHQUFJakIsRUFBY0MsRUFBZ0JGLEdBRTFHUCxFQUdULElBQUksSUFBSUssRUFBSSxFQUFHQSxFQUFJTCxFQUFPTSxPQUFRRCxJQWhCdEJKLEtBaUJKRCxPQUFTbUIsRUFqQkxsQixLQWlCd0JELE9BQVFBLEVBQU9LLEdBQUcsR0FBSUwsRUFBT0ssR0FBRyxHQUFJTCxFQUFPSyxHQUFHLEdBQUlMLEVBQU9LLEdBQUcsSUFJbEdSLGFBQWFHLEdBRVgsU0FBUzBCLEVBQWUxQixFQUFRRyxHQUk5QixPQUhHYSxPQUFPVyxLQUFLM0IsRUFBT0csRUFBVyxLQUFLeUIsT0FBT0MsR0FBaUIsR0FBWkEsRUFBRXZCLFFBQWV1QixHQUFLMUIsRUFBVyxJQUFJLEdBQ3JGSCxFQUFPRyxFQUFXLElBQU11QixFQUFlMUIsRUFBT0csRUFBVyxJQUFLQSxFQUFXc0IsTUFBTSxXQUNwRXpCLEVBQU9HLEVBQVcsSUFDeEJILEVBR1QsSUFBSSxJQUFJSyxFQUFJLEVBQUdBLEVBQUlMLEVBQU9NLE9BQVFELElBUnRCSixLQVFpQ0QsT0FBUzBCLEVBUjFDekIsS0FRK0RELE9BQVFBLEVBQU9LLElBRzVGUixZQUVFLE9BQU9pQyxLQUFLQyxNQUFNRCxLQUFLRSxVQURYL0IsS0FDMkJEIiwiZmlsZSI6IklucHV0cy9JbnB1dC5qcyIsInNvdXJjZXNDb250ZW50IjpbIi8qKlxyXG5AY2xhc3MgSW5wdXRcclxuQGRlc2MgdGhpcyBjbGFzcyBpcyBuZWVkIHRvIGdldCBkYXRhIGZyb20gcGFnZVxyXG5AcGFyYW1zIHtPYmplY3R9IHRha2VzLCB7T2JqZWN0fSB2YWxpZGF0b3JzLCB7QXJyYXl9IGlucHV0c1xyXG4gIEBwYXJhbSB7RGljdGlvbmFyeTxGdW5jdGlvbj59IHRha2VzID0+IHt0YWtlX25hbWU6IHRha2VfZnVuY31cclxuICAgIEBmdW5jdGlvbiB0YWtlX2Z1bmNcclxuICAgICAgQHBhcmFtIHMgPT4gY3NzIHNlbGVjdG9yIHRvIHRoZSBlbGVtZW50XHJcbiAgICAgIEBwYXJhbSB2ID0+IHZhbGlkYXRlIGNvbnRlbnRcclxuICAgICAgQHBhcmFtIHIgPT4gY29udmVydCBodG1sIHRvIGVzY2FwZWQgc3RyaW5nXHJcbiAgICAgIEByZXR1cm4gYW55IGRhdGFcclxuICBAcGFyYW0ge0RpY3Rpb25hcnk8RnVuY3Rpb24+fSB2YWxpZGF0b3JzID0+IHt2YWxpZGF0b3JfbmFtZTogdmFsaWRhdG9yfVxyXG4gICAgQGZ1bmN0aW9uIHZhbGlkYXRvclxyXG4gICAgICBAcGFyYW0gcyA9PiBzdHJpbmcgd2hpY2ggd2lsbCBiZSB2YWxpZGF0ZWRcclxuICAgICAgQHJldHVybiBib29sZWFuXHJcbiAgQHBhcmFtIHtBcnJheTxBcnJheTxTdHJpbmcsIFN0cmluZywgU3RyaW5nLCBTdHJpbmc+Pn0gaW5wdXRzID0+IFtbc2hvcnRfbmFtZSwgY3NzX3NlbGVjdG9yLCB2YWxpZGF0b3JfbmFtZSwgdGFrZV9uYW1lXV1cclxuICAgIEB2YWx1ZSBzaG9ydF9uYW1lIHtTdHJpbmd9ID0+IHNob3J0IG5hbWUgb2YgZWxlbWVudC4gSXMgdXNlZCB0byBnZXQgdmFsdWUgZnJvbSB0aGUgZWxlbWVudCBieSB0aGlzIGNsYXNzXHJcbiAgICBAdmFsdWUgY3NzX3NlbGVjdG9yIHtTdHJpbmd9ID0+IGNzcyBzZWxlY3RvciBvZiBlbGVtZW50IGZyb20gd2hpY2ggeW91IG5lZWQgdG8gZ2V0IHZhbHVlLiBXaWxsIGJlIHBhc3NlZCB0byB0aGUgcGFyYW1ldGVycyBvZiB0YWtlIGZ1bmN0aW9uXHJcbiAgICBAdmFsdWUgdmFsaWRvdG9yIHtTdHJpbmd9ID0+IHZhbGlkYXRvciBuYW1lIGZyb20gQHBhcmFtIHZhbGlkYXRvcnMsIHdoaWNoIHdpbGwgYmUgcGFzc2VkIHRvIHRoZSBwYXJhbWV0ZXJzIG9mIHRoZSB0YWtlIGZ1bmN0aW9uXHJcbiAgICBAdmFsdWUgdGFrZV9uYW1lIHtTdHJpbmd9ID0+IGlzIHVzZWQgdG8gcGFyc2UgaHRtbCBjb250ZW50IGZyb20gZWxlbWVudCBmcm9tIGNzc19zZWxlY3RvciBhbmQgcmV0dXJuIGRhdGFcclxuXHJcblxyXG5AbWV0aG9kIHRha2VEYXRhXHJcbiAgQHBhcmFtIHNob3J0X25hbWUgPT4gc2hvcnQgbmFtZSBvZiBlbGVtZW50XHJcbiAgQHJldHVybiBkYXRhIGZyb20gQHRha2VfZnVuYyBmdW5jdGlvblxyXG4gIEBkbyBwYXJzZSBjb250ZW50IG9mIGVsZW1lbnQgYnkgQHRha2VfZnVuYyBhbmQgdGhhbiB2YWxpZGF0ZSBpdC4gVGhhbiByZXR1cm4gcGFyc2VkIGRhdGEgZnJvbSB0YWtlX2Z1bmNcclxuXHJcbkBtZXRob2QgYWRkVGFrZXNcclxuICBAcGFyYW0gdGFrZXMge09iamVjdH0gPT4gaGFzIGtleS12YWx1ZSBwYWlycyBvZiB0YWtlIGZ1bmN0aW9uc1xyXG4gIEBkbyBhZGQgbmV3IHRha2VzIGZ1bmN0aW9ucyB0byB0aGUgSW5wdXQgb2JqZWN0XHJcblxyXG5AbWV0aG9kIGRlbGV0ZVRha2VzXHJcbiAgQHBhcmFtIHRha2VzX25hbWVzIHtBcnJheTxTdHJpbmc+fSA9PiBpcyBhcnJheSBvZiB0YWtlJ3MgZnVuY3Rpb25zIG5hbWVzXHJcbiAgQGRvIHJlbW92ZSB0YWtlcyBmdW5jdGlvbnMgYnkgaXRzIG5hbWUgZnJvbSBJbnB1dCBvYmplY3RcclxuXHJcbkBtZXRob2QgZ2V0VGFrZXNcclxuICBAcmV0dXJuIHtPYmplY3Q8U3RyaW5nOkZ1bnRpb25zPn0gb2JqZWN0IHdpdGgga2V5IGFzIG5hbWUgb2YgdGFrZSBmdW5jdGlvbiBhbmQgdmFsdWUgYXMgZnVuY3Rpb25cclxuICBAZG8gcmV0dXJuIEFycmF5IG9mIHRha2VzIGZ1bmN0aW9ucyBieSBpdHMgbmFtZSBmcm9tIElucHV0IG9iamVjdFxyXG5cclxuQG1ldGhvZCBhZGRWYWxpZGF0b3JzXHJcbiAgQHBhcmFtIHZhbGlkYXRvcnMge09iamVjdH0gPT4gb2JqZWN0IHdpdGgga2V5IGFzIG5hbWUgb2YgdmFsaWRhdG9yIGZ1bmN0aW9uIGFuZCB2YWx1ZSBhcyBmdW5jdGlvblxyXG4gIEBkbyBhZGQgbmV3IHZhbGlkYXRvcnMgZnVuY3Rpb25zIHRvIHRoZSBJbnB1dCBvYmplY3RcclxuXHJcbkBtZXRob2QgZGVsZXRlVmFsaWRhdG9yc1xyXG4gIEBwYXJhbSB2YWxpZGF0b3JzX25hbWVzIHtBcnJheTxTdHJpbmc+fSA9PiBpcyBhcnJheSBvZiB2YWxpZGF0b3IncyBmdW5jdGlvbnMgbmFtZXNcclxuICBAZG8gcmVtb3ZlIHZhbGlkYXRvcnMgZnVuY3Rpb25zIGJ5IGl0cyBuYW1lIGZyb20gSW5wdXQgb2JqZWN0XHJcblxyXG5AbWV0aG9kIGdldFZhbGlkYXRvcnNcclxuICBAcmV0dXJuIHtPYmplY3Q8U3RyaW5nOkZ1bnRpb25zPn0gb2JqZWN0IHdpdGgga2V5IGFzIG5hbWUgb2YgdmFsaWRhdG9yIGZ1bmN0aW9uIGFuZCB2YWx1ZSBhcyBmdW5jdGlvblxyXG4gIEBkbyByZXR1cm4gQXJyYXkgb2YgdmFsaWRhdG9ycyBmdW5jdGlvbnMgYnkgaXRzIG5hbWUgZnJvbSBJbnB1dCBvYmplY3RcclxuXHJcbkBtZXRob2QgYWRkSW5wdXRzXHJcbiAgQHBhcmFtIHtBcnJheTxBcnJheTxTdHJpbmcsIFN0cmluZywgU3RyaW5nLCBTdHJpbmc+Pn0gaW5wdXRzID0+IFtbc2hvcnRfbmFtZSwgY3NzX3NlbGVjdG9yLCB2YWxpZGF0b3JfbmFtZSwgdGFrZV9uYW1lXV1cclxuICBAZG8gYWRkIG5ldyBlbGVtZW50cyB0byB0aGUgdHJlZSBvZiBlbGVtZW50cyBpbiBJbnB1dCBvYmplY3RcclxuXHJcbkBtZXRob2QgZGVsZXRlSW5wdXRzXHJcbiAgQHBhcmFtIGlucHV0cyB7QXJyYXk8U3RyaW5nPn0gPT4gaXMgYXJyYXkgb2YgaW5wdXRzIHNob3J0IG5hbWVzXHJcbiAgQGRvIHJlbW92ZSBpbnB1dHMgZWxlbWVudHMgYnkgaXRzIHNob3J0IG5hbWUgZnJvbSBJbnB1dCBvYmplY3RcclxuXHJcbkBtZXRob2QgZ2V0SW5wdXRzXHJcbiAgQHJldHVybiB7T2JqZWN0PE9iamVjdC4uLiwgU3RyaW5nLCBTdHJpbmcsIFN0cmluZz59IHRyZWUgb2YgaW5wdXRzIGVsZW1lbnRzIHdoZXJlIGJyYW5jaGVzIGFyZSBzaG9ydCBuYW1lcyBvZiB0aGF0IGZpZWxkc1xyXG5cclxuKi9cclxuY2xhc3MgSW5wdXR7XHJcbiAgY29uc3RydWN0b3IodGFrZXMsIHZhbGlkYXRvcnMsIGlucHV0cyl7XHJcbiAgICB2YXIgX3RoaXMgPSB0aGlzO1xyXG4gICAgdGhpcy50YWtlcyA9IHRha2VzO1xyXG4gICAgdGhpcy52YWxpZGF0b3JzID0gdmFsaWRhdG9ycztcclxuICAgIHRoaXMuaW5wdXRzID0ge307XHJcbiAgICB0aGlzLmFkZElucHV0cyhpbnB1dHMpO1xyXG4gIH1cclxuXHJcbiAgdGFrZURhdGEoc2hvcnRfbmFtZSl7XHJcbiAgICB2YXIgX3RoaXMgPSB0aGlzO1xyXG4gICAgdmFyIGlucHV0ID0gX3RoaXMuaW5wdXRzO1xyXG4gICAgZm9yKHZhciBpID0gMDsgaSA8IHNob3J0X25hbWUubGVuZ3RoOyBpKyspe1xyXG4gICAgICBpbnB1dCA9IGlucHV0W3Nob3J0X25hbWVbaV1dO1xyXG4gICAgfVxyXG4gICAgcmV0dXJuIF90aGlzLnRha2VzW2lucHV0LnRha2VfbmFtZV0oaW5wdXQuY3NzX3NlbGVjdG9yLCBfdGhpcy52YWxpZGF0b3JzW2lucHV0LnZhbGlkYXRvcl9uYW1lXSwgc3RyID0+IFN0cmluZyhzdHIpLnJlcGxhY2UoLyYvZywgJyZhbXA7JylcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLnJlcGxhY2UoLzwvZywgJyZsdDsnKVxyXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAucmVwbGFjZSgvPi9nLCAnJmd0OycpXHJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC5yZXBsYWNlKC9cIi9nLCAnJnF1b3Q7JylcclxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLnJlcGxhY2UoLycvZywgJyZhcG9zOycpKTtcclxuICB9XHJcblxyXG4gIC8vbWV0aG9kcyBmb3IgQHBhcmFtIHRha2VzXHJcbiAgYWRkVGFrZXModGFrZXMpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIHRoaXMudGFrZXMgPSB7Li4uX3RoaXMudGFrZXMsIC4uLnRha2VzfTtcclxuICB9XHJcblxyXG4gIGRlbGV0ZVRha2VzKHRha2VzX25hbWVzKXtcclxuICAgIHZhciBfdGhpcyA9IHRoaXM7XHJcbiAgICB0YWtlc19uYW1lcy5mb3JFYWNoKHRha2VfbmFtZSA9PiBkZWxldGUgX3RoaXMudGFrZXNbdGFrZV9uYW1lXSk7XHJcbiAgfVxyXG5cclxuICBnZXRUYWtlcygpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIHJldHVybiBPYmplY3QuYXNzaWduKHt9LCBfdGhpcy50YWtlcyk7XHJcbiAgfVxyXG5cclxuICAvL21ldGhvZHMgZm9yIEBwYXJhbSB2YWxpZGF0b3JzXHJcbiAgYWRkVmFsaWRhdG9ycyh2YWxpZGF0b3JzKXtcclxuICAgIHZhciBfdGhpcyA9IHRoaXM7XHJcbiAgICB0aGlzLnZhbGlkYXRvcnMgPSB7Li4uX3RoaXMudmFsaWRhdG9ycywgLi4udmFsaWRhdG9yc307XHJcbiAgfVxyXG5cclxuICBkZWxldGVWYWxpZGF0b3JzKHZhbGlkYXRvcnNfbmFtZXMpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIHZhbGlkYXRvcnNfbmFtZXMuZm9yRWFjaCh2YWxpZGF0b3JfbmFtZSA9PiBkZWxldGUgX3RoaXMudmFsaWRhdG9yc1t2YWxpZGF0b3JfbmFtZV0pO1xyXG4gIH1cclxuXHJcbiAgZ2V0VmFsaWRhdG9ycygpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIHJldHVybiBPYmplY3QuYXNzaWduKHt9LCBfdGhpcy52YWxpZGF0b3JzKTtcclxuICB9XHJcblxyXG4gIGFkZElucHV0cyhpbnB1dHMpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuXHJcbiAgICAvL0BmdW5jIGdlbmVyYXRlVHJlZSBjcmVhdGUgdHJlZSB3aXRoIGxldHRlcnMgZnJvbSBzaG9ydF9uYW1lXHJcbiAgICBmdW5jdGlvbiBnZW5lcmF0ZVRyZWUoaW5wdXRzLCBzaG9ydF9uYW1lLCBjc3Nfc2VsZWN0b3IsIHZhbGlkYXRvcl9uYW1lLCB0YWtlX25hbWUpe1xyXG4gICAgICBpZighaW5wdXRzW3Nob3J0X25hbWVbMF1dKSBpbnB1dHNbc2hvcnRfbmFtZVswXV0gPSB7fTtcclxuICAgICAgaWYoc2hvcnRfbmFtZS5sZW5ndGggPD0gMSl7XHJcbiAgICAgICAgaWYoY3NzX3NlbGVjdG9yLnNwbGl0KFwiP1wiKS5sZW5ndGggPD0gMSkgaWYoIWRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoY3NzX3NlbGVjdG9yKSkgY29uc29sZS53YXJuKFwiSW52YWxpZCBjc3Mgc2VsZWN0b3IgZm9yIElucHV0OiBcIiArIGNzc19zZWxlY3Rvcik7XHJcbiAgICAgICAgaW5wdXRzW3Nob3J0X25hbWVdLmNzc19zZWxlY3RvciA9IGNzc19zZWxlY3RvcjtcclxuICAgICAgICBpbnB1dHNbc2hvcnRfbmFtZV0udmFsaWRhdG9yX25hbWUgPSB2YWxpZGF0b3JfbmFtZTtcclxuICAgICAgICBpbnB1dHNbc2hvcnRfbmFtZV0udGFrZV9uYW1lID0gdGFrZV9uYW1lO1xyXG4gICAgICB9IGVsc2Uge1xyXG4gICAgICAgIGlucHV0c1tzaG9ydF9uYW1lWzBdXSA9IGdlbmVyYXRlVHJlZShpbnB1dHNbc2hvcnRfbmFtZVswXV0sIHNob3J0X25hbWUuc2xpY2UoMSksIGNzc19zZWxlY3RvciwgdmFsaWRhdG9yX25hbWUsIHRha2VfbmFtZSk7XHJcbiAgICAgIH1cclxuICAgICAgcmV0dXJuIGlucHV0cztcclxuICAgIH1cclxuXHJcbiAgICBmb3IodmFyIGkgPSAwOyBpIDwgaW5wdXRzLmxlbmd0aDsgaSsrKXtcclxuICAgICAgX3RoaXMuaW5wdXRzID0gZ2VuZXJhdGVUcmVlKF90aGlzLmlucHV0cywgaW5wdXRzW2ldWzBdLCBpbnB1dHNbaV1bMV0sIGlucHV0c1tpXVsyXSwgaW5wdXRzW2ldWzNdKTtcclxuICAgIH1cclxuICB9XHJcblxyXG4gIGRlbGV0ZUlucHV0cyhpbnB1dHMpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIGZ1bmN0aW9uIGRlbGV0ZUZyb21UcmVlKGlucHV0cywgc2hvcnRfbmFtZSl7XHJcbiAgICAgIGlmKE9iamVjdC5rZXlzKGlucHV0c1tzaG9ydF9uYW1lWzBdXSkuZmlsdGVyKGsgPT4gay5sZW5ndGggPT0gMSAmJiBrICE9IHNob3J0X25hbWVbMV0pWzBdKXtcclxuICAgICAgICBpbnB1dHNbc2hvcnRfbmFtZVswXV0gPSBkZWxldGVGcm9tVHJlZShpbnB1dHNbc2hvcnRfbmFtZVswXV0sIHNob3J0X25hbWUuc2xpY2UoMSkpO1xyXG4gICAgICB9ZWxzZSBkZWxldGUgaW5wdXRzW3Nob3J0X25hbWVbMF1dO1xyXG4gICAgICByZXR1cm4gaW5wdXRzO1xyXG4gICAgfVxyXG5cclxuICAgIGZvcih2YXIgaSA9IDA7IGkgPCBpbnB1dHMubGVuZ3RoOyBpKyspIF90aGlzLmlucHV0cyA9IGRlbGV0ZUZyb21UcmVlKF90aGlzLmlucHV0cywgaW5wdXRzW2ldKTtcclxuICB9XHJcblxyXG4gIGdldElucHV0cygpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIHJldHVybiBKU09OLnBhcnNlKEpTT04uc3RyaW5naWZ5KF90aGlzLmlucHV0cykpO1xyXG4gIH1cclxufVxyXG4iXX0=
+/**
+@class Input
+@desc this class is need to get data from page
+@params {Object} takes, {Object} validators, {Array} inputs
+  @param {Dictionary<Function>} takes => {take_name: take_func}
+    @function take_func
+      @param s => css selector to the element
+      @param v => validate content
+      @param r => convert html to escaped string
+      @return any data
+  @param {Dictionary<Function>} validators => {validator_name: validator}
+    @function validator
+      @param s => string which will be validated
+      @return boolean
+  @param {Array<Array<String, String, String, String>>} inputs => [[short_name, css_selector, validator_name, take_name]]
+    @value short_name {String} => short name of element. Is used to get value from the element by this class
+    @value css_selector {String} => css selector of element from which you need to get value. Will be passed to the parameters of take function
+    @value validotor {String} => validator name from @param validators, which will be passed to the parameters of the take function
+    @value take_name {String} => is used to parse html content from element from css_selector and return data
+
+
+@method takeData
+  @param short_name => short name of element
+  @return data from @take_func function
+  @do parse content of element by @take_func and than validate it. Than return parsed data from take_func
+
+@method addTakes
+  @param takes {Object} => has key-value pairs of take functions
+  @do add new takes functions to the Input object
+
+@method deleteTakes
+  @param takes_names {Array<String>} => is array of take's functions names
+  @do remove takes functions by its name from Input object
+
+@method getTakes
+  @return {Object<String:Funtions>} object with key as name of take function and value as function
+  @do return Array of takes functions by its name from Input object
+
+@method addValidators
+  @param validators {Object} => object with key as name of validator function and value as function
+  @do add new validators functions to the Input object
+
+@method deleteValidators
+  @param validators_names {Array<String>} => is array of validator's functions names
+  @do remove validators functions by its name from Input object
+
+@method getValidators
+  @return {Object<String:Funtions>} object with key as name of validator function and value as function
+  @do return Array of validators functions by its name from Input object
+
+@method addInputs
+  @param {Array<Array<String, String, String, String>>} inputs => [[short_name, css_selector, validator_name, take_name]]
+  @do add new elements to the tree of elements in Input object
+
+@method deleteInputs
+  @param inputs {Array<String>} => is array of inputs short names
+  @do remove inputs elements by its short name from Input object
+
+@method getInputs
+  @return {Object<Object..., String, String, String>} tree of inputs elements where branches are short names of that fields
+
+*/
+class Input{
+  constructor(takes, validators, inputs){
+    var _this = this;
+    this.takes = takes;
+    this.validators = validators;
+    this.inputs = {};
+    this.addInputs(inputs);
+  }
+
+  takeData(short_name){
+    var _this = this;
+    var input = _this.inputs;
+    for(var i = 0; i < short_name.length; i++){
+      input = input[short_name[i]];
+    }
+    return _this.takes[input.take_name](input.css_selector, _this.validators[input.validator_name], str => String(str).replace(/&/g, '&amp;')
+                                                                                                      .replace(/</g, '&lt;')
+                                                                                                      .replace(/>/g, '&gt;')
+                                                                                                      .replace(/"/g, '&quot;')
+                                                                                                      .replace(/'/g, '&apos;'));
+  }
+
+  //methods for @param takes
+  addTakes(takes){
+    var _this = this;
+    this.takes = {..._this.takes, ...takes};
+  }
+
+  deleteTakes(takes_names){
+    var _this = this;
+    takes_names.forEach(take_name => delete _this.takes[take_name]);
+  }
+
+  getTakes(){
+    var _this = this;
+    return Object.assign({}, _this.takes);
+  }
+
+  //methods for @param validators
+  addValidators(validators){
+    var _this = this;
+    this.validators = {..._this.validators, ...validators};
+  }
+
+  deleteValidators(validators_names){
+    var _this = this;
+    validators_names.forEach(validator_name => delete _this.validators[validator_name]);
+  }
+
+  getValidators(){
+    var _this = this;
+    return Object.assign({}, _this.validators);
+  }
+
+  addInputs(inputs){
+    var _this = this;
+
+    //@func generateTree create tree with letters from short_name
+    function generateTree(inputs, short_name, css_selector, validator_name, take_name){
+      if(!inputs[short_name[0]]) inputs[short_name[0]] = {};
+      if(short_name.length <= 1){
+        if(css_selector.split("?").length <= 1) if(!document.querySelector(css_selector)) console.warn("Invalid css selector for Input: " + css_selector);
+        inputs[short_name].css_selector = css_selector;
+        inputs[short_name].validator_name = validator_name;
+        inputs[short_name].take_name = take_name;
+      } else {
+        inputs[short_name[0]] = generateTree(inputs[short_name[0]], short_name.slice(1), css_selector, validator_name, take_name);
+      }
+      return inputs;
+    }
+
+    for(var i = 0; i < inputs.length; i++){
+      _this.inputs = generateTree(_this.inputs, inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
+    }
+  }
+
+  deleteInputs(inputs){
+    var _this = this;
+    function deleteFromTree(inputs, short_name){
+      if(Object.keys(inputs[short_name[0]]).filter(k => k.length == 1 && k != short_name[1])[0]){
+        inputs[short_name[0]] = deleteFromTree(inputs[short_name[0]], short_name.slice(1));
+      }else delete inputs[short_name[0]];
+      return inputs;
+    }
+
+    for(var i = 0; i < inputs.length; i++) _this.inputs = deleteFromTree(_this.inputs, inputs[i]);
+  }
+
+  getInputs(){
+    var _this = this;
+    return JSON.parse(JSON.stringify(_this.inputs));
+  }
+}

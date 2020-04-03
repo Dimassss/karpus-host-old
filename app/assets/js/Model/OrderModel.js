@@ -1,2 +1,13 @@
-class OrderModel extends Model{constructor(e){super(e)}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIk1vZGVsL09yZGVyTW9kZWwuanMiXSwibmFtZXMiOlsiT3JkZXJNb2RlbCIsIk1vZGVsIiwiW29iamVjdCBPYmplY3RdIiwiZGF0YSIsInN1cGVyIl0sIm1hcHBpbmdzIjoiQUFRQSxNQUFNQSxtQkFBbUJDLE1BQ3ZCQyxZQUFZQyxHQUNWQyxNQUFNRCIsImZpbGUiOiJNb2RlbC9PcmRlck1vZGVsLmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXHJcbkBjbGFzcyBPcmRlck1vZGVsXHJcbkBwYXJhbXNcclxuICBAcGFyYW0ge09iamVjdH0gZGF0YSA9PiBhbGwgZmllbGRzIHRvIHNldCBpbiBjdXJyZW50IG9iamVjdFxyXG5cclxuQGNvbnN0cnVjdG9yIHtpZDogMCwgY3ljbGVJRDogMCwgdGVsZXBob25lOiBcIlwiLCBzb2NpYWxNZWRpYTogXCJcIiwgYWRyZXNzOiBcIlwiLCBvcmRlck5vdGVzOiBcIlwiLCBzdW1tYXJ5OiAwLCBiaWxsZWQ6IGZhbHNlLCBpc05vdFRoaXM6IGZhbHNlLCBwYXlEYXRlczogW10sIHBheXM6IFtdLCBjeWNsZUlEOiAtMSwgY3VzdG9tZXJJRDogY3VzdG9tZXJJRH1cclxuXHJcbiovXHJcbmNsYXNzIE9yZGVyTW9kZWwgZXh0ZW5kcyBNb2RlbHtcclxuICBjb25zdHJ1Y3RvcihkYXRhKXtcclxuICAgIHN1cGVyKGRhdGEpO1xyXG4gIH1cclxufVxyXG4iXX0=
+/**
+@class OrderModel
+@params
+  @param {Object} data => all fields to set in current object
+
+@constructor {id: 0, cycleID: 0, telephone: "", socialMedia: "", adress: "", orderNotes: "", summary: 0, billed: false, isNotThis: false, payDates: [], pays: [], cycleID: -1, customerID: customerID}
+
+*/
+class OrderModel extends Model{
+  constructor(data){
+    super(data);
+  }
+}

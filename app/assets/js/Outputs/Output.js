@@ -1,2 +1,129 @@
-class Output{constructor(t,e){this.editors=t,this.outputs={},this.addOutputs(e)}insertData(t,e){for(var s=this.outputs,r=0;r<t.length;r++)s=s[t[r]];return this.editors[s.editor_name](s.css_selector,e)}addEditors(t){this.editors={...this.editors,...t}}deleteEditors(t){var e=this;t.forEach(t=>delete e.editors[t])}getEditors(){return Object.assign({},this.editors)}addOutputs(t){function e(t,s,r,u){return t[s[0]]||(t[s[0]]={}),s.length<=1?(t[s].css_selector=r,t[s].editor_name=u):t[s[0]]=e(t[s[0]],s.slice(1),r,u),t}for(var s=0;s<t.length;s++)t[s]&&(this.outputs=e(this.outputs,t[s][0],t[s][1],t[s][2]))}deleteOutputs(t){function e(t,s){return Object.keys(t[s[0]]).filter(t=>1==t.length&&t!=s[1])[0]?t[s[0]]=e(t[s[0]],s.slice(1)):delete t[s[0]],t}for(var s=0;s<t.length;s++)this.outputs=e(this.outputs,t[s])}getOutputs(){return JSON.parse(JSON.stringify(this.outputs))}q(t){return document.querySelector(t)}qa(t){return document.querySelectorAll(t)}}
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIk91dHB1dHMvT3V0cHV0LmpzIl0sIm5hbWVzIjpbIk91dHB1dCIsIltvYmplY3QgT2JqZWN0XSIsImVkaXRvcnMiLCJvdXRwdXRzIiwidGhpcyIsImFkZE91dHB1dHMiLCJzaG9ydF9uYW1lIiwiZGF0YSIsIm91dHB1dCIsImkiLCJsZW5ndGgiLCJlZGl0b3JfbmFtZSIsImNzc19zZWxlY3RvciIsIl90aGlzIiwiZm9yRWFjaCIsImVkaXRvciIsIk9iamVjdCIsImFzc2lnbiIsImdlbmVyYXRlVHJlZSIsInNsaWNlIiwiZGVsZXRlRnJvbVRyZWUiLCJrZXlzIiwiZmlsdGVyIiwiayIsIkpTT04iLCJwYXJzZSIsInN0cmluZ2lmeSIsInMiLCJkb2N1bWVudCIsInF1ZXJ5U2VsZWN0b3IiLCJxdWVyeVNlbGVjdG9yQWxsIl0sIm1hcHBpbmdzIjoiQUFtREEsTUFBTUEsT0FDSkMsWUFBWUMsRUFBU0MsR0FDbkJDLEtBQUtGLFFBQVVBLEVBQ2ZFLEtBQUtELFFBQVUsR0FDZkMsS0FBS0MsV0FBV0YsR0FHbEJGLFdBQVdLLEVBQVlDLEdBSXJCLElBSEEsSUFDSUMsRUFEUUosS0FDT0QsUUFFWE0sRUFBSSxFQUFHQSxFQUFJSCxFQUFXSSxPQUFRRCxJQUNwQ0QsRUFBU0EsRUFBT0YsRUFBV0csSUFHN0IsT0FQWUwsS0FPQ0YsUUFBUU0sRUFBT0csYUFBYUgsRUFBT0ksYUFBY0wsR0FHaEVOLFdBQVdDLEdBRVRFLEtBQUtGLFFBQVUsSUFESEUsS0FDYUYsV0FBWUEsR0FHdkNELGNBQWNDLEdBQ1osSUFBSVcsRUFBUVQsS0FDWkYsRUFBUVksUUFBUUMsVUFBaUJGLEVBQU1YLFFBQVFhLElBR2pEZCxhQUVFLE9BQU9lLE9BQU9DLE9BQU8sR0FEVGIsS0FDbUJGLFNBR2pDRCxXQUFXRSxHQUlULFNBQVNlLEVBQWFmLEVBQVNHLEVBQVlNLEVBQWNELEdBUXZELE9BUElSLEVBQVFHLEVBQVcsTUFBS0gsRUFBUUcsRUFBVyxJQUFNLElBQ2xEQSxFQUFXSSxRQUFVLEdBQ3RCUCxFQUFRRyxHQUFZTSxhQUFlQSxFQUNuQ1QsRUFBUUcsR0FBWUssWUFBY0EsR0FFbENSLEVBQVFHLEVBQVcsSUFBTVksRUFBYWYsRUFBUUcsRUFBVyxJQUFLQSxFQUFXYSxNQUFNLEdBQUlQLEVBQWNELEdBRTVGUixFQUdULElBQUksSUFBSU0sRUFBSSxFQUFHQSxFQUFJTixFQUFRTyxPQUFRRCxJQUM5Qk4sRUFBUU0sS0FmREwsS0FlV0QsUUFBVWUsRUFmckJkLEtBZXdDRCxRQUFTQSxFQUFRTSxHQUFHLEdBQUlOLEVBQVFNLEdBQUcsR0FBSU4sRUFBUU0sR0FBRyxLQUl4R1IsY0FBY0UsR0FFWixTQUFTaUIsRUFBZWpCLEVBQVNHLEdBSS9CLE9BSEdVLE9BQU9LLEtBQUtsQixFQUFRRyxFQUFXLEtBQUtnQixPQUFPQyxHQUFpQixHQUFaQSxFQUFFYixRQUFlYSxHQUFLakIsRUFBVyxJQUFJLEdBQ3RGSCxFQUFRRyxFQUFXLElBQU1jLEVBQWVqQixFQUFRRyxFQUFXLElBQUtBLEVBQVdhLE1BQU0sV0FDdEVoQixFQUFRRyxFQUFXLElBQ3pCSCxFQUdULElBQUksSUFBSU0sRUFBSSxFQUFHQSxFQUFJTixFQUFRTyxPQUFRRCxJQVJ2QkwsS0FRa0NELFFBQVVpQixFQVI1Q2hCLEtBUWlFRCxRQUFTQSxFQUFRTSxJQUdoR1IsYUFFRSxPQUFPdUIsS0FBS0MsTUFBTUQsS0FBS0UsVUFEWHRCLEtBQzJCRCxVQUd6Q0YsRUFBRTBCLEdBQ0EsT0FBT0MsU0FBU0MsY0FBY0YsR0FHaEMxQixHQUFHMEIsR0FDRCxPQUFPQyxTQUFTRSxpQkFBaUJIIiwiZmlsZSI6Ik91dHB1dHMvT3V0cHV0LmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyoqXHJcbkBjbGFzcyBPdXRwdXRcclxuQGRlc2MgaXMgbmVlZGVkIHRvIGFkZC93cml0ZSBodG1sIHRvIHRoZSBkb2N1bWVudFxyXG5AcGFyYW1zIHtPYmplY3R9IGVkaXRvcnMsIHtBcnJheX0gb3V0cHV0c1xyXG4gIEBwYXJhbSBlZGl0b3JzIHtPYmplY3Q8U3RyaW5nOiBGdW5jdGlvbj59ID0+IHtlZGl0b3JfbmFtZTogZWRpdG9yX2Z1bmN9IG9iamVjdCB3aGllY2ggaGFzIGtleXMgYXMgbmFtZSBvZiBlZGl0b3IgZnVuY3Rpb24gYW5kIHZhbHVlIGFzIGEgZnVuY2l0b25cclxuICAgIEBmdW5jdGlvbiBlZGl0b3JfZnVuYyBnZXQgZGF0YSBhbmQgY29udmVydCBpdCB0byBodG1sIGFuZCB0aGFuIHBhc3RlIGl0IGluIG5lZWRlZCBsb2NhdGlvbiBpbiBkb2N1bWVudFxyXG4gICAgICBAcGFyYW0gcyA9PiBjc3Mgc2VsZWN0b3IgdG8gdGhlIG91dHB1dFxyXG4gICAgICBAcGFyYW0gZCA9PiBkYXRhLCB3aGljaCBpcyB1c2VkIHRvIGdlbmVyYXRlIGh0bWxcclxuICAgICAgQHJldHVybiBhbnkgZGF0YVxyXG4gIEBwYXJhbSBvdXRwdXRzIHtBcnJheTxBcnJheTxTdHJpbmcsIFN0cmluZywgU3RyaW5nPj59ID0+IGlzIGFycmF5IG9mIG91dHB1dHMgd2hpY2ggYXJlIFtzaG9ydF9uYW1lLCBjc3Nfc2VsZWN0b3IsIGVkaXRvcl9uYW1lXVxyXG4gICAgQHZhbHVlIHNob3J0X25hbWUge1N0cmluZ30gPT4gc2hvcnQgbmFtZSBvZiBvdXRwdXQuIElzIHVzZWQgdG8gZ2V0IGVkaXRvciBmdW5jdGlvblxyXG4gICAgQHZhbHVlIGNzc19zZWxlY3RvciB7U3RyaW5nfSA9PiBjc3Mgc2VsZWN0b3Igb2Ygb3V0cHV0d2hlcmUgeW91IG5lZWQgdG8gcGFzdGUvd3JpdGUgaHRtbC4gV2lsbCBiZSBwYXNzZWQgdG8gdGhlIHBhcmFtZXRlcnMgb2YgZWRpdG9yIGZ1bmN0aW9uXHJcbiAgICBAdmFsdWUgZWRpdG9yX25hbWUge1N0cmluZ30gPT4gaXMgdXNlZCB0byBnZW5lcmF0ZSBodG1sIGNvbnRlbnQgZnJvbSBvdXRwdXQgZnJvbSBkYXRhIGFuZCBwYXN0ZSBpdCBpbnRvIGNzc19zZWxlY3RvclxyXG5cclxuQG1ldGhvZCBpbnNlcnREYXRhXHJcbiAgQHBhcmFtIHNob3J0X25hbWUge1N0cmluZ30gPT4gc2hvcnQgbmFtZSBvZiBvdXRwdXRcclxuICBAcGFyYW0gZGF0YSA9PiBkYXRhLCB3aGljaCBpcyB1c2VkIHRvIGdlbmVyYXRlIGh0bWwgYW5kIHBhc3RlL3dyaXRlIGl0IGJ5IHRoZSBlZGl0b3IgZnVuY3Rpb25cclxuICBAZG8gZ2VuZXJhdGUgaHRtbCBieSBlZGl0b3IgZnVuY3Rpb24gd2l0aCBkYXRhIGFuZCB3cml0ZS9wYXN0ZSBpdCB0byB0aGUgZG9jdW1lbnRcclxuXHJcbkBtZXRob2QgYWRkRWRpdG9yc1xyXG4gIEBwYXJhbSBlZGl0b3JzIHtPYmplY3Q8U3RyaW5nOiBGdW5jdGlvbn0gPT4gb2JqZWN0IHdoZXJlIGtleSBpcyBuYW1lIG9mIGVkaXRvciBmdW5jdGlvbiBhbmQgdmFsdWUgaXMgZnVuY3Rpb25cclxuICBAZG8gYWRkIG5ldyBlZGl0b3JzIGZ1bmN0aW9ucyB0byB0aGUgT3V0cHV0IG9iamVjdFxyXG5cclxuQG1ldGhvZCBkZWxldGVFZGl0b3JzXHJcbiAgQHBhcmFtIGVkaXRvcnMge0FycmF5PFN0cmluZz59ID0+IGFycmF5IG9mIG5hbWVzIG9mIGVkaXRvcnMgdG8gZGVsZXRlXHJcbiAgQGRvIGRlbGV0ZSBlZGl0b3JzIGZyb20gT3V0cHV0IG9iamVjdFxyXG5cclxuQG1ldGhvZCBnZXRFZGl0b3JzXHJcbiAgQHJldHVybiB7T2JqZWN0PFN0cmluZzogRnVuY3Rpb24+fVxyXG4gIEBkbyByZXR1cm4gb2JqZWN0IHdoZXJlIGtleSBpcyBuYW1lIG9mIGVkaXRvciBmdW5jdGlvbiBhbmQgdmFsdWUgaXMgYSBmdW5jdGlvblxyXG5cclxuQG1ldGhvZCBhZGRPdXRwdXRzXHJcbiAgQHBhcmFtIG91dHB1dHMge0FycmF5PEFycmF5PFN0cmluZywgU3RyaW5nLCBTdHJpbmc+fSA9PiBuZXcgb3V0cHV0c1xyXG4gIEBkbyBhZGQgbmV3IG91dHB1dHMgdG8gdGhlIE91dHB1dCBvYmplY3QgdHJlZSBvZiBvdXRwdXRzXHJcblxyXG5AbWV0aG9kIGRlbGV0ZU91dHB1dHNcclxuICBAcGFyYW0gb3V0cHV0cyB7QXJyYXk8U3RyaW5nPn0gPT4gYXJyYXkgb2Ygc2hvcnQgbmFtZXMgb2Ygb3V0cHV0cyB0byBkZWxldGVcclxuICBAZG8gZGVsZXRlIG91dHB1dHMgZnJvbSBPdXRwdXQgY2xhc3Mgb2JqZWN0XHJcblxyXG5AbWV0aG9kIGdldE91dHB1dHNcclxuICBAcmV0dXJuIHtPYmplY3Q8T2JqZWN0Li4uLCBTdHJpbmcsIFN0cmluZywgU3RyaW5nPn1cclxuICBAZG8gcmV0dXJuIHRyZWUgb2Ygb3V0cHV0cywgd2hlcmUgYnJhbmNoZXMgYXJlIGxldHRlcnMgb2Ygc2hvcnQgbmFtZVxyXG5cclxuQG1ldGhvZCBxXHJcbiAgQHBhcmFtIHMge1N0cmluZ30gPT4gY3NzIHNlbGVjdG9yXHJcbiAgQHJldHVybiBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKHMpJ3MgcmV0dXJuXHJcblxyXG5AbWV0aG9kIHFhXHJcbiAgQHBhcmFtIHMge1N0cmluZ30gPT4gY3NzIHNlbGVjdG9yXHJcbiAgQHJldHVybiBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKHMpJ3MgcmV0dXJuXHJcbiovXHJcbmNsYXNzIE91dHB1dHtcclxuICBjb25zdHJ1Y3RvcihlZGl0b3JzLCBvdXRwdXRzKXtcclxuICAgIHRoaXMuZWRpdG9ycyA9IGVkaXRvcnM7XHJcbiAgICB0aGlzLm91dHB1dHMgPSB7fTtcclxuICAgIHRoaXMuYWRkT3V0cHV0cyhvdXRwdXRzKTtcclxuICB9XHJcblxyXG4gIGluc2VydERhdGEoc2hvcnRfbmFtZSwgZGF0YSl7XHJcbiAgICB2YXIgX3RoaXMgPSB0aGlzO1xyXG4gICAgdmFyIG91dHB1dCA9IF90aGlzLm91dHB1dHM7XHJcblxyXG4gICAgZm9yKHZhciBpID0gMDsgaSA8IHNob3J0X25hbWUubGVuZ3RoOyBpKyspe1xyXG4gICAgICBvdXRwdXQgPSBvdXRwdXRbc2hvcnRfbmFtZVtpXV07XHJcbiAgICB9XHJcblxyXG4gICAgcmV0dXJuIF90aGlzLmVkaXRvcnNbb3V0cHV0LmVkaXRvcl9uYW1lXShvdXRwdXQuY3NzX3NlbGVjdG9yLCBkYXRhKTtcclxuICB9XHJcblxyXG4gIGFkZEVkaXRvcnMoZWRpdG9ycyl7XHJcbiAgICB2YXIgX3RoaXMgPSB0aGlzO1xyXG4gICAgdGhpcy5lZGl0b3JzID0gey4uLl90aGlzLmVkaXRvcnMsIC4uLmVkaXRvcnN9O1xyXG4gIH1cclxuXHJcbiAgZGVsZXRlRWRpdG9ycyhlZGl0b3JzKXtcclxuICAgIHZhciBfdGhpcyA9IHRoaXM7XHJcbiAgICBlZGl0b3JzLmZvckVhY2goZWRpdG9yID0+IGRlbGV0ZSBfdGhpcy5lZGl0b3JzW2VkaXRvcl0pO1xyXG4gIH1cclxuXHJcbiAgZ2V0RWRpdG9ycygpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIHJldHVybiBPYmplY3QuYXNzaWduKHt9LCBfdGhpcy5lZGl0b3JzKTtcclxuICB9XHJcblxyXG4gIGFkZE91dHB1dHMob3V0cHV0cyl7XHJcbiAgICB2YXIgX3RoaXMgPSB0aGlzO1xyXG5cclxuICAgIC8vQGZ1bmMgZ2VuZXJhdGVUcmVlIGNyZWF0ZSB0cmVlIHdpdGggbGV0dGVycyBmcm9tIHNob3J0X25hbWVcclxuICAgIGZ1bmN0aW9uIGdlbmVyYXRlVHJlZShvdXRwdXRzLCBzaG9ydF9uYW1lLCBjc3Nfc2VsZWN0b3IsIGVkaXRvcl9uYW1lKXtcclxuICAgICAgaWYoIW91dHB1dHNbc2hvcnRfbmFtZVswXV0pIG91dHB1dHNbc2hvcnRfbmFtZVswXV0gPSB7fTtcclxuICAgICAgaWYoc2hvcnRfbmFtZS5sZW5ndGggPD0gMSl7XHJcbiAgICAgICAgb3V0cHV0c1tzaG9ydF9uYW1lXS5jc3Nfc2VsZWN0b3IgPSBjc3Nfc2VsZWN0b3I7XHJcbiAgICAgICAgb3V0cHV0c1tzaG9ydF9uYW1lXS5lZGl0b3JfbmFtZSA9IGVkaXRvcl9uYW1lO1xyXG4gICAgICB9IGVsc2Uge1xyXG4gICAgICAgIG91dHB1dHNbc2hvcnRfbmFtZVswXV0gPSBnZW5lcmF0ZVRyZWUob3V0cHV0c1tzaG9ydF9uYW1lWzBdXSwgc2hvcnRfbmFtZS5zbGljZSgxKSwgY3NzX3NlbGVjdG9yLCBlZGl0b3JfbmFtZSk7XHJcbiAgICAgIH1cclxuICAgICAgcmV0dXJuIG91dHB1dHM7XHJcbiAgICB9XHJcblxyXG4gICAgZm9yKHZhciBpID0gMDsgaSA8IG91dHB1dHMubGVuZ3RoOyBpKyspe1xyXG4gICAgICBpZihvdXRwdXRzW2ldKSBfdGhpcy5vdXRwdXRzID0gZ2VuZXJhdGVUcmVlKF90aGlzLm91dHB1dHMsIG91dHB1dHNbaV1bMF0sIG91dHB1dHNbaV1bMV0sIG91dHB1dHNbaV1bMl0pO1xyXG4gICAgfVxyXG4gIH1cclxuXHJcbiAgZGVsZXRlT3V0cHV0cyhvdXRwdXRzKXtcclxuICAgIHZhciBfdGhpcyA9IHRoaXM7XHJcbiAgICBmdW5jdGlvbiBkZWxldGVGcm9tVHJlZShvdXRwdXRzLCBzaG9ydF9uYW1lKXtcclxuICAgICAgaWYoT2JqZWN0LmtleXMob3V0cHV0c1tzaG9ydF9uYW1lWzBdXSkuZmlsdGVyKGsgPT4gay5sZW5ndGggPT0gMSAmJiBrICE9IHNob3J0X25hbWVbMV0pWzBdKXtcclxuICAgICAgICBvdXRwdXRzW3Nob3J0X25hbWVbMF1dID0gZGVsZXRlRnJvbVRyZWUob3V0cHV0c1tzaG9ydF9uYW1lWzBdXSwgc2hvcnRfbmFtZS5zbGljZSgxKSk7XHJcbiAgICAgIH1lbHNlIGRlbGV0ZSBvdXRwdXRzW3Nob3J0X25hbWVbMF1dO1xyXG4gICAgICByZXR1cm4gb3V0cHV0cztcclxuICAgIH1cclxuXHJcbiAgICBmb3IodmFyIGkgPSAwOyBpIDwgb3V0cHV0cy5sZW5ndGg7IGkrKykgX3RoaXMub3V0cHV0cyA9IGRlbGV0ZUZyb21UcmVlKF90aGlzLm91dHB1dHMsIG91dHB1dHNbaV0pO1xyXG4gIH1cclxuXHJcbiAgZ2V0T3V0cHV0cygpe1xyXG4gICAgdmFyIF90aGlzID0gdGhpcztcclxuICAgIHJldHVybiBKU09OLnBhcnNlKEpTT04uc3RyaW5naWZ5KF90aGlzLm91dHB1dHMpKTtcclxuICB9XHJcblxyXG4gIHEocyl7XHJcbiAgICByZXR1cm4gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihzKTtcclxuICB9XHJcblxyXG4gIHFhKHMpe1xyXG4gICAgcmV0dXJuIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwocyk7XHJcbiAgfVxyXG59XHJcbiJdfQ==
+/**
+@class Output
+@desc is needed to add/write html to the document
+@params {Object} editors, {Array} outputs
+  @param editors {Object<String: Function>} => {editor_name: editor_func} object whiech has keys as name of editor function and value as a funciton
+    @function editor_func get data and convert it to html and than paste it in needed location in document
+      @param s => css selector to the output
+      @param d => data, which is used to generate html
+      @return any data
+  @param outputs {Array<Array<String, String, String>>} => is array of outputs which are [short_name, css_selector, editor_name]
+    @value short_name {String} => short name of output. Is used to get editor function
+    @value css_selector {String} => css selector of outputwhere you need to paste/write html. Will be passed to the parameters of editor function
+    @value editor_name {String} => is used to generate html content from output from data and paste it into css_selector
+
+@method insertData
+  @param short_name {String} => short name of output
+  @param data => data, which is used to generate html and paste/write it by the editor function
+  @do generate html by editor function with data and write/paste it to the document
+
+@method addEditors
+  @param editors {Object<String: Function} => object where key is name of editor function and value is function
+  @do add new editors functions to the Output object
+
+@method deleteEditors
+  @param editors {Array<String>} => array of names of editors to delete
+  @do delete editors from Output object
+
+@method getEditors
+  @return {Object<String: Function>}
+  @do return object where key is name of editor function and value is a function
+
+@method addOutputs
+  @param outputs {Array<Array<String, String, String>} => new outputs
+  @do add new outputs to the Output object tree of outputs
+
+@method deleteOutputs
+  @param outputs {Array<String>} => array of short names of outputs to delete
+  @do delete outputs from Output class object
+
+@method getOutputs
+  @return {Object<Object..., String, String, String>}
+  @do return tree of outputs, where branches are letters of short name
+
+@method q
+  @param s {String} => css selector
+  @return document.querySelector(s)'s return
+
+@method qa
+  @param s {String} => css selector
+  @return document.querySelectorAll(s)'s return
+*/
+class Output{
+  constructor(editors, outputs){
+    this.editors = editors;
+    this.outputs = {};
+    this.addOutputs(outputs);
+  }
+
+  insertData(short_name, data){
+    var _this = this;
+    var output = _this.outputs;
+
+    for(var i = 0; i < short_name.length; i++){
+      output = output[short_name[i]];
+    }
+
+    return _this.editors[output.editor_name](output.css_selector, data);
+  }
+
+  addEditors(editors){
+    var _this = this;
+    this.editors = {..._this.editors, ...editors};
+  }
+
+  deleteEditors(editors){
+    var _this = this;
+    editors.forEach(editor => delete _this.editors[editor]);
+  }
+
+  getEditors(){
+    var _this = this;
+    return Object.assign({}, _this.editors);
+  }
+
+  addOutputs(outputs){
+    var _this = this;
+
+    //@func generateTree create tree with letters from short_name
+    function generateTree(outputs, short_name, css_selector, editor_name){
+      if(!outputs[short_name[0]]) outputs[short_name[0]] = {};
+      if(short_name.length <= 1){
+        outputs[short_name].css_selector = css_selector;
+        outputs[short_name].editor_name = editor_name;
+      } else {
+        outputs[short_name[0]] = generateTree(outputs[short_name[0]], short_name.slice(1), css_selector, editor_name);
+      }
+      return outputs;
+    }
+
+    for(var i = 0; i < outputs.length; i++){
+      if(outputs[i]) _this.outputs = generateTree(_this.outputs, outputs[i][0], outputs[i][1], outputs[i][2]);
+    }
+  }
+
+  deleteOutputs(outputs){
+    var _this = this;
+    function deleteFromTree(outputs, short_name){
+      if(Object.keys(outputs[short_name[0]]).filter(k => k.length == 1 && k != short_name[1])[0]){
+        outputs[short_name[0]] = deleteFromTree(outputs[short_name[0]], short_name.slice(1));
+      }else delete outputs[short_name[0]];
+      return outputs;
+    }
+
+    for(var i = 0; i < outputs.length; i++) _this.outputs = deleteFromTree(_this.outputs, outputs[i]);
+  }
+
+  getOutputs(){
+    var _this = this;
+    return JSON.parse(JSON.stringify(_this.outputs));
+  }
+
+  q(s){
+    return document.querySelector(s);
+  }
+
+  qa(s){
+    return document.querySelectorAll(s);
+  }
+}
