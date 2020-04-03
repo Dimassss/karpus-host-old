@@ -1,0 +1,246 @@
+.coloredScroll{
+  --maxWidth:1284px;
+  scrollbar-color:linear-gradient(to bottom,#ff8a00,#da1b60);
+  scrollbar-width:20px;
+  }
+.coloredScroll::-webkit-scrollbar{
+  width:20px;
+}
+.coloredScroll::-webkit-scrollbar-thumb{
+  background:#77f;
+  border-radius:4px;
+  -webkit-box-shadow:inset 2px 2px 2px rgba(255,255,255,.25),inset -2px -2px 2px rgba(0,0,0,.25);
+}
+.coloredScroll::-webkit-scrollbar-track{
+  background:#eee;
+}
+
+#alertWindow{
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height: 100vh;
+  background-color: #eee;
+  /*display: flex;*/
+}
+/*alertWindow css =========================================================================*/
+#alertWindow .vertical-scroll{
+  display: inline-block;
+  max-height: 100vh;
+  overflow-y: scroll;
+  background-color: #aaa;
+  min-width: 23em;
+}
+
+#alertWindow .vertical-scroll div{
+  border-right: 40px solid #f44;
+  background-color: #111;
+  margin:0 0 3px 0;
+  padding: 10px;
+  color: #aca;
+}
+
+#alertWindow .vertical-scroll div:first-child{
+  border-right: 0;
+  margin:0 0 3px 0;
+  padding: 8px;
+  color: #000;
+  text-align: center;
+  text-rendering: geometricPrecision;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: #f44;
+  position: sticky;
+  top:0;
+}
+
+#alertWindow .vertical-scroll div:hover{
+  background-color: #444;
+  cursor: pointer;
+}
+
+#alertWindow .vertical-scroll div:first-child:hover{
+  background-color: #f66;
+}
+
+#alertWindow .vertical-scroll div:first-child:active{
+  background-color: #f22;
+}
+
+#alertWindow .workspace {
+  width: 100%;
+  display: inline-block;
+  background-color: #eee;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+#alertWindow .tab-bar{
+  top:0;
+  position: sticky;
+  width:100%;
+  height: 40px;
+}
+
+#alertWindow .tab-bar .saveButton{
+  height: 40px;
+  width: calc(100% - 140px);
+  display:inline-block;
+  background-color: #8f8;
+	margin: 0;
+}
+
+#alertWindow .tab-bar .closeRecord{
+  max-height:40px;
+  height:40px;
+  width:140px;
+  float:right;
+  font-size: 20px;
+  text-align: center;
+  line-height: 0;
+  display: inline-block;
+  background-color: #f44;
+}
+
+#alertWindow .tab-bar .closeRecord p {
+  width:100%;
+}
+
+#alertWindow .tab-bar .closeRecord:hover{
+  background-color: #444;
+}
+
+#alertWindow .tab-bar .closeRecord:hover{
+  background-color: #f66;
+}
+
+#alertWindow .tab-bar .closeRecord:active{
+  background-color: #f22;
+}
+
+#alertWindow .form-fields{
+  margin: 15px;
+}
+
+#alertWindow .form-fields > div{
+  background-color: #ddd;
+
+  box-shadow: 4px 4px 2px #aaa;
+  display: flex;
+  border-radius: 10px;
+  align-items: start;
+  margin-bottom:20px;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  padding-bottom: 10px;
+}
+
+#alertWindow .form-fields div div{
+  background-color: #eee;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+
+#alertWindow .form-fields div h{
+  font-size: 18px;
+  padding: 3px;
+}
+
+#alertWindow .form-fields div input{
+  width: 100%;
+  padding: 2px;
+  border-radius: 3px;
+  border: 0;
+  height: 27px;
+}
+
+#alertWindow .form-fields div textarea{
+  width: 100%;
+  padding: 2px;
+  border-radius: 3px;
+  border: 0;
+  resize:none;
+  height: 80px;
+}
+
+#alertWindow .form-fields div ol{
+  margin:0;
+  padding:0;
+}
+
+#alertWindow .form-fields div ol li{
+  display: block;
+  margin-top: 3px;
+}
+
+#alertWindow .form-fields div ol li div{
+  display: inline-block;
+  background-color: #ffffff;
+  padding: 2px;
+  border-radius: 3px;
+  border: 0;
+  height: 20px;
+  margin:0;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  white-space: nowrap;
+  font-size: 18px;
+  width: 180px;
+  -moz-appearance: textfield;
+  -webkit-appearance: textfield;
+}
+
+#alertWindow .form-fields div ol li div:first-child{
+  width: 100px;
+}
+
+#alertWindow .form-fields div.fieldType-textArray input{
+  display: none;
+}
+
+#alertWindow .form-fields div.fieldType-textArray div ol li{
+  display: flex;
+  background-color: #ffffff;
+}
+
+#alertWindow .form-fields div.fieldType-textArray b{
+  text-align: center;
+  align-self: baseline;
+}
+
+#alertWindow .form-fields div.fieldType-textShort div{
+  width: 220px;
+}
+
+#alertWindow .form-fields div.fieldType-textlong div{
+  width: 300px;
+}
+
+#alertWindow .form-fields div.fieldType-textArray .duplicatedKey div.field-key{
+  background-color: #fdd;
+  border-left: 1px solid red;
+}
+
+#alertWindow .vertical-scroll div.isOpened{
+  background-color: #333;
+}
+
+#alertWindow .workspace form{
+  display: none;
+}
+
+#alertWindow .workspace form#isSelected{
+  display:block;
+}
+
+#alertWindow .form-fields div.fieldType-else input[type="checkbox"]{
+  display:inline-block !important;
+  float:right;
+  width:42px;
+  height: 42px;
+  margin-right: 10px;
+}

@@ -1,0 +1,3 @@
+class DAO{
+  constructor(){}
+}
