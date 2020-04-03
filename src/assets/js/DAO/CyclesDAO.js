@@ -62,7 +62,7 @@ class CyclesDAO extends DAO{
       let cycle = cycles[0];
       (new CyclesOutput()).insertData("C_ID", cycleID);
 
-      (new OrderTableSQL()).select(`cycleID LIKE ?`, [JSON.stringify(cycleID)], orders => {
+      (new OrderTableSQL()).select('`cycleID` LIKE ?', [cycleID], orders => {
         _this.fillOrdersWin(orders.map(o => o.id));
 
         (new KitTableSQL()).select(`cycleID = ?`, [cycleID], kits => {
@@ -102,7 +102,6 @@ class CyclesDAO extends DAO{
           let row = [];
           row[row.length] = {id: order.id};
           for(var i = 0; i < columns.length; i++) row[row.length] = [convertField(order, columns[i]), 1, 1];
-          console.log(order);
           tableObject.body[tableObject.body.length] = row;
         });
 
@@ -171,7 +170,6 @@ class CyclesDAO extends DAO{
     var out = new CyclesOutput();
     const cols = ["name", "unit", "count", "price", "dimensions", "weight", "description"];
     var tableObject = {body:[]};
-    console.log(db.v, cols);
 
     db.load(keys, products => {
       for(var i = 0; i < products.length; i++){
@@ -227,10 +225,10 @@ class CyclesDAO extends DAO{
           out.insertData("AW_ID", order["id"]);
           out.insertData("AW_ON", order["orderNotes"]);
           out.insertData("AW_Sum", order["summary"]);
-          out.insertData("AW_Bill", order["billed"] == "true");
-          out.insertData("AW_n_ths", order["isNotThis"] == "true");
-          out.insertData("AW_an_FN", order["isNotThis"] == "true"?order["anotherFullName"]:"");
-          out.insertData("AW_an_Tel", order["isNotThis"] == "true"?order["anotherTelephone"]:"");
+          out.insertData("AW_Bill", order["billed"]);
+          out.insertData("AW_n_ths", order["isNotThis"]);
+          out.insertData("AW_an_FN", order["isNotThis"]?order["anotherFullName"]:"");
+          out.insertData("AW_an_Tel", order["isNotThis"]?order["anotherTelephone"]:"");
           out.insertData("AW_P", order["payDates"].map((d, i) => [d, order["pays"][i]]));
           //clear kits
           out.insertData("AW_kits", {});
@@ -282,7 +280,7 @@ class CyclesDAO extends DAO{
                     }
                     kit.products[i] = Object.assign({}, pr);
                   });
-                  console.log(kit, pcPrice, pcWeight);
+
                   kit.pcPrice = pcPrice;
                   kit.pcWeight = pcWeight;
                 });
@@ -290,7 +288,6 @@ class CyclesDAO extends DAO{
                 var kitsData = {};
 
                 kitsFromDB.forEach(kit => {
-                  console.log(kit);
                   kitsData[kit.name] = JSON.parse(JSON.stringify(kit));
                 });
 
@@ -342,10 +339,10 @@ class CyclesDAO extends DAO{
         kit.products = products.map(pr => {
           if(typeof idMap[pr.name] != "undefined"){
             let kPr = kit.products[idMap[pr.name]];
-            pr.price.selected = kPr.selected;
-            pr.count = kPr.count;
+            pr.price.selected = kPr.price.selected.valueOf();
+            pr.count = kPr.count.valueOf();
           }else{
-            pr.price.selected = pr.price["p-kt"];
+            pr.price.selected = "p-kt";
             pr.count = 0;
           }
           return pr;
@@ -431,14 +428,14 @@ class CyclesDAO extends DAO{
     var inp = new CyclesInput();
     var order = new OrderModel({
       id: inp.takeData("AW_ID"),
-      cycleID: inp.takeData("AW_c_id"),
+      cycleID: parseInt(inp.takeData("AW_c_id")),
       telephone: inp.takeData("AW_Tel"),
       socialMedia: inp.takeData("AW_SM"),
       adress: inp.takeData("AW_Adr"),
       orderNotes: inp.takeData("AW_ON"),
-      summary: inp.takeData("AW_Sum"),
-      billed: inp.takeData("AW_Bill"),
-      isNotThis: inp.takeData("AW_n_ths"),
+      summary: parseFloat(inp.takeData("AW_Sum")),
+      billed: inp.takeData("AW_Bill") == "true"?1:0,
+      isNotThis: inp.takeData("AW_n_ths") == "true"?1:0,
       payDates: inp.takeData("AW_PD"),
       pays: inp.takeData("AW_Pay"),
       customerID: inp.takeData("Cstm_ID"),
@@ -468,9 +465,9 @@ class CyclesDAO extends DAO{
     });
   }
 
-  saveOrder(order){
-    this.fillOrdersWin(order["id"]);
-    (new OrderTableSQL()).save([order], () => {});
+  saveOrder(order, cb){
+    this.fillOrdersWin(order["id"], cb);
+    (new OrderTableSQL()).save([order], () => {if(cb) cb();});
   }
 
   saveCustomer(customer){

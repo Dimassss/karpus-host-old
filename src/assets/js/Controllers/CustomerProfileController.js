@@ -118,11 +118,11 @@ class CustomerProfileController{
     });
   }
 
-  saveOrder(e, cb){
+  saveOrder(e, cb, cb2){
     let _this = g.Controller.CustomerProfile.instance;
     let [order, customer] = _this.dao.getOrderFromPage();
     let out = new CustomerProfileOutput();
-    
+
     _this.dao.saveOrder(order, order => {
       out.insertData("AW_ID", order["id"]);
       _this.dao.addOrdersToTable(order["customerID"], order["id"], cb, true);
@@ -135,6 +135,8 @@ class CustomerProfileController{
       out.insertData("WP_SM", customer.socialMedia);
 
       out.insertData("WP_Tbl", {body:[[{id: customer["id"], class: "selected"}, [customer["fullName"], 1, 1], [JSON.stringify(customer["telephones"]).slice(4, -1).split("\",\"").join("<br>").replace(/\"/g, ""), 1, 1]]]});
+
+      cb2();
     });
   }
 

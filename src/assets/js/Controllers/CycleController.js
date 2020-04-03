@@ -93,12 +93,13 @@ class CycleController{
     _this.dao.closeOrderCreatingWindow();
   }
 
-  saveOrder(e){
+  saveOrder(e, cb){
     let _this = g.Controller.Cycles.instance;
     _this.dao.getOrderFromPage((order, customer) => {
-      _this.dao.saveOrder(order);
+      _this.dao.saveOrder(order, cb);
       _this.dao.saveCustomer(customer);
       _this.dao.closeOrderCreatingWindow();
+
     });
   }
 
@@ -151,7 +152,6 @@ class CycleController{
     var dbCycle = new CycleTableSQL();
 
     if(e.path[4].id == "js-product-count-set"){
-      console.log(product);
       Object.keys(product.count).forEach(k => {
         if(!product.count[k]) product.count[k] = 0;
       });
@@ -188,8 +188,9 @@ class CycleController{
         out.insertData("K_ID", kits[0]["id"]);
       }
       _this.dao.fillKitsWin([kits[0]["id"]], cb);
-      out.insertData("K_PcPr", Number((kits[0].pcPrice).toFixed(2)));
-      out.insertData("K_PcW", Number((kits[0].pcWeight).toFixed(2)));
+
+      out.insertData("K_PcPr", parseFloat(kits[0].pcPrice).toFixed(2));
+      out.insertData("K_PcW", parseFloat(kits[0].pcWeight).toFixed(2));
     });
   }
 

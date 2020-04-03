@@ -25,7 +25,7 @@ function run(){
   e.bind("body > header div.drop a:nth-child(1)", "click", c.createCustomer);
   e.bind("body > header div.drop a:nth-child(2)", "click", c.deleteCustomer);
   e.bind("body > header div.drop a:nth-child(3)", "click", c.deleteOrder);
-  e.bind("section.alert-window navbar label:nth-child(1)", "click", c.saveOrder, [trBindOrders]);
+  e.bind("section.alert-window navbar label:nth-child(1)", "click", c.saveOrder, [trBindOrders, trBindCustomers]);
   e.bind("section.alert-window #js-cycle", "change", c.displayKitsOnCycleSelect);
   e.bind("input[name=js-customer-nav-table-search]", "change", e => {c.searchCustomers(e, trBindCustomers)});
   e.bind("input[name=js-cutomer-order-table-search]", "change", e => {c.seachOrders(e, trBindOrders)});

@@ -80,7 +80,7 @@ class CustomerProfileDAO extends DAO{
       var customer = customers[0];
       customer = customer!=undefined?customer:{fullName:"", telephones: [""], adresses: [""], email: "", notes: "", preferences: "", socialMedia: [""], activity: "", isEmpty: true};
       var columns = ["fullName", "telephone"];
-
+      console.log(customer);
       out.insertData("WP_ID", customerID);
       out.insertData("WP_Nm", customer["fullName"]);
       out.insertData("WP_Tel", customer["telephones"]);
@@ -192,10 +192,10 @@ class CustomerProfileDAO extends DAO{
           out.insertData("AW_ID", order["id"]);
           out.insertData("AW_ON", order["orderNotes"]);
           out.insertData("AW_Sum", order["summary"]);
-          out.insertData("AW_Bill", order["billed"] == "true");
-          out.insertData("AW_n_ths", order["isNotThis"] == "true");
-          out.insertData("AW_an_FN", order["isNotThis"] == "true"?order["anotherFullName"]:"");
-          out.insertData("AW_an_Tel", order["isNotThis"] == "true"?order["anotherTelephone"]:"");
+          out.insertData("AW_Bill", order["billed"]);
+          out.insertData("AW_n_ths", order["isNotThis"]);
+          out.insertData("AW_an_FN", order["isNotThis"]?order["anotherFullName"]:"");
+          out.insertData("AW_an_Tel", order["isNotThis"]?order["anotherTelephone"]:"");
           out.insertData("AW_P", order["payDates"].map((d, i) => [order["pays"][i], d]));
           //clear kits
           out.insertData("AW_kits", {});
@@ -207,6 +207,7 @@ class CustomerProfileDAO extends DAO{
           }else dbCycle.select("TRUE", [], cycles => {
             var selectedCycle = cycles.find(cycle => cycle.id == order.cycleID);
             var restCycles = cycles.filter(cycle => cycle.id != order.cycleID);
+            console.log(cycles, order);
             out.insertData("AW_c_id", [ [selectedCycle.id, selectedCycle.name], ...restCycles.map(cycle => [cycle.id, cycle.name]) ]);
 
             dbKit.select("cycleID = ?", [order.cycleID], kitsFromDB => {
@@ -347,14 +348,14 @@ class CustomerProfileDAO extends DAO{
     let inp = new CustomerProfileInput();
     let order = new OrderModel({
       id: inp.takeData("AW_ID"),
-      cycleID: inp.takeData("AW_c_id"),
+      cycleID: parseInt(inp.takeData("AW_c_id")),
       telephone: inp.takeData("AW_Tel"),
       socialMedia: inp.takeData("AW_SM"),
       adress: inp.takeData("AW_Adr"),
       orderNotes: inp.takeData("AW_ON"),
-      summary: inp.takeData("AW_Sum"),
-      billed: inp.takeData("AW_Bill"),
-      isNotThis: inp.takeData("AW_n_ths"),
+      summary: parseFloat(inp.takeData("AW_Sum")),
+      billed: inp.takeData("AW_Bill") == "true"?1:0,
+      isNotThis: inp.takeData("AW_n_ths") == "true"?1:0,
       customerID: inp.takeData("WP_ID"),
       anotherFullName: inp.takeData("AW_an_FN"),
       anotherTelephone: inp.takeData("AW_an_Tel"),
@@ -376,7 +377,7 @@ class CustomerProfileDAO extends DAO{
     const payData = inp.takeData("AW_P");
     let pays = payData.map(data => data[0]);
     let dates = payData.map(data => data[1]);
-
+    console.log(order, customer)
     order.pays = pays;
     order.payDates = dates;
 
@@ -388,6 +389,7 @@ class CustomerProfileDAO extends DAO{
     let id = customer["id"];
     if(id==-1) delete customer["id"];
     db.save([customer], customers => {
+      console.log(customers[0]);
       cb(customers[0]);
     });
   }
@@ -396,6 +398,7 @@ class CustomerProfileDAO extends DAO{
     let db = new OrderTableSQL();
     let id = order["id"];
     if(id==-1) delete order["id"];
+
     db.save([order], orders => {
       cb(orders[0]);
     });
