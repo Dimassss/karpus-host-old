@@ -63,15 +63,24 @@ class CyclesDAO extends DAO{
       (new CyclesOutput()).insertData("C_ID", cycleID);
 
       (new OrderTableSQL()).select('`cycleID` LIKE ?', [cycleID], orders => {
+        let updatedDataForProducts = {};
+
+        orders.map(ord => {
+          for(var kit in ord.kits) ord.kits[kit].products.map(pr => {
+            updatedDataForProducts[pr.name] = updatedDataForProducts[pr.name]?updatedDataForProducts[pr.name]:0 + pr.count;
+          });
+        });
+
         _this.fillOrdersWin(orders.map(o => o.id));
 
         (new KitTableSQL()).select(`cycleID = ?`, [cycleID], kits => {
-
           _this.fillKitsWin(kits.map(o => o.id));
 
           (new ProductTableSQL()).select(`cycleID = ?`, [cycleID], products => {
-
-            _this.fillProductsWin(products.map(o => o.id), cb);
+/*
+updateDataForProducts = {prName: kit_count,...}
+*/
+            _this.fillProductsWin(products.map(o => o.id), cb, updatedDataForProducts);
           });
         });
       });
@@ -167,18 +176,27 @@ class CyclesDAO extends DAO{
     out.insertData("K_Tbl", {body: -1});
   }
 
-  fillProductsWin(keys, cb){
+  fillProductsWin(keys, cb, updatedDataForProducts){
     var db = new ProductTableSQL();
     var out = new CyclesOutput();
     const cols = ["name", "unit", "count", "price", "dimensions", "weight", "description"];
     var tableObject = {body:[]};
 
     db.load(keys, products => {
-      for(var i = 0; i < products.length; i++){
+      for(var i = 0; i < products.length; i++) if(products[i]) {
         var row = [{id: products[i]["id"], cycleID: products[i]["cycleID"]}];
         for(var j in cols) if(cols[j] != "id" && cols[j] != "cycleID"){
           const col = cols[j];
-          if(col == "count" || col == "price") for(var c in products[i][col]) row[row.length] = [products[i][col][c], 1, 1];
+          if(col == "count" || col == "price"){
+            if(col == "count"){
+              for(var c in products[i][col]) if(!products[i][col][c]) products[i][col][c] = 0;
+              products[i][col]["c-or"] = (updatedDataForProducts && updatedDataForProducts[products[i].name])?updatedDataForProducts[products[i].name]:0;
+              products[i][col]["c-kt"] = products[i][col]["c-st"] - products[i][col]["c-wh"] - products[i][col]["c-sh"];
+              products[i][col]["c-lft"] = products[i][col]["c-kt"] - products[i][col]["c-or"];
+            }
+
+            for(var c in products[i][col]) row[row.length] = [products[i][col][c], 1, 1];
+          }
           else if(products[i][col] == null) row[row.length] = ["", 1, 1];
           else if(typeof products[i][col] == "object") row[row.length] = [products[i][col].join(" * "), 1, 1];
           else row[row.length] = [products[i][col], 1, 1];
@@ -385,11 +403,24 @@ class CyclesDAO extends DAO{
       out.insertData("P_ID", product["id"]);
       out.insertData("P_Nm", product["name"]);
       out.insertData("P_Unt", product["unit"]);
-      out.insertData("P_C", product["count"]);
       out.insertData("P_Pr", product["price"]);
       out.insertData("P_Dm", product["dimensions"]);
       out.insertData("P_W", product["weight"]);
       out.insertData("P_D", product["description"]);
+      (new OrderTableSQL).select('`cycleID` = ?', [product.cycleID], orders => {
+        for(var c in product["count"]) if(!product["count"][c]) product["count"][c] = 0;
+        product["count"]["c-or"] = 0;
+
+        product["count"]["c-kt"] = product["count"]["c-st"] - product["count"]["c-wh"] - product["count"]["c-sh"];
+
+        orders.map(ord => {
+          for(var kit in ord.kits) ord.kits[kit].products.filter(pr => pr.name == product["name"]).map(pr => product["count"]["c-or"] += pr.count?pr.count:0);
+        });
+
+        product["count"]["c-lft"] = product["count"]["c-kt"] - product["count"]["c-or"];
+
+        out.insertData("P_C", product["count"]);
+      });
     });
   }
 
