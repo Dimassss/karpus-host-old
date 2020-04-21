@@ -42,4 +42,8 @@ class Model{
     }
     return this;
   }
+
+  getCellOfRow(t){
+    return JSON.stringify(this[t]);
+  }
 }

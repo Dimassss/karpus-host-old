@@ -120,6 +120,12 @@ class crm extends Controller{
     $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
 
     array_unshift($data, $where);
+
+    /*if($table == "ORDERS"){
+      echo json_encode($data);
+      return;
+    }*/
+
     if(array_key_exists($table, $db)) echo json_encode($db[$table]->getBySelector($data));
   }
 

@@ -25,8 +25,9 @@
 
       /*Orders table*/
       #orders{
-        min-width: 1520px;
-      }
+        /*min-width: 1520px;*/
+        min-width: 1300px;
+      }/*
       #orders th:nth-child(1), #orders td:nth-child(1){
         width: 180px;
       }
@@ -36,14 +37,14 @@
       #orders th:nth-child(3), #orders td:nth-child(3){
         width: 120px;
       }
-      #orders th:nth-child(4), #orders td:nth-child(4){
+      /*#orders th:nth-child(4), #orders td:nth-child(4){
         width: 180px;
-      }
+      }*//*
       #orders th:nth-child(5), #orders td:nth-child(5){
         width: 180px;
       }
       #orders th:nth-child(6), #orders td:nth-child(6){
-        width: 80px;
+        width: 100px;
       }
       #orders th:nth-child(7), #orders td:nth-child(7){
         width: 90px;
@@ -59,6 +60,36 @@
       }
       #orders th:nth-child(11), #orders td:nth-child(11){
         width: 150px;
+      }*/
+      #orders th:nth-child(1), #orders td:nth-child(1){
+        width: 100px;
+      }
+      #orders th:nth-child(2), #orders td:nth-child(2){
+        width: 100px;
+      }
+      #orders th:nth-child(3), #orders td:nth-child(3){
+        width: 160px;
+      }
+      #orders th:nth-child(5), #orders td:nth-child(5){
+        width: 120px;
+      }
+      #orders th:nth-child(6), #orders td:nth-child(6){
+        width: 100px;
+      }
+      #orders th:nth-child(7), #orders td:nth-child(7){
+        width: 140px;
+      }
+      #orders th:nth-child(8), #orders td:nth-child(8){
+        width: 140px;
+      }
+      #orders th:nth-child(9), #orders td:nth-child(9){
+        width: 140px;
+      }
+      #orders th:nth-child(10), #orders td:nth-child(10){
+        width: 180px;
+      }
+      #orders th:nth-child(11), #orders td:nth-child(11){
+        width: 120px;
       }
       /*Kit Table*/
       #kits {
@@ -166,7 +197,7 @@
                       <th>Full Name</th>
                       <th>Telephone</th>
                       <th>Kit</th>
-                      <th>Products</th>
+                      <!--<th>Products</th>-->
                       <th>Adress</th>
                       <th>Cost</th>
                       <th>Is Billed</th>
@@ -182,7 +213,7 @@
                       <td>Full Name</td>
                       <td>Telephone</td>
                       <td>Kit</td>
-                      <td>Products</td>
+                      <!--<th>Products</th>-->
                       <td>Adress</td>
                       <td>Cost</td>
                       <td>Is Billed</td>
@@ -470,7 +501,7 @@
         </div>
       </section>
 
-      <input type="checkbox" name="open-alert-window" id="open-alert-window_not_work" style="display: none">
+      <input type="checkbox" name="open-alert-window" id="open-alert-window" style="display: none">
       <section class="alert-window">
         <navbar>
           <label for="open-alert-window"><i class="icon icon-2x icon-check" style="color: green"></i></label>
@@ -594,7 +625,7 @@
     </main>
   </body>
   <!--script src="https://code.jquery.com/jquery-3.4.1.min.js"></script-->
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <!--script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
   <script type="text/javascript" src="../app/assets/js/EventHandlers/eventHandler.js"></script>
   <script type="text/javascript" src="../app/assets/js/Inputs/Input.js"></script>
@@ -617,5 +648,47 @@
   <script type="text/javascript" src="../app/assets/js/DAO/DAO.js"></script>
   <script type="text/javascript" src="../app/assets/js/DAO/CyclesDAO.js"></script>
   <script type="text/javascript" src="../app/assets/js/Controllers/CycleController.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Cycles.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Cycles.js"></script-->
+
+  <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
+
+  <script type="text/javascript" src="../app/assets/js/Model/Model.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/CustomerModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/CycleModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/KitModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/OrderModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/ProductModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/websql.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/TableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/CustomerTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/CycleTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/KitTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/OrderTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/ProductTableSQL.js"></script>
+
+  <script type="text/javascript" src="../app/assets/js/jquery.min.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLObject.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLArray.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLInput.js"></script>d
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLKitProductsForm.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLKitsPanel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLList.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLProductsOfKit.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLTableInput.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLText.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLTextfield.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLProfileObjects/HTMLProfile.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLProfileObjects/HTMLProfile.Kit.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLProfileObjects/HTMLProfile.Product.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.Kits.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.Orders.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.Products.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLContextMenuObjects/HTMLContextMenu.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLAlertWinObjects/HTMLAlertWin.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLAlertWinObjects/HTMLAlertWin.Order.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLCyclesBarObjects/HTMLCyclesBar.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLPages/Cycles.js"></script>
+  <script type="text/javascript" src="../app/assets/js/FOR_DEBUG.js"></script>
+  <!--<script type="text/javascript" src="../app/assets/js/HTMLObjects/HTML"></script>-->
 </html>

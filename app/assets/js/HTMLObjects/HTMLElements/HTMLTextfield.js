@@ -1,25 +1,28 @@
 class HTMLTextfield extends HTMLObject{
-  constructor(selector, value, handler, onchange){
-    //handler is func which convert data from one format to another
-    //  handler:input.value -> formated
+  constructor(selector, value, onchange){
     //onchange(this.value) calls when user change data of textfield
     //value is a str to paste in html textfield
 
     super(selector);
 
-    this.onchage = onchange;
-    this.handler = handler;
-    this.value = this.handler(value);
+    this.onchange = onchange;
+    this.val = value;
 
     this.html.value = value;
   }
 
-  activateEventListener(){
-    this.html.addEventListener("change", this.onChange);
+  activate(){
+    let _ = this;
+    this.html.addEventListener("change", e => _.onChange(e));
   }
 
   onChange(e){
-    this.value = this.handler(e.target.value);
-    this.onchange(this.value.valueOf());
+    this.val = e.target.value;
+    this.onchange(this.val.valueOf());
+  }
+
+  set value(value){
+    this.val = value;
+    this.html.value = value;
   }
 }

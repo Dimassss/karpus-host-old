@@ -1,14 +1,33 @@
 class HTMLProfileCustomer extends HTMLProfile{
   constructor(selector, fields, onchange){
     /*
+    IS NO CORRECT:
     fields = {fieldName: relativeSelector}
+    NEW VARIANT:
+    fields = {
+      fieldName: [HTMLObject, HTMLObject.handler(data)]
+    }
+
     onchage(CustomerModel)
+
     */
 
     super(selector, fields);
 
     this.db = new CustomerTableSQL();
     this.onchange = onchange;
+  }
+
+  activate(){
+    let _ = this;
+
+    _.profile = {
+
+    };
+
+    Object.keys(_.profile).forEach(k => {
+      if(_.profile[k][0].activate) _.profile[k][0].activate();
+    });
   }
 
   open(id){

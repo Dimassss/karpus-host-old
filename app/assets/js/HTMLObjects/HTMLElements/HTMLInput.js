@@ -1,25 +1,38 @@
 class HTMLInput extends HTMLObject{
-  constructor(selector, value, handler, onchange){
-    //handler is func which convert data from one format to another
-    //  handler:input.value -> formated
+  constructor(selector, value, strToVal, valToStr, onchange){
+    //strToVal is func which convert data from one format to another
+    //  strToVal:input.value -> formated
     //onchange(this.value) calls when user change data of input
     //value is a str to paste in html input
 
     super(selector);
 
-    this.onchage = onchange;
-    this.handler = handler;
-    this.value = this.handler(value);
+    this.onchange = onchange;
+    this.valToStr = valToStr;
+    this.strToVal = strToVal;
+    this.val = value;
 
-    this.html.value = value;
+    if(this.html.getAttribute("type") == "checkbox") this.html.checked = valToStr(value);
+    else this.html.value = valToStr(value);
   }
 
-  activateEventListener(){
-    this.html.addEventListener("change", this.onChange);
+  activate(){
+    let _ = this;
+    this.html.addEventListener("change", e => _.onChange.call(_, e));
   }
 
   onChange(e){
-    this.value = this.handler(e.target.value);
-    this.onchange(this.value.valueOf());
+    this.val = this.strToVal(e.target.value);
+    this.onchange(this.val.valueOf());
+  }
+
+  get value(){
+    return this.val;
+  }
+
+  set value(val){
+    this.val = val;
+    if(this.html.getAttribute("type") == "checkbox") this.html.checked = this.valToStr(val);
+    else this.html.value = this.valToStr(val);
   }
 }

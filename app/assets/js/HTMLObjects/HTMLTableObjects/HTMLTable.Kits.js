@@ -1,13 +1,13 @@
 class HTMLTableKits extends HTMLTable{
-  constructor(selector, callbacks){
+  constructor(selector, callbacks, cols){
     /*
     callbacks = {func1: [cb1, cb2, ...]}
     Every callback take current HTMLTableObject obj as a parametr
     */
 
-    this.callbacks = callbacks;
+    super(new KitTableSQL(), selector, cols, new KitTableSQL());
 
-    super(new KitTableSQL(), selector, [/*cols*/]);
+    this.callbacks = callbacks;
   }
 
   selectRow(){
@@ -19,6 +19,8 @@ class HTMLTableKits extends HTMLTable{
     this.sqlMain = "`cycleID` = ?"
     this.sqlData = [cycleID];
     this.tableIsFull = false;
+    this.body = [];
+    this.html.querySelector("tbody").innerHTML = "";
     this.loadNewRowsEvent("FL");
   }
 }

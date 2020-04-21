@@ -10,11 +10,12 @@ class HTMLAlertWin extends HTMLObject{
     */
     super(selector);
 
-    this.html.querySelector("navbar label:nth-child(1)").addEventListener("click", this.ok);
+    let _ = this;
+    this.html.querySelector("navbar label:nth-child(1)").addEventListener("click", e => this.ok.call(_, e));
   }
 
-  open(){
-    this.fillUp();
-    this.html.querySelector("input#open-alert-window[name=open-alert-window]").checked = true;
+  open(id){
+    this.fillUp(id);
+    this.html.parentNode.querySelector("input#open-alert-window").checked = true;
   }
 }

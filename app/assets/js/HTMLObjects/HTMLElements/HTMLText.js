@@ -1,13 +1,13 @@
-class HTMLInput extends HTMLObject{
+class HTMLText extends HTMLObject{
   constructor(selector, text){
     super(selector);
 
-    this.text = text;
+    this.txt = text;
     this.html.innerHTML = text;
   }
 
   set text(text){
-    this.text = text;
+    this.txt = text;
     this.html.innerHTML = text;
   }
 }

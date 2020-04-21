@@ -1,64 +1,120 @@
 class HTMLKitProductForm extends HTMLObject{
-  constructor(selector, kit, products, maxWeight, maxVolume, callbacks){
+  constructor(selector, callbacks, fullMode){
+    //callbacks = {funcName: [callbacks]}
+    //fullMode is boolean value. If true form will be generated like in alert win orders. If false it will generate only product form
+    /*
+    Needed callbakcs to funks:
+      updateFormEvent(KitModel)
+
+    */
+    super(selector);
+
+    this.fullMode = fullMode;
+    this.selector = selector;
+    this.callbacks = callbacks;
+  }
+
+  fillKitForm(kit, products, maxWeight = 10, maxVolume = 10){
     /**
     @kit is object of KitModel class
     */
     //kit = {id, cycleID, name, count, price, weight, products: {id: {priceSelected: price_type, count}}}
     //products = {id: productModel}
-    //callbacks = {funcName: [callbacks]}
-    /*
-    Needed callbakcs to funks:
-      addOrUpdateProductEvent(KitModel)
-      deleteProductInFormEvent(KitModel)
 
-    */
+    let idMap = Object.fromEntries(products.map(pr => [pr.id, pr]));
+    let _ = this;
+
     this.productsLIST = products;
-
     this.id = kit.id ? kit.id : NaN;
     this.cycleID = kit.cycleID ? kit.cycleID : NaN;
     this.name = kit.name ? kit.name : undefined;
     this.count = kit.count ? kit.count : 0;
-    this.products = kit.products ? kit.products : {};
-    this.pcPrice = this.products.map(pr => pr.price[pr.price.selected?pr.price.selected:"p-kt"] * (pr.count?pr.count*:0)).reduce((a, b) => a + b, 0);
+    this.products = Object.fromEntries(Object.values(kit.products).filter(pr => idMap[pr.id] != undefined).map(pr => [pr.id, pr]));
+    this.pcPrice = Object.values(products).filter(pr => kit.products[pr.id]).map(pr => pr.price[kit.products[pr.id].selected?kit.products[pr.id].selected:"p-kt"] * kit.products[pr.id].count).reduce((a, b) => a + b, 0);
     this.price = kit.price ? kit.price : this.pcPrice;
-    this.pcWeight = this.products.map(pr => (pr.weight?pr.weight:0) * (pr.count?pr.count*:0)).reduce((a, b) => a + b, 0);
+    this.pcWeight = Object.keys(this.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
     this.weight = kit.weight ? kit.weight : this.pcPrice;
     this.maxVolume = maxVolume;
     this.maxWeight = maxWeight;
 
-    super(selector);
-  }
+    let html = ""
+    if(_.fullMode){
+      // - code - take data from @this and generate by it html for kit form
+      html = `<h6 class="columns">
+                    <div class="col-3 pcWeight"></div>
+                    <div class="col-3 pcPrice"></div>
+                    <div class="col-3"><input value="${_.price}" placeholder="Price" class="form-input price" type="number" min="0"/></div>
+                    <div class="col-3"><input value="${_.count}" placeholder="Count" class="form-input count" type="number" min="0" step="1"/></div>
+                    <progress class="progress col-12" value="${600/maxVolume}" min="0" max="100"></progress>
+                    <progress class="progress col-12" value="${(_.weight/maxWeight)*100}" min="0" max="100"></progress>
+                  </h6>
+                  <div class="products-container unique-scroll"></div>`;
+    }else{
+      html = "HellowORLD!";
+    }
 
-  createKitForm(){
-    // - code - take data from @this and generate by it html for kit form
-    //id of form is the same as id of kit
-    // - code - paste generated html to the @this.html
+    this.html.innerHTML = html;
+
+    this.fields = {
+      price: new HTMLInput(
+                          _.selector + " h6 .price",
+                          0,
+                          str => Math.round(parseFloat(str)*100)/100,
+                          val => val.toFixed(2),
+                          val => {
+                            _.price = val;
+                            _.callbacks.updateFormEvent();
+                          }
+                        ),
+      count: new HTMLInput(
+                          _.selector + " h6 .count",
+                          0,
+                          str => parseInt(str),
+                          val => val,
+                          val => {
+                            _.count = val;
+                            _.callbacks.updateFormEvent();
+                          }
+                        ),
+      pcPrice: new HTMLText(_.selector + " h6 .pcPrice", _.pcPrice.toFixed(2) + " uah"),
+      pcWeight: new HTMLText(_.selector + " h6 .pcWeight", _.pcWeight.toFixed(2) + " kg")
+    }
+
+    Object.values(_.fields).forEach(f => {
+      if(f.activate) f.activate();
+    });
+
+    _.fields.price.value = _.price;
+    _.fields.count.value = _.count;
+
+    this.productsForm = new HTMLProductsOfKit(_.selector + " .products-container", maxWeight, maxVolume, {
+      addOrUpdateProductEvent: kit => {
+        _.products = kit.products;
+        _.pcPrice = Object.keys(_.products).map(k => _.products[k].price[(_.products[k].price.selected)?(_.products[k].price.selected):("p-kt")] * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
+        _.pcWeight = Object.keys(_.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
+
+        _.fields.pcPrice.text = _.pcPrice.toFixed(2) + "uah";
+        _.fields.pcWeight.text = _.pcWeight.toFixed(2) + "kg";
+
+        _.callbacks.updateFormEvent();
+      },
+      deleteProductInFormEvent: kit => {
+        _.products = kit.products;
+        _.pcPrice = Object.keys(_.products).map(k => _.products[k].price[(_.products[k].price.selected)?(_.products[k].price.selected):("p-kt")] * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
+        _.pcWeight = Object.keys(_.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
+
+        _.fields.pcPrice.text = _.pcPrice + " uah";
+        _.fields.pcWeight.text = _.pcWeight + " kg";
+
+        _.callbacks.updateFormEvent();
+      }
+    });
+    this.productsForm.fillForm(_.kit, _.productsLIST,);
   }
 
   deleteKitProductForm(){
     this.html.outerHTML = "";
     delete this;
-  }
-
-  addOrUpdateProduct(productID, selectedPrice, count){
-    let _this = this;
-    // - code - add or update product in the html form
-    // - code - add event listeners
-    this.products[productID] = {priceSelected: selectedPrice, count: count};
-    this.pcPrice += count * productsLIST[productID].price[selectedPrice];
-    this.pcWeight += count * productsLIST[productID].weight;
-    // - code - update progress bar of html form
-    if(count <= 0) this.hideProduct(product.id);
-
-    this.callbacks.addOrUpdateProductEvent.forEach(cb => cb(new KitModel({
-      id: _this.id,
-      cycleID: _this.cycleID,
-      name: _this.name?_this.name:"",
-      count: this.count,
-      products: _this.products,
-      price: _this.price == _this.pcPrice?0:_this.price,
-      weight: : _this.weight == _this.pcWeight?0:_this.weight;
-    })));
   }
 
   onChangeForm(e){
@@ -68,36 +124,29 @@ class HTMLKitProductForm extends HTMLObject{
     //of it is possible to get that data, it writes it to this object
   }
 
-  onChangeProduct(e){
-    //calls when something is changed by user in html form
-
-    let id, count, selectedPrice;
-    //- code - get id, count and which price was selected from changed product
-    this.addOrUpdateProduct(id, count, selectedPrice);
-
-  }
-
-  hideProductInForm(productID){
+  hideZeroProductsInForm(productID){
     if(this.products[productID]){
       // - code - hide the current product in htm form
     }
   }
 
-  showProductInForm(productID){
+  showProductsInForm(productID){
     if(this.products[productID]){
       // - code - show the current product in htm form
     }
   }
 
-  deleteProductInForm(productID){
-    if(this.products[productID]){
-      let product = this.products[productID];
-
-      // - code - delete the current product in htm form
-      this.pcPrice -= product.count * productsLIST[productID].price[product.priceSelected];
-      this.pcWeight -= product.count * productsLIST[productID].weight;
-      delete this.products[productID];
-      // - code - update progress bar of html form
-    }
+  get kit(){
+    let _ = this;
+    return new KitModel({
+      id: _.id,
+      name: _.name,
+      count: _.count,
+      products: _.products,
+      price: _.price == _.pcPrice? 0 : _.price,
+      weight: _.weight == _.pcWeight? 0 : _.weight,
+      pcPrice: _.pcPrice,
+      pcWeight: _.pcWeight
+    });
   }
 }

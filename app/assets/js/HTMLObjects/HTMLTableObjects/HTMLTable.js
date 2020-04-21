@@ -19,10 +19,11 @@ Following function can be in child:
 */
 
 class HTMLTable extends HTMLObject{
-  constructor(db, selector, tableColumns){
+  constructor(db, selector, tableColumns/*, db*/){
     /**
     tableColumns = ["col1", "col2"]
     */
+    super(selector);
 
     this.tableIsFull = false; //if true, when user scroll table, it wouldnt liod new rows. Sets true when all the rows from db are loaded.
     this.columns = tableColumns;
@@ -31,25 +32,26 @@ class HTMLTable extends HTMLObject{
     this.selected = NaN; //means that nothing is selected
     this.sqlMain = ""; //sqlMain is str which always is added to start of the load sql request
     this.sqlData = []; //data to select(). (To "?" places in sqlMain)
-    super(selector);
+    this.db = db;
 
     this.findInput = this.html.parentElement.parentElement.parentElement.querySelector("input.search");
     if(this.findInput) this.findInput.addEventListener("change", this.findEvent);
-    this.html.addEventListener("scroll", this.loadNewRowsEvent);
+    this.html.addEventListener("scroll", e => this.loadNewRowsEvent.call(_));
   }
 
   loadNewRowsEvent(forceLoad){
     let _this = this;
+
     if(!this.tableIsFull) if(forceLoad == "FL" || this.html.scrollHeight - this.html.scrollTop < 400)
       this.db.select(
               _this.sqlMain + " "
               + (
                   (this.findInput && this.findInput.value)
                   ?(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" ") + " AND "):""
-              ) + "`id` NOT IN ("
+              ) + (Object.keys(_this.body)[0]?("AND `id` NOT IN ("
               + Object.keys(_this.body).map(el => "?").join(",")
-              + ") ORDER BY ID DESC LIMIT 30",
-          [_this.sqlData, ...Object.keys(this.body)],
+              + ") "):"") + "ORDER BY ID DESC LIMIT 30",
+          [..._this.sqlData, ...Object.keys(this.body)],
           rows => {
             if(!rows) _this.tableIsFull = true;
             else{
@@ -74,35 +76,47 @@ class HTMLTable extends HTMLObject{
 
     let rowHTML = "";
     this.columns.forEach(col => {
-      rowHTML += "<td>" + row.getCellOfRow(col) + "</td>";
+      rowHTML += `<td data-rowID="${row.id}">${row.getCellOfRow?row.getCellOfRow(col):col}</td>`;
     });
-    this.body[row.id] = row.valueOf();
 
-    if(this.body[row.id]) this.html.querySelector("tr[data-rowID='" + row + "']").innerHTML = rowHTML;
-    else this.html.insertAdjacentHTML("beforeend", rowHTML);
+    const isNew = this.body[row.id]?false:true;
 
-    let tr = this.html.querySelector("tr[data-rowID='" + row + "']");
+    if(this.body[row.id]) this.html.querySelector(`tr[data-rowID='${row.id}']`).innerHTML = rowHTML;
+    else this.html.querySelector("tbody").insertAdjacentHTML("beforeend", `<tr data-rowID='${row.id}'>${rowHTML}</tr>`);
+
+    this.body[row.id] = row;
+
+    let tr = this.html.querySelector("tr[data-rowID='" + row.id + "']");
+    let _ = this;
     //Maybe i need to update all the cells
-    tr.addEventListener("click", this.selectRowEvent);
-    if(this.dblSelectRow) tr.addEventListener("dblclick", this.dblSelectRow);
+    if(!isNew) return;
+    tr.addEventListener("click", e => this.selectRowEvent.call(_, e));
+    if(this.dblSelectRow) tr.addEventListener("dblclick", e => this.dblSelectRow.call(_, e));
   }
 
-  deleteRow(rowID){
+  deleteRow(rowID = this.selected){
     //if row exist it will be deleted
     //rowID is an element id (for example, id of customer or order)
+
+    if(!rowID) return;
 
     let row = this.html.querySelector("tr[data-rowID='" + rowID + "']");
     if(row) row.outerHTML = "";
     if(row[rowID]) delete row[rowID];
+    this.db([rowID]);
+    if(this.callbacks.deleteRow) this.callbacks.deleteRow.forEach(cb => cb(rowID));
+  }
+
+  deleteAllFromCycle(cycleID){
+    let _ = this;
+    _.db.select("`cycleID` = ?", [cycleID], records => _.db.delete(records.map(rec => rec.id)));
   }
 
   selectRowEvent(e){
-
     if(!isNaN(this.selected)) this.html.querySelector("tr[data-rowID='" + this.selected + "']").classList.remove("selected");
 
     this.selected = parseInt(e.target.getAttribute("data-rowID"));
     this.html.querySelector("tr[data-rowID='" + this.selected + "']").classList.add("selected");
-
     if(this.selectRow) this.selectRow(); //Use this.selected to get rowID
   }
 
