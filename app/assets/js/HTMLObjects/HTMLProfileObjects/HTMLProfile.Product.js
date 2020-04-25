@@ -22,8 +22,7 @@ class HTMLProfileProduct extends HTMLProfile{
     let _ = this;
 
     _.profile = {
-      name: [
-        new HTMLInput(
+      name: new HTMLInput(
           _.selector + " " + _.fields.name,
           "",
           str => str,
@@ -33,59 +32,56 @@ class HTMLProfileProduct extends HTMLProfile{
             _.onChange();
           }
         ),
-        val => {
-          this.value = val?val:"";
-        }],
-      unit: [
-        new HTMLList(_.selector + " " + _.fields.unit,
+      unit: new HTMLList(_.selector + " " + _.fields.unit,
           false,
           {
             kg: "Kilogram",
             p: "Piece",
             l: "Liter",
             g: "Gramm"
-          }, "p", selected => {
+          }, "p", [selected => {
             _.product.unit = selected;
-          }),
-          selected => {
-            this.selected = selected;
-          }
-      ],
-      price: [new HTMLTableInput(_.selector + " " + _.fields.price,
-          ["input[data-type='p-wh']", "input[data-type='p-sh']", "input[data-type='p-rst']", "input[data-type='p-kt']"],
-          [0, 0, 0, 0],
-          strArr => strArr.map(str => parseInt(str)),
+            _.onChange();
+          }]),
+      price: new HTMLTableInput(_.selector + " " + _.fields.price,
+          {"p-wh": "input[data-type='p-wh']", "p-sh": "input[data-type='p-sh']", "p-rst": "input[data-type='p-rst']", "p-kt": "input[data-type='p-kt']"},
+          {"p-wh": 0, "p-sh": 0, "p-rst": 0, "p-kt": 0},
+          strArr => strArr,
           valArr => valArr,
           valArr => {
             _.product.price = valArr;
+            _.onChange();
           }
         ),
-        arr => {
-          this.val = arr;
-        }],
-      count: [new HTMLTableInput(_.selector + " " + _.fields.count,
-          ["input[data-type='c-st']", "input[data-type='c-wh']", "input[data-type='c-sh']", "input[data-type='c-kt']", "input[data-type='c-or']", "input[data-type='c-lft']"],
-          [0, 0, 0, 0, 0, 0],
-          strArr => strArr.map(str => parseInt(str)),
-          valArr => valArr,
+      count: new HTMLTableInput(_.selector + " " + _.fields.count,
+          {'c-st': "input[data-type='c-st']", 'c-wh': "input[data-type='c-wh']", 'c-sh': "input[data-type='c-sh']", 'c-kt': "input[data-type='c-kt']", 'c-or': "input[data-type='c-or']", "c-lft": "input[data-type='c-lft']"},
+          {'c-st':0, 'c-wh': 0, 'c-sh': 0, 'c-kt': 0, 'c-or': 0, 'c-lft': 0},
+          strArr => {
+            if(!strArr["c-st"]) strArr["c-st"] = 0;
+
+            strArr["c-kt"] = strArr["c-st"] - strArr["c-wh"] - strArr["c-sh"];
+            strArr["c-kt"] = strArr["c-kt"]?strArr["c-kt"]:0;
+            strArr["c-lft"] = strArr["c-kt"] - strArr["c-or"];
+            strArr["c-lft"] = strArr["c-lft"]?strArr["c-lft"]:0;
+
+            return strArr;
+          },
           valArr => {
-            if(!valArr[0]) valArr[0] = 0;
+            if(!valArr["c-st"]) valArr["c-st"] = 0;
 
-            valArr[3] = valArr[0] - valArr[1] - valArr[2];
-            valArr[3] = valArr[3]?valArr[3]:0;
-            valArr[5] = valArr[3] - valArr[4];
-            valArr[5] = valArr[5]?valArr[5]:0;
+            valArr["c-kt"] = valArr["c-st"] - valArr["c-wh"] - valArr["c-sh"];
+            valArr["c-kt"] = valArr["c-kt"]?valArr["c-kt"]:0;
+            valArr["c-lft"] = valArr["c-kt"] - valArr["c-or"];
+            valArr["c-lft"] = valArr["c-lft"]?valArr["c-lft"]:0;
 
-            _.profile.count.val = valArr;
-
+            return valArr;
+          },
+          valArr => {
             _.product.count = valArr;
+            _.onChange();
           }
         ),
-        arr => {
-          this.val = arr;
-        }],
-      dimensions: [
-        new HTMLInput(
+      dimensions: new HTMLInput(
             _.selector + " " + _.fields.dimensions,
             [0,0,0],
             str => str.split(" ").map(v => parseFloat(v)),
@@ -95,10 +91,7 @@ class HTMLProfileProduct extends HTMLProfile{
               _.onChange();
             }
           ),
-          val => {
-          this.value = val?val:[0, 0, 0];
-        }],
-      weight: [new HTMLInput(
+      weight: new HTMLInput(
           _.selector + " " + _.fields.weight,
           "",
           str => parseFloat(str),
@@ -108,14 +101,14 @@ class HTMLProfileProduct extends HTMLProfile{
             _.onChange();
           }
         ),
-        val => {
-        this.value = val?val:0;
-        }],
-      description: [new HTMLTextfield(_.selector + " " + _.fields.description, "", txt => {_.product.description = txt;}), val => {this.value = val}]
+      description: new HTMLTextfield(_.selector + " " + _.fields.description, "", txt => {
+        _.product.description = txt;
+        _.onChange();
+      })
     };
 
     Object.keys(_.profile).forEach(k => {
-      if(_.profile[k][0].activate) _.profile[k][0].activate();
+      if(_.profile[k].activate) _.profile[k].activate();
     });
   }
 
@@ -125,12 +118,9 @@ class HTMLProfileProduct extends HTMLProfile{
 
     this.db.load([id], products => {
       if(products[0]){
-        _.product = product[0];
+        _.product = products[0];
         // - code - set up all fields in the profile
-        Object.keys(_.profile).forEach(fieldName => {
-          _.profile[fieldName][1].call(_.profile[fieldName][0], _.kit[fieldName]);
-          if(_.profile[fieldName][0].activate) _.profile[fieldName][0].activate();
-        });
+        _.setProduct(products[0]);
       }
     });
   }
@@ -142,10 +132,30 @@ class HTMLProfileProduct extends HTMLProfile{
 
   onChange(){
     let _ = this;
-    _.db.save([_.product], product => {
-      if(!product) return;
-       _.product.id = product.id;
+    _.db.save([_.product], products => {
+      if(!products[0]) return;
+       _.product.id = products[0].id;
        _.onchange(_.product);
     });
+  }
+
+  setProduct(product){
+    /*
+    name: HTMLInput
+    unit: HTMLList
+    price: HTMLTableInput
+    count: HTMLTableInput
+    dimensions: HTMLInput
+    weight: HTMLInput
+    description: HTMLTextfield
+    */
+    let _ = this;
+    _.profile.name.value = product.name;
+    _.profile.unit.selected = product.unit;
+    _.profile.price.val = product.price;
+    _.profile.count.val = product.count;
+    _.profile.dimensions.value = product.dimensions;
+    _.profile.weight.value = product.weight;
+    _.profile.description.value = product.description;
   }
 }

@@ -1,33 +1,37 @@
 class HTMLTableInput extends HTMLObject{
-  constructor(selector, fields, value, strArrToValArr, valArrToStrArr, onchange){
+  constructor(selector, fields, value, valArrRefresh, valArrToStrArr, onchange){
     //fields is an array of selectors to the fields
     //strArrToValArr is func
     //onchange(this.value) calls when user change data of input
-    //value is an array. value[i] = value to paste in fields[i] input
+    //value is an array. value[key] = value to paste in fields[key] input
 
     super(selector);
 
-    this.onchage = onchange;
-    this.strToVal = strArrToValArr;
+    this.onchange = onchange;
+    this.valArrRefresh = valArrRefresh;
     this.valToStr = valArrToStrArr;
-    this.value = value;
+    this.value = valArrRefresh(value);
     this.fields = fields;
-    
-    fields.forEach((field, i) => this.html.querySelector(field).value = value[i]?valArrToStrArr(value[i]):"");
+    let _ = this;
+    Object.entries(_.fields).forEach(field => _.html.querySelector(field[1]).value = value[field[0]]);
   }
 
   activate(){
-    this.fields.forEach(field => this.html.querySelector(field).addEventListener("change", this.onChange));
+    let _ = this;
+    Object.values(_.fields).forEach(field => this.html.querySelector(field).addEventListener("change", e => _.onChange(e)));
   }
 
   onChange(e){
-    this.value = this.handler(fields.map(field => this.html.querySelector(field).value.valueOf()));
-    this.onchange(this.value);
+    let _ = this;
+    this.value[e.target.dataset.type] = e.target.value;
+    this.value = _.valArrRefresh(_.value);
+    Object.entries(_.fields).forEach(field => _.html.querySelector(field[1]).value = _.value[field[0]]);
+    this.onchange(_.value);
   }
 
   set val(value){
-    this.value = value;
+    this.value = this.valArrRefresh(value);
     let _ = this;
-    fields.forEach((field, i) => _.html.querySelector(field).value = value[i]?_.valToStr(value[i]):"");
+    Object.entries(_.fields).forEach(field => _.html.querySelector(field[1]).value = value[field[0]]);
   }
 }

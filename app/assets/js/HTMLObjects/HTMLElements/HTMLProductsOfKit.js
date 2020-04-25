@@ -22,10 +22,21 @@ class HTMLProductsOfKit extends HTMLObject{
   }
 
   fillForm(kit, products){
-    let idMap = /*Object.fromEntries(products.map((pr, i) => [pr.id, pr]))*/products;
     let _ = this;
     this.productsLIST = Object.values(products);
-    this.products = Object.fromEntries(Object.values(kit.products).filter(pr => idMap[pr.id] != undefined).map(pr => [pr.id, pr]));
+    //setting products
+    let prs = JSON.parse(JSON.stringify(Object.fromEntries(products.map(pr => [pr.id, pr]))));
+    Object.keys(prs).forEach(id => {
+      prs[id].count = 0;
+      prs[id].price.selected = "p-kt";
+    });
+    Object.keys(kit.products).forEach(id => {
+      if(!prs[id])return;
+      prs[id].count = kit.products[id].count;
+      prs[id].price.selected = kit.products[id].price.selected;
+    });
+    this.products = prs;
+    //end setting products
     this.pcPrice = Object.keys(_.products).map(k => _.products[k].price[_.products[k].price.selected?_.products[k].price.selected:"p-kt"] * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
     this.price = kit.price ? kit.price : this.pcPrice;
     this.pcWeight = Object.keys(_.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);

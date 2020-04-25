@@ -37,7 +37,6 @@ class HTMLList extends HTMLObject{
 
   set array(list){
     let _ = this;
-
     _.list = list;
     //generate html and show the list on page
     if(_.canWrite) _.html.parentNode.querySelector("datalist").innerHTML = list.map(el => `<option>${el}</option>`).join("");

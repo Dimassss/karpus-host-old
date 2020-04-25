@@ -18,17 +18,27 @@ class HTMLKitProductForm extends HTMLObject{
     /**
     @kit is object of KitModel class
     */
-    //kit = {id, cycleID, name, count, price, weight, products: {id: {priceSelected: price_type, count}}}
+    //kit = {id, name, count, price, weight, products: {id: {priceSelected: price_type, count}}}
     //products = {id: productModel}
-    let idMap = products.constructor.name == "array"?Object.fromEntries(products.map(pr => [pr.id, pr])):products;
     let _ = this;
 
     this.productsLIST = products;
     this.id = kit.id ? kit.id : NaN;
-    this.cycleID = kit.cycleID ? kit.cycleID : NaN;
     this.name = kit.name ? kit.name : undefined;
     this.count = kit.count ? kit.count : 0;
-    this.products = Object.fromEntries(Object.values(kit.products).filter(pr => idMap[pr.id] != undefined).map(pr => [pr.id, pr]));
+    //setting products
+    let prs = JSON.parse(JSON.stringify(Object.fromEntries(products.map(pr => [pr.id, pr]))));
+    Object.keys(prs).forEach(id => {
+      prs[id].count = 0;
+      prs[id].price.selected = "p-kt";
+    });
+    Object.keys(kit.products).forEach(id => {
+      if(!prs[id])return;
+      prs[id].count = kit.products[id].count;
+      prs[id].price.selected = kit.products[id].price.selected;
+    });
+    this.products = prs;
+    //end setting products
     this.pcPrice = Object.values(products).filter(pr => kit.products[pr.id]).map(pr => pr.price[kit.products[pr.id].selected?kit.products[pr.id].selected:"p-kt"] * kit.products[pr.id].count).reduce((a, b) => a + b, 0);
     this.price = kit.price ? kit.price : this.pcPrice;
     this.pcWeight = Object.keys(this.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);

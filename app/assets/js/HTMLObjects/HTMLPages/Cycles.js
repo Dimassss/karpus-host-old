@@ -75,7 +75,7 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
     tableProduct = new HTMLTableProducts(mapper.tables.product.selector, {}, mapper.tables.product.cols),
     tableKit = new HTMLTableKits(mapper.tables.kit.selector, {}, mapper.tables.kit.cols),
     kitProfile = new HTMLProfileKit(mapper.profiles.kit.selector, mapper.profiles.kit.fields, kit => tableKit.addOrUpdateRow(kit)),
-    productProfile = new HTMLProfileProduct(mapper.profiles.product.selector, mapper.profiles.product.fields, tableProduct.addOrUpdateRow),
+    productProfile = new HTMLProfileProduct(mapper.profiles.product.selector, mapper.profiles.product.fields, product => tableProduct.addOrUpdateRow(product)),
     alertWin = new HTMLAlertWinOrder(mapper.alertWin.selector, mapper.alertWin.fields, (customer, order) => {
       order.customerName = customer.fullName;
       tableOrder.addOrUpdateRow(new OrderModel(order));

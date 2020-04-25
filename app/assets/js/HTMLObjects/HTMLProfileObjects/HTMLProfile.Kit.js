@@ -123,7 +123,7 @@ class HTMLProfileKit extends HTMLProfile{
       if(kits){
         _.id = id;
         (new ProductTableSQL()).select("`cycleID` = ?", [kits[0].cycleID], products => {
-          f(kits[0], Object.fromEntries(products.map(pr => [pr.id, pr])));
+          f(kits[0], products);
         });
       }
     });

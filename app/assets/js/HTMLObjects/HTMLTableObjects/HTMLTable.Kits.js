@@ -18,9 +18,7 @@ class HTMLTableKits extends HTMLTable{
   loadOnCycleSelect(cycleID){
     this.sqlMain = "`cycleID` = ?"
     this.sqlData = [cycleID];
-    this.tableIsFull = false;
-    this.body = [];
-    this.html.querySelector("tbody").innerHTML = "";
+    this.cleanTable();
     this.loadNewRowsEvent("FL");
   }
 }

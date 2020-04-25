@@ -16,7 +16,7 @@ class OrderModel extends Model{
     switch (t) {
       case "kits":
         let html = Object.keys(this[t]).map(k =>
-              `<span title="${
+              `<span data-rowid="${_.id}" title="${
                 Object.values(_[t][k].products)
                       .map(pr => `${pr.name}: ${pr.count}`)
                       .join("\n")

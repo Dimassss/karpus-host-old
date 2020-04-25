@@ -35,8 +35,8 @@ class HTMLTable extends HTMLObject{
     this.db = db;
 
     this.findInput = this.html.parentElement.parentElement.parentElement.querySelector("input.search");
-    if(this.findInput) this.findInput.addEventListener("change", this.findEvent);
-    this.html.addEventListener("scroll", e => this.loadNewRowsEvent.call(_));
+    if(this.findInput) this.findInput.addEventListener("change", e => this.findEvent(e));
+    this.html.addEventListener("scroll", e => this.loadNewRowsEvent());
   }
 
   loadNewRowsEvent(forceLoad){
@@ -90,8 +90,8 @@ class HTMLTable extends HTMLObject{
     let _ = this;
     //Maybe i need to update all the cells
     if(!isNew) return;
-    tr.addEventListener("click", e => this.selectRowEvent.call(_, e));
-    if(this.dblSelectRow) tr.addEventListener("dblclick", e => this.dblSelectRow.call(_, e));
+    tr.addEventListener("click", e => this.selectRowEvent(e));
+    if(this.dblSelectRow) tr.addEventListener("dblclick", e => this.dblSelectRow(e));
   }
 
   deleteRow(rowID = this.selected){
@@ -127,7 +127,8 @@ class HTMLTable extends HTMLObject{
 
   cleanTable(){
     this.body = {};
-    this.html.innerHTML = "";
+    this.html.querySelector("tbody").innerHTML = "";
     this.tableIsFull = false;
+    this.selected = NaN;
   }
 }
