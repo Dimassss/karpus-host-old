@@ -20,8 +20,7 @@ class HTMLKitProductForm extends HTMLObject{
     */
     //kit = {id, cycleID, name, count, price, weight, products: {id: {priceSelected: price_type, count}}}
     //products = {id: productModel}
-
-    let idMap = Object.fromEntries(products.map(pr => [pr.id, pr]));
+    let idMap = products.constructor.name == "array"?Object.fromEntries(products.map(pr => [pr.id, pr])):products;
     let _ = this;
 
     this.productsLIST = products;
@@ -37,55 +36,53 @@ class HTMLKitProductForm extends HTMLObject{
     this.maxVolume = maxVolume;
     this.maxWeight = maxWeight;
 
-    let html = ""
-    if(_.fullMode){
-      // - code - take data from @this and generate by it html for kit form
-      html = `<h6 class="columns">
-                    <div class="col-3 pcWeight"></div>
-                    <div class="col-3 pcPrice"></div>
-                    <div class="col-3"><input value="${_.price}" placeholder="Price" class="form-input price" type="number" min="0"/></div>
-                    <div class="col-3"><input value="${_.count}" placeholder="Count" class="form-input count" type="number" min="0" step="1"/></div>
-                    <progress class="progress col-12" value="${600/maxVolume}" min="0" max="100"></progress>
-                    <progress class="progress col-12" value="${(_.weight/maxWeight)*100}" min="0" max="100"></progress>
-                  </h6>
-                  <div class="products-container unique-scroll"></div>`;
-    }else{
-      html = "HellowORLD!";
-    }
+    let html = `<h6 class="columns">
+                  ${_.fullMode
+                    ?`<div class="col-3 pcWeight"></div>
+                      <div class="col-3 pcPrice"></div>
+                      <div class="col-3"><input value="${_.price}" placeholder="Price" class="form-input price" type="number" min="0"/></div>
+                      <div class="col-3"><input value="${_.count}" placeholder="Count" class="form-input count" type="number" min="0" step="1"/></div>`
+                    :``
+                  }
+                  <progress class="progress col-12" value="${600/maxVolume}" min="0" max="100"></progress>
+                  <progress class="progress col-12" value="${(_.weight/maxWeight)*100}" min="0" max="100"></progress>
+                </h6>
+                <div class="products-container unique-scroll"></div>`;
 
     this.html.innerHTML = html;
 
-    this.fields = {
-      price: new HTMLInput(
-                          _.selector + " h6 .price",
-                          0,
-                          str => Math.round(parseFloat(str)*100)/100,
-                          val => val.toFixed(2),
-                          val => {
-                            _.price = val;
-                            _.callbacks.updateFormEvent();
-                          }
-                        ),
-      count: new HTMLInput(
-                          _.selector + " h6 .count",
-                          0,
-                          str => parseInt(str),
-                          val => val,
-                          val => {
-                            _.count = val;
-                            _.callbacks.updateFormEvent();
-                          }
-                        ),
-      pcPrice: new HTMLText(_.selector + " h6 .pcPrice", _.pcPrice.toFixed(2) + " uah"),
-      pcWeight: new HTMLText(_.selector + " h6 .pcWeight", _.pcWeight.toFixed(2) + " kg")
+    this.fields = {};
+    if(_.fullMode){
+      this.fields.price = new HTMLInput(
+                            _.selector + " h6 .price",
+                            0,
+                            str => Math.round(parseFloat(str)*100)/100,
+                            val => val.toFixed(2),
+                            val => {
+                              _.price = val;
+                              _.callbacks.updateFormEvent();
+                            }
+                          );
+      this.fields.count = new HTMLInput(
+                            _.selector + " h6 .count",
+                            0,
+                            str => parseInt(str),
+                            val => val,
+                            val => {
+                              _.count = val;
+                              _.callbacks.updateFormEvent();
+                            }
+                          );
+      this.fields.pcPrice = new HTMLText(_.selector + " h6 .pcPrice", _.pcPrice.toFixed(2) + " uah");
+      this.fields.pcWeight = new HTMLText(_.selector + " h6 .pcWeight", _.pcWeight.toFixed(2) + " kg");
+
+      Object.values(_.fields).forEach(f => {
+        if(f.activate) f.activate();
+      });
+
+      _.fields.price.value = _.price;
+      _.fields.count.value = _.count;
     }
-
-    Object.values(_.fields).forEach(f => {
-      if(f.activate) f.activate();
-    });
-
-    _.fields.price.value = _.price;
-    _.fields.count.value = _.count;
 
     this.productsForm = new HTMLProductsOfKit(_.selector + " .products-container", maxWeight, maxVolume, {
       addOrUpdateProductEvent: kit => {
@@ -93,8 +90,10 @@ class HTMLKitProductForm extends HTMLObject{
         _.pcPrice = Object.keys(_.products).map(k => _.products[k].price[(_.products[k].price.selected)?(_.products[k].price.selected):("p-kt")] * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
         _.pcWeight = Object.keys(_.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
 
-        _.fields.pcPrice.text = _.pcPrice.toFixed(2) + "uah";
-        _.fields.pcWeight.text = _.pcWeight.toFixed(2) + "kg";
+        if(_.fullMode){
+          _.fields.pcPrice.text = _.pcPrice.toFixed(2) + "uah";
+          _.fields.pcWeight.text = _.pcWeight.toFixed(2) + "kg";
+        }
 
         _.callbacks.updateFormEvent();
       },
@@ -103,8 +102,10 @@ class HTMLKitProductForm extends HTMLObject{
         _.pcPrice = Object.keys(_.products).map(k => _.products[k].price[(_.products[k].price.selected)?(_.products[k].price.selected):("p-kt")] * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
         _.pcWeight = Object.keys(_.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
 
-        _.fields.pcPrice.text = _.pcPrice + " uah";
-        _.fields.pcWeight.text = _.pcWeight + " kg";
+        if(_.fullMode){
+          _.fields.pcPrice.text = _.pcPrice + " uah";
+          _.fields.pcWeight.text = _.pcWeight + " kg";
+        }
 
         _.callbacks.updateFormEvent();
       }

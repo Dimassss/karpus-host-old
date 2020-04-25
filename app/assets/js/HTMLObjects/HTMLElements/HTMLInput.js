@@ -22,7 +22,7 @@ class HTMLInput extends HTMLObject{
   }
 
   onChange(e){
-    this.val = this.strToVal(e.target.value);
+    this.val = this.strToVal(this.html.getAttribute("type") == "checkbox"?e.target.checked:e.target.value);
     this.onchange(this.val.valueOf());
   }
 

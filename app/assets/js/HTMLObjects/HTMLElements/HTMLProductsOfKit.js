@@ -22,9 +22,9 @@ class HTMLProductsOfKit extends HTMLObject{
   }
 
   fillForm(kit, products){
-    let idMap = Object.fromEntries(products.map((pr, i) => [pr.id, pr]));
+    let idMap = /*Object.fromEntries(products.map((pr, i) => [pr.id, pr]))*/products;
     let _ = this;
-    this.productsLIST = products;
+    this.productsLIST = Object.values(products);
     this.products = Object.fromEntries(Object.values(kit.products).filter(pr => idMap[pr.id] != undefined).map(pr => [pr.id, pr]));
     this.pcPrice = Object.keys(_.products).map(k => _.products[k].price[_.products[k].price.selected?_.products[k].price.selected:"p-kt"] * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
     this.price = kit.price ? kit.price : this.pcPrice;

@@ -47,7 +47,7 @@ class HTMLKitsPanel extends HTMLObject{
         preparedKits.forEach(kit => idMap[kit.id] = kit);
         kits = kits.map(kit => {
           if(idMap[kit.id]) return new KitModel(idMap[kit.id]);
-          kit.products = Object.fromEntries(kit.products.map(pr => [pr.id, pr]));
+          //kit.products = Object.fromEntries(kit.products.map(pr => [pr.id, pr]));
           return kit;
         });
 

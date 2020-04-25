@@ -22,104 +22,84 @@ class HTMLProfileKit extends HTMLProfile{
     let _ = this;
 
     _.profile = {
-      name: [
-        new HTMLInput(
-            _.selector + " " + _.fields.name,
-            "",
-            str => str,
-            val => val,
-            val => {
-              _.kit.name = val;
-              _.onChange();
-            }
-          ),
-          val => {
-          this.value = val?val:"";
-        }],
-      pcPrice: [new HTMLText(_.selector + " " + _.fields.pcPrice, ""), txt => {this.text = txt;}],
-      price: [new HTMLInput(
-          _.selector + " " + _.fields.name,
-          "",
-          str => parseFloat(str),
-          val => val,
-          val => {
-            _.kit.price = val;
-            _.profile.pcPrice[1].call(_.profile.pcPrice[0], val);
-            _.onChange();
-          }
-        ),
-        val => {
-        this.value = val?val:0;
-      }],
-      type: [new HTMLInput(
-          _.selector + " " + _.fields.type,
-          "",
-          str => str,
-          val => val,
-          val => {
-            _.kit.type = val;
-            _.onChange();
-          }
-        ),
-        val => {
-        this.value = val?val:"";
-      }],
-      size: [new HTMLInput(
-          _.selector + " " + _.fields.size,
-          "",
-          str => str,
-          val => val,
-          val => {
-            _.kit.size = val;
-            _.onChange();
-          }
-        ),
-        val => {
-        this.value = val?val:"";
-      }],
-      dimensions: [
-        new HTMLInput(
-            _.selector + " " + _.fields.dimensions,
-            [0,0,0],
-            str => str.split(" ").map(v => parseFloat(v)),
-            val => val.join(" "),
-            val => {
-              _.kit.dimensions = val;
-              _.onChange();
-            }
-          ),
-          val => {
-          this.value = val?val:[0, 0, 0];
-        }],
-      pcWeight: [new HTMLText(_.selector + " " + _.fields.pcWeight, ""), txt => {this.text = txt;}],
-      weight: [new HTMLInput(
-          _.selector + " " + _.fields.weight,
+      name: new HTMLInput(
+              _.selector + " form " + _.fields.name,
+              "",
+              str => str,
+              val => val,
+              val => {
+                _.kit.name = val;
+                _.onChange();
+              }
+            ),
+      pcPrice: new HTMLText(_.selector + " form " + _.fields.pcPrice, ""),
+      price: new HTMLInput(
+              _.selector + " form " + _.fields.price,
+              "",
+              str => parseFloat(str),
+              val => val,
+              val => {
+                _.kit.price = val;
+                _.profile.pcPrice.text = val;
+                _.onChange();
+              }
+            ),
+      type: new HTMLInput(
+              _.selector + " form " + _.fields.type,
+              "",
+              str => str,
+              val => val,
+              val => {
+                _.kit.type = val;
+                _.onChange();
+              }
+            ),
+      size: new HTMLInput(
+              _.selector + " form " + _.fields.size,
+              "",
+              str => str,
+              val => val,
+              val => {
+                _.kit.size = val;
+                _.onChange();
+              }
+            ),
+      dimensions: new HTMLInput(
+              _.selector + " form " + _.fields.dimensions,
+              [0,0,0],
+              str => str.split(" ").map(v => parseFloat(v)),
+              val => val.join(" "),
+              val => {
+                _.kit.dimensions = val;
+                _.onChange();
+              }
+            ),
+      pcWeight: new HTMLText(_.selector + " form " + _.fields.pcWeight, ""),
+      weight: new HTMLInput(
+          _.selector + " form " + _.fields.weight,
           "",
           str => parseFloat(str),
           val => val,
           val => {
             _.kit.weight = val;
-            _.profile.pcWeight[1].call(_.profile.pcWeight[0], val);
             _.onChange();
           }
         ),
-        val => {
-        this.value = val?val:0;
-      }],
-      desription: [new HTMLTextfield(_.selector + " " + _.fields.description, "", txt => {_.kit.description = txt;return txt}), val => {this.value = val;return val}],
-      products: [new HTMLKitProductForm(_.selector + " " + _.fields.kits, {
-        updateFormEvent: kit => {
-          Object.keys(kit).forEach(k => _.kit[k] = kit[k]);
+      description: new HTMLTextfield(_.selector + " form " + _.fields.description, "", txt => {_.kit.description = txt;return txt}),
+      products: new HTMLKitProductForm(_.selector + " " + _.fields.products, {
+        updateFormEvent: () => {
+          _.kit.products = _.profile.products.kit.products;
+          _.kit.pcWeight = _.profile.products.kit.pcWeight;
+          _.kit.pcPrice = _.profile.products.kit.pcPrice;
+          _.profile.pcWeight.text = _.kit.pcWeight.toFixed(2) + " kg";
+          _.profile.pcPrice.text = _. kit.pcPrice.toFixed(2) + " uah";
           _.onChange();
         }
-      }, false), d => {
-        //d = [kit, products]
-        this.fillKitForm(d[0], d[1]);
-      }]
+      })
     };
 
     Object.keys(_.profile).forEach(k => {
-      if(_.profile[k][0].activate) _.profile[k][0].activate();
+      if(_.profile[k].activate) _.profile[k].activate();
     });
   }
 
@@ -128,11 +108,12 @@ class HTMLProfileKit extends HTMLProfile{
     let f = (kit, products) => {
       _.kit = kit;
       // - code - set up all fields in the profile
-      Object.keys(_.profile).forEach(fieldName => {
+      _.setKitProfile(kit, products);
+      /*Object.keys(_.profile).forEach(fieldName => {
         if(fieldName == "products") _.profile[fieldName][1].call(_.profile[fieldName][0], [_.kit, products]);
         else _.profile[fieldName][1].call(_.profile[fieldName][0], _.kit[fieldName]);
         if(_.profile[fieldName][0].activate) _.profile[fieldName][0].activate();
-      });
+      });*/
     };
 
     this.clean();
@@ -155,10 +136,37 @@ class HTMLProfileKit extends HTMLProfile{
 
   onChange(){
     let _ = this;
-    _.db.save([_.kit], kit => {
-      if(!kit) return;
-       _.kit.id = kit.id;
+    _.db.save([_.kit], kits => {
+      if(!kits[0]) return;
+       _.kit.id = kits[0].id;
        _.onchange(_.kit);
     });
+  }
+
+  setKitProfile(kit, products){
+    /*
+    name: "HTMLInput"
+    pcPrice: "HTMLText"
+    price: "HTMLInput"
+    type: "HTMLInput"
+    size: "HTMLInput"
+    dimensions: "HTMLInput"
+    pcWeight: "HTMLText"
+    weight: "HTMLInput"
+    desription: "HTMLTextfield"
+    products: "HTMLKitProductForm"
+    */
+    let _ = this;
+
+    _.profile.name.value = kit.name;
+    _.profile.price.value = kit.price;
+    _.profile.type.value = kit.type;
+    _.profile.size.value = kit.size;
+    _.profile.dimensions.value = kit.dimensions;
+    _.profile.weight.value = kit.weight;
+    _.profile.description.value = kit.description;
+    _.profile.products.fillKitForm(kit, products);
+    _.profile.pcPrice.text = _.profile.products.kit.pcPrice.toFixed(2) + " uah";
+    _.profile.pcWeight.text = _.profile.products.kit.pcWeight.toFixed(2) + " kg";
   }
 }

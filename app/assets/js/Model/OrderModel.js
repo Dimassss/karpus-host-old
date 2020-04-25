@@ -31,7 +31,7 @@ class OrderModel extends Model{
         return _[t];
         break;
       case "payDates":
-        return _[t].filter(o => o != "").join(", ");
+        return _[t].filter(o => o != "").map(o => (new Date(o).toLocaleDateString())).join(",<br>");
         break;
       case "pays":
         return _[t].filter(o => o != "").join(", ");

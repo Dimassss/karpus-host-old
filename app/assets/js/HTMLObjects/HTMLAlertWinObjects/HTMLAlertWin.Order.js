@@ -47,7 +47,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
                           str => str,
                           val => val,
                           val => {
-                            _.o.isNotThis = val;
+                            _.o.isNotThis = val?1:0;
                           }
                         ),
       telephone: new HTMLList(_.selector + " " + _.fields.telephone,
@@ -87,7 +87,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
                           str => str,
                           val => val,
                           val => {
-                            _.o.billed = val;
+                            _.o.billed = val?1:0;
                           }
                         ),
       pays: new HTMLArray(_.selector + " " + _.fields.paysDiv, {
@@ -261,7 +261,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     _.alert.addresses.selected = order.adress;
     _.alert.summary.value = order.summary;
     _.alert.billed.value = order.billed;
-    _.alert.pays.array = order.payDates.map((pd, i) => [pd, order.pays[i]]);
+    _.alert.pays.array = order.payDates.map((pd, i) => [order.pays[i], pd]);
     _.alert.cycleID.selected = order.cycleID;
     _.alert.kits.loadKits(order.cycleID, Object.values(order.kits), (kits, products) => {
       var sum = 0;

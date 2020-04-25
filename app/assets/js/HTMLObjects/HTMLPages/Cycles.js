@@ -3,7 +3,7 @@ var mapper = {
   tables: {
     order: {
       selector: ".w-orders table#orders",
-      cols: ["customerName", "telephone", "kits", "adress", "summary", "billed", "payDates", "pays", "orderNotes", "socialMedia"],
+      cols: ["customerName", "telephone", "kits", "adress", "summary", "billed", "pays", "payDates", "orderNotes", "socialMedia"],
       //cols: ["customer.name", "order.telephone", "order.kits", "order.products", "order.adress", "order.summary", "order.billed", "order.pays", "order.payDates", "order.orderNotes", "order.socialMedia"]
     },
     kit: {
@@ -17,7 +17,7 @@ var mapper = {
   },
   profiles: {
     kit: {
-      selector: ".cycles-container .w-kits form",
+      selector: ".cycles-container .w-kits",
       fields: {   //fieldName: relativeSelector
         name: "input#js-kit-name",
         pcPrice: "#js-kit-pc-price",
@@ -28,7 +28,7 @@ var mapper = {
         pcWeight: "#js-kit-pc-weight",
         weight: "input#js-kit-weight",
         description: "textarea#js-kit-description",
-        products: ".kits"
+        products: ".kits .kit"
       }
     },
     product: {
@@ -74,7 +74,7 @@ var mapper = {
 var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.tables.order.cols),
     tableProduct = new HTMLTableProducts(mapper.tables.product.selector, {}, mapper.tables.product.cols),
     tableKit = new HTMLTableKits(mapper.tables.kit.selector, {}, mapper.tables.kit.cols),
-    kitProfile = new HTMLProfileKit(mapper.profiles.kit.selector, mapper.profiles.kit.fields, tableKit.addOrUpdateRow),
+    kitProfile = new HTMLProfileKit(mapper.profiles.kit.selector, mapper.profiles.kit.fields, kit => tableKit.addOrUpdateRow(kit)),
     productProfile = new HTMLProfileProduct(mapper.profiles.product.selector, mapper.profiles.product.fields, tableProduct.addOrUpdateRow),
     alertWin = new HTMLAlertWinOrder(mapper.alertWin.selector, mapper.alertWin.fields, (customer, order) => {
       order.customerName = customer.fullName;
@@ -102,11 +102,11 @@ tableOrder.callbacks = {
     deleteRow: [id => {}]
   };
 tableKit.callbacks = {
-    selectRow: [kitProfile.open],
+    selectRow: [table => kitProfile.open(table.selected)],
     deleteRow: [id => {if(kitProfile.kit && id == kitProfile.kit.id) kitProfile.clean()}]
   };
 tableProduct.callbacks = {
-  selectRow: [productProfile.open],
+  selectRow: [table => productProfile.open(table.selected)],
   deleteRow: [id => {if(productProfile.kit && id == productProfile.kit.id) productProfile.clean()}]
 };
 

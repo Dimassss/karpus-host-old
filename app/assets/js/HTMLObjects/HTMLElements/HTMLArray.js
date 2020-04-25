@@ -41,7 +41,7 @@ class HTMLArray extends HTMLObject{
 
   removeElement(e){
     //calls when user click on a cross of the html elemnt
-    let id = parseInt(e.target.getAttribute("id"));
+    let id = parseInt(e.target.getAttribute("id").split("id")[1]);
     e.target.parentNode.outerHTML = "";
     //delete lement from HTMLArray object
     delete this.list[id];
