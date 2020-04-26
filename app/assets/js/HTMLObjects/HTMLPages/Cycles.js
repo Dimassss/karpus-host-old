@@ -112,7 +112,7 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
       deleteCycle: [e => {
         cycleBar.deleteCycle();
       }, "Delete Cycle"],
-      createProduct: [e => {console.log(e, isNaN(cycleBar.selected), cycleBar.selected, cycleBar);
+      createProduct: [e => {
         if(isNaN(cycleBar.selectedCycle)) return;
         productProfile.open();
         productProfile.product.cycleID = cycleBar.selectedCycle;

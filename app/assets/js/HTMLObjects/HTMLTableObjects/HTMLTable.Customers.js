@@ -8,10 +8,11 @@ class HTMLTableCustomers extends HTMLTable{
     super(new CustomerTableSQL(), selector, cols, new CustomerTableSQL());
 
     this.callbacks = callbacks;
+    this.sqlMain = "1=1";
   }
 
   selectRow(){
     let _this = this;
-    if(this.callbacks.selectRow) this.callbacks.selectRow.forEach(cb => cb(_this.selected));
+    if(this.callbacks.selectRow) this.callbacks.selectRow.forEach(cb => cb(_this));
   }
 }

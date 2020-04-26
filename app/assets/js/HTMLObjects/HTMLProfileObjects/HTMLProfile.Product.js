@@ -123,9 +123,6 @@ class HTMLProfileProduct extends HTMLProfile{
         _.setProduct(products[0]);
       }
     });
-    else{
-      _.clean();
-    }
   }
 
   clean(){

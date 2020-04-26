@@ -1,5 +1,5 @@
 class HTMLArray extends HTMLObject{
-  constructor(selector, fields, valArrToStr, fieldsToVal){
+  constructor(selector, fields, valArrToStr, fieldsToVal, onchange = () => {}){
     //fields = {fieldName: [HTMLInput, set(val)]}
     //handler convert data from html field to string
     // fieldsConverter is a func which convert data from element to string to paste it in html element of html array
@@ -7,6 +7,7 @@ class HTMLArray extends HTMLObject{
 
     this.array = []; //array = [valArr, ...]
     this.fields = fields;
+    this.onchange = onchange;
     this.fieldsToVal = fieldsToVal;
     this.valArrToStr = valArrToStr;
 
@@ -37,6 +38,7 @@ class HTMLArray extends HTMLObject{
     container.querySelector("#id"+_.list.length).addEventListener("click", e => _.removeElement.call(_, e));
     //add new elemnt to HTMLArray object
     this.list[this.list.length] = val;
+    this.onchange(this.list);
   }
 
   removeElement(e){
@@ -46,6 +48,7 @@ class HTMLArray extends HTMLObject{
     //delete lement from HTMLArray object
     delete this.list[id];
     this.list = this.list.filter(el => el !== undefined);
+    this.onchange(this.list);
   }
 
   clean(){
