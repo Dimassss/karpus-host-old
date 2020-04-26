@@ -81,8 +81,14 @@ var mapper = {
 var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.tables.order.cols),
     tableProduct = new HTMLTableProducts(mapper.tables.product.selector, {}, mapper.tables.product.cols),
     tableKit = new HTMLTableKits(mapper.tables.kit.selector, {}, mapper.tables.kit.cols),
-    kitProfile = new HTMLProfileKit(mapper.profiles.kit.selector, mapper.profiles.kit.fields, kit => tableKit.addOrUpdateRow(kit)),
-    productProfile = new HTMLProfileProduct(mapper.profiles.product.selector, mapper.profiles.product.fields, product => tableProduct.addOrUpdateRow(product)),
+    kitProfile = new HTMLProfileKit(mapper.profiles.kit.selector, mapper.profiles.kit.fields, kit => {
+      tableKit.addOrUpdateRow(kit);
+      tableKit.selectRowInTable(kit.id);
+    }),
+    productProfile = new HTMLProfileProduct(mapper.profiles.product.selector, mapper.profiles.product.fields, product => {
+      tableProduct.addOrUpdateRow(product);
+      tableProduct.selectRowInTable(product.id);
+    }),
     alertWin = new HTMLAlertWinOrder(mapper.alertWin.selector, mapper.alertWin.fields, (customer, order) => {
       order.customerName = customer.fullName;
       tableOrder.addOrUpdateRow(new OrderModel(order));
@@ -90,7 +96,10 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
     cycleBar = new HTMLCyclesBar(mapper.cycleBar.selector, mapper.cycleBar.fields, {
               selectCycle: [cycleID => tableOrder.loadOnCycleSelect(cycleID),
                             cycleID => tableProduct.loadOnCycleSelect(cycleID),
-                            cycleID => tableKit.loadOnCycleSelect(cycleID)],
+                            cycleID => tableKit.loadOnCycleSelect(cycleID),
+                            () => kitProfile.clean(),
+                            () => productProfile.clean()
+                          ],
               deleteCycle: [
                       cycleID => tableOrder.deleteAllFromCycle(cycleID),
                       cycleID => tableProduct.deleteAllFromCycle(cycleID),
@@ -116,11 +125,13 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
         if(isNaN(cycleBar.selectedCycle)) return;
         productProfile.open();
         productProfile.product.cycleID = cycleBar.selectedCycle;
+        tableProduct.removeSelectionInTable();
       }, "Create Product"],
       createKit: [e => {
         if(isNaN(cycleBar.selectedCycle)) return;
         kitProfile.cycleID = cycleBar.selectedCycle;
         kitProfile.open();
+        tableKit.removeSelectionInTable();
       }, "Create Kit"],
       deleteOrder: [e => {
         if(isNaN(cycleBar.selectedCycle)) return;

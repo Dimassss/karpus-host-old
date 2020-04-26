@@ -47,7 +47,7 @@ class HTMLTable extends HTMLObject{
               _this.sqlMain + " "
               + (
                   (this.findInput && this.findInput.value)
-                  ?(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" ") + " AND "):""
+                  ?(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" OR ") + " AND "):""
               ) + (Object.keys(_this.body)[0]?("AND `id` NOT IN ("
               + Object.keys(_this.body).map(el => "?").join(",")
               + ") "):"") + "ORDER BY ID DESC LIMIT 30",
@@ -115,11 +115,18 @@ class HTMLTable extends HTMLObject{
   }
 
   selectRowEvent(e){
-    if(!isNaN(this.selected)) this.html.querySelector("tr[data-rowID='" + this.selected + "']").classList.remove("selected");
-
-    this.selected = parseInt(e.target.getAttribute("data-rowID"));
-    this.html.querySelector("tr[data-rowID='" + this.selected + "']").classList.add("selected");
+    this.removeSelectionInTable();
+    this.selectRowInTable(e.target.getAttribute("data-rowID"))
     if(this.selectRow) this.selectRow(); //Use this.selected to get rowID
+  }
+
+  selectRowInTable(id){
+    this.selected = id;
+    this.html.querySelector("tr[data-rowID='" + this.selected + "']").classList.add("selected");
+  }
+
+  removeSelectionInTable(){
+    if(!isNaN(this.selected)) this.html.querySelector("tr[data-rowID='" + this.selected + "']").classList.remove("selected");
   }
 
   findEvent(){

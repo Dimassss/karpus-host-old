@@ -141,6 +141,8 @@ class HTMLProfileKit extends HTMLProfile{
       products: {},
       cycleID: _.cycleID
     });
+
+    _.setKitProfile(_.kit, []);
   }
 
   onChange(){

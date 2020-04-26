@@ -60,7 +60,6 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
     alertWin = {},
     customerProfile = new HTMLProfileCustomer(mapper.profiles.customer.selector, mapper.profiles.customer.fields, customer => tableCustomer.addOrUpdateRow(customer), customer => {
       //create order
-      console.log(customer, customer.id)
       alertWin.fillUp(undefined,customer.id);
     }),
     alertWin = new HTMLAlertWinOrder(mapper.alertWin.selector, mapper.alertWin.fields, (customer, order) => {
@@ -70,6 +69,8 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
     contextMenu = new HTMLContextMenu(mapper.contextMenu.selector, {
       createCustomer: [e => {
         customerProfile.open();
+        tableCustomer.removeSelectionInTable();
+        tableOrder.cleanTable();
       }, "Create Customer"],
       deleteCustomer: [e => {
         tableCustomer.deleteRow();

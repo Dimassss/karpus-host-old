@@ -35,7 +35,7 @@ class HTMLTableOrders extends HTMLTable{
               _this.sqlMain + " "
               + (
                   (this.findInput && this.findInput.value)
-                  ?(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" ") + " AND "):""
+                  ?(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" OR ") + " AND "):""
               ) + (Object.keys(_this.body)[0]?("AND `id` NOT IN ("
               + Object.keys(_this.body).map(el => "?").join(",")
               + ") "):"") + "ORDER BY ID DESC LIMIT 30",

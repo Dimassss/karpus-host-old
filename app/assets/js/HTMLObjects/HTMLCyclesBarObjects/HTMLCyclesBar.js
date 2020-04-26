@@ -65,9 +65,20 @@ class HTMLCyclesBar extends HTMLObject{
     let _ = this;
     let id = parseInt(e.target.getAttribute("for").split("-")[1]); //get id of selected cycle
 
-    this.selectedCycle = id;
+    this.removeSelectionInBar();
+    this.selectCycleInBar(id);
+
     this.callbacks.selectCycle.forEach(f => f(id));
 
+  }
+
+  selectCycleInBar(id){
+    this.selectedCycle = id;
+    this.html.querySelector("div.cycles label[for='cycle-"+id+"']").classList.add("selected");
+  }
+
+  removeSelectionInBar(){
+    if(!isNaN(this.selectedCycle)) this.html.querySelector("div.cycles label[for='cycle-"+this.selectedCycle+"']").classList.remove("selected");
   }
 
   deleteCycle(){
@@ -83,6 +94,7 @@ class HTMLCyclesBar extends HTMLObject{
 
   createCycle(e){
     this.callbacks.cleanCycle.forEach(f => f());
+    this.removeSelectionInBar();
 
     let _ = this;
     let cycleName = this.html.querySelector(_.fields.newCycleInput).value.valueOf(); //get from html name of cycle
@@ -90,9 +102,9 @@ class HTMLCyclesBar extends HTMLObject{
     else this.html.querySelector(_.fields.newCycleInput).value = "";console.log(cycleName,this.html.querySelector(_.fields.newCycleInput));
     // save and add cycle element to the html
     this.dbCycle.save([new CycleModel({name: cycleName})], cycles => {
-      _.selectedCycle = cycles[0].id;
       _.html.querySelector(_.fields.cycles).insertAdjacentHTML("afterbegin", `<label for="cycle-${cycles[0].id}">${cycles[0].name}</label>`);
       _.html.querySelector(_.fields.cycles + " label[for='cycle-" + cycles[0].id + "']").addEventListener("click", e => _.selectCycle(e));
+      _.selectCycleInBar(cycles[0].id);
     });
   }
 }
