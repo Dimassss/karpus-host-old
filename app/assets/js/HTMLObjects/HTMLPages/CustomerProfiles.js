@@ -55,9 +55,14 @@ var mapper = {
   }
 }
 
-var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.tables.order.cols),
+var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.tables.order.cols, {main:"1=2", data:[]}),
     tableCustomer = new HTMLTableCustomers(mapper.tables.customer.selector, {}, mapper.tables.customer.cols),
-    customerProfile = new HTMLProfileCustomer(mapper.profiles.customer.selector, mapper.profiles.customer.fields, customer => tableCustomer.addOrUpdateRow(customer)),
+    alertWin = {},
+    customerProfile = new HTMLProfileCustomer(mapper.profiles.customer.selector, mapper.profiles.customer.fields, customer => tableCustomer.addOrUpdateRow(customer), customer => {
+      //create order
+      console.log(customer, customer.id)
+      alertWin.fillUp(undefined,customer.id);
+    }),
     alertWin = new HTMLAlertWinOrder(mapper.alertWin.selector, mapper.alertWin.fields, (customer, order) => {
       order.customerName = customer.fullName;
       tableOrder.addOrUpdateRow(new OrderModel(order));
@@ -82,7 +87,13 @@ tableOrder.callbacks = {
     deleteRow: [id => {}]
   };
 tableCustomer.callbacks = {
-    selectRow: [table => customerProfile.open(table.selected)],
+    selectRow: [table => {
+      tableOrder.cleanTable();
+      tableOrder.sqlMain = "customerID = ?";
+      tableOrder.sqlData = [table.selected];
+      tableOrder.loadNewRowsEvent("FL");
+      customerProfile.open(table.selected);
+    }],
     deleteRow: [id => {if(customerProfile.customer && id == customerProfile.customer.id) customerProfile.clean()}]
   };
 

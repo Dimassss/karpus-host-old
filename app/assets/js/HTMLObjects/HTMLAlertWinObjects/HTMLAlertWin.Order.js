@@ -55,15 +55,11 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
                         [], "", [selected => {
                           _.o.telephone = selected;
                         }]),
-      socialMedia: new HTMLInput(
-                          _.selector + " " + _.fields.socialMedia,
-                          "",
-                          str => str,
-                          val => val,
-                          val => {
-                            _.o.socialMedia = val;
-                          }
-                        ),
+      socialMedia: new HTMLList(_.selector + " " + _.fields.socialMedia,
+                        true,
+                        [], "", [selected => {
+                          _.o.socialMedia = selected;
+                        }]),
       orderNotes: new HTMLTextfield(_.selector + " " + _.fields.orderNotes, "", txt => {_.o.orderNotes = txt;}),
       preferences: new HTMLTextfield(_.selector + " " + _.fields.preferences, "", txt => {_.c.preferences = txt;}),
       addresses: new HTMLList(_.selector + " " + _.fields.addresses,
@@ -129,8 +125,8 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
       cycleID: new HTMLList(_.selector + " " + _.fields.cycleID,
                         false,
                         [], "", [selected => {
-                          _.o.cycleID = selected;
-                          _.alert.kits.loadKits(selected);
+                          _.o.cycleID = parseInt(selected);
+                          _.alert.kits.loadKits(parseInt(selected));
                         }]),
       kits: new HTMLKitsPanel(
                         _.selector + " " + _.fields.kits, {
@@ -154,6 +150,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     _.dbCustomer.save([_.customer], () => {});
     _.dbOrder.save([_.order], orders => {
       let order = orders[0];
+      console.log(order,_.order);
       _.okCB(_.customer, order?order:_.order);
     });
   }
@@ -169,7 +166,19 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     }
 
     this.orderID = orderID;
-    this.o = new OrderModel({/*empty order object*/});
+    this.o = new OrderModel({
+      telephone: "",
+      socialMedia: "",
+      adress: "",
+      orderNotes: "",
+      summary: 0,
+      billed: 0,
+      isNotThis: 0,
+      payDates: [],
+      pays: [],
+      customerID: customerID,
+      kits: {}
+    });
     let _ = this;
 
     const preparing = (order, customerID) => {
@@ -193,7 +202,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     };
 
     if(orderID) this.dbOrder.load([orderID], orders => preparing(orders[0], orders[0].customerID));
-    else preparing(order, customerID);
+    else preparing(this.o, customerID);
   }
 
   get customer(){
@@ -263,7 +272,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     _.alert.billed.value = order.billed;
     _.alert.pays.array = order.payDates.map((pd, i) => [order.pays[i], pd]);
     _.alert.cycleID.selected = order.cycleID;
-    _.alert.kits.loadKits(order.cycleID, Object.values(order.kits), (kits, products) => {
+    if(order.cycleID) _.alert.kits.loadKits(order.cycleID, Object.values(order.kits), (kits, products) => {
       var sum = 0;
 
       kits.filter(kit => kit.count > 0).forEach(kit => {
@@ -296,5 +305,6 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     _.alert.telephone.array = customer.telephones;
     _.alert.preferences.value = customer.preferences;
     _.alert.addresses.array = customer.adresses;
+    _.alert.socialMedia.array = customer.socialMedia;
   }
 }

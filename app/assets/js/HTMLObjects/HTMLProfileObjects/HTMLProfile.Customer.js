@@ -1,5 +1,5 @@
 class HTMLProfileCustomer extends HTMLProfile{
-  constructor(selector, fields, onchange){
+  constructor(selector, fields, onchange, onOrderCreate = () => {}){
     /*
     fields = {fieldName: relativeSelector}
     onchage(CustomerModel)
@@ -9,6 +9,7 @@ class HTMLProfileCustomer extends HTMLProfile{
 
     this.db = new CustomerTableSQL();
     this.onchange = onchange;
+    this.onOrderCreate = onOrderCreate;
     this.selector = selector;
     this.fields = fields;
   }
@@ -102,13 +103,14 @@ class HTMLProfileCustomer extends HTMLProfile{
             _.customer.activity = val;
             _.onChange();
           }
-        ),
-      createCycle: ".windows .window label[name='create_order']"
+        )
     };
 
     Object.keys(_.profile).forEach(k => {
       if(_.profile[k].activate) _.profile[k].activate();
     });
+
+    this.html.querySelector(_.selector + " " + _.fields.createCycle).addEventListener("click", e => _.onOrderCreate(_.customer));
   }
 
   open(id){
@@ -117,7 +119,7 @@ class HTMLProfileCustomer extends HTMLProfile{
 
     if(id !== undefined) this.db.load([id], customers => {
       if(customers[0]){
-        _.customer.id = customers[0].id;
+        _.customer = customers[0];
         _.setCustomer(customers[0]);
       }
     });
