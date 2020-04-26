@@ -116,18 +116,31 @@ class HTMLProfileProduct extends HTMLProfile{
     let _ = this;
     this.clean();
 
-    this.db.load([id], products => {
+    if(id !== undefined) this.db.load([id], products => {
       if(products[0]){
         _.product = products[0];
         // - code - set up all fields in the profile
         _.setProduct(products[0]);
       }
     });
+    else{
+      _.clean();
+    }
   }
 
   clean(){
     // - code - clean all the fields in profile
-    this.product = new ProductModel();
+    this.product = new ProductModel({
+      name: "",
+      unit: "kg",
+      price: {"p-wh":0,"p-sh":0,"p-rst":0,"p-kt":0},
+      count: {"c-st":0,"c-wh":0,"c-sh":0,"c-kt":0,"c-or":0,"c-lft":0},
+      dimensions: [0,0,0],
+      weight: 0,
+      description: ""
+    });
+
+    this.setProduct(this.product);
   }
 
   onChange(){

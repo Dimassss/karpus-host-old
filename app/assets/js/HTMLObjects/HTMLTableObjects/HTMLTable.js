@@ -100,16 +100,18 @@ class HTMLTable extends HTMLObject{
 
     if(!rowID) return;
 
+    let _ = this;
     let row = this.html.querySelector("tr[data-rowID='" + rowID + "']");
     if(row) row.outerHTML = "";
-    if(row[rowID]) delete row[rowID];
-    this.db([rowID]);
+    if(_.body[rowID]) delete _.body[rowID];
+    this.db.del([rowID]);
     if(this.callbacks.deleteRow) this.callbacks.deleteRow.forEach(cb => cb(rowID));
+    this.selected = NaN;
   }
 
   deleteAllFromCycle(cycleID){
     let _ = this;
-    _.db.select("`cycleID` = ?", [cycleID], records => _.db.delete(records.map(rec => rec.id)));
+    _.db.select("`cycleID` = ?", [cycleID], records => _.db.del(records.map(rec => rec.id)));
   }
 
   selectRowEvent(e){

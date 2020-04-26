@@ -1,5 +1,12 @@
 var mapper = {
-  cycleBar: "body > main > section.cycles-tab-container",
+  cycleBar: {
+    selector: "body > main > section.cycles-tab-container",
+    fields: {
+      cycles: ".cycles",
+      newCycleInput: ".controll input[name='new-cycle-name']",
+      newCycleAdd: ".controll .create-cycle label[for='create-cycle']#add"
+    }
+  },
   tables: {
     order: {
       selector: ".w-orders table#orders",
@@ -80,20 +87,55 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
       order.customerName = customer.fullName;
       tableOrder.addOrUpdateRow(new OrderModel(order));
     }),
-    cycleBar = new HTMLCyclesBar(mapper.cycleBar, {
+    cycleBar = new HTMLCyclesBar(mapper.cycleBar.selector, mapper.cycleBar.fields, {
               selectCycle: [cycleID => tableOrder.loadOnCycleSelect(cycleID),
                             cycleID => tableProduct.loadOnCycleSelect(cycleID),
                             cycleID => tableKit.loadOnCycleSelect(cycleID)],
-              deleteCycle: [tableOrder.deleteAllFromCycle, tableProduct.deleteAllFromCycle, tableKit.deleteAllFromCycle],
-              cleanCycle: [tableOrder.cleanTable, tableProduct.cleanTable, tableKit.cleanTable]
+              deleteCycle: [
+                      cycleID => tableOrder.deleteAllFromCycle(cycleID),
+                      cycleID => tableProduct.deleteAllFromCycle(cycleID),
+                      cycleID => tableKit.deleteAllFromCycle(cycleID)
+                    ],
+              cleanCycle: [() => {
+                            tableOrder.cleanTable();
+                          },
+                          () => {
+                            tableProduct.cleanTable();
+                            productProfile.clean();
+                          },
+                          () => {
+                            tableKit.cleanTable();
+                            kitProfile.clean();
+                          }]
             }),
     contextMenu = new HTMLContextMenu(mapper.contextMenu.selector, {
-      deleteCycle: [cycleBar.deleteCycle, "Delete Cycle"],
-      createProduct: [productProfile.open, "Create Product"],
-      createKit: [kitProfile.open, "Create Kit"],
-      deleteOrder: [tableOrder.deleteRow, "Delete Order"],
-      deleteKit: [tableKit.deleteRow, "Delete Kit"],
-      deleteProduct: [tableProduct.deleteRow, "Delete Product"]
+      deleteCycle: [e => {
+        cycleBar.deleteCycle();
+      }, "Delete Cycle"],
+      createProduct: [e => {console.log(e, isNaN(cycleBar.selected), cycleBar.selected, cycleBar);
+        if(isNaN(cycleBar.selectedCycle)) return;
+        productProfile.open();
+        productProfile.product.cycleID = cycleBar.selectedCycle;
+      }, "Create Product"],
+      createKit: [e => {
+        if(isNaN(cycleBar.selectedCycle)) return;
+        kitProfile.cycleID = cycleBar.selectedCycle;
+        kitProfile.open();
+      }, "Create Kit"],
+      deleteOrder: [e => {
+        if(isNaN(cycleBar.selectedCycle)) return;
+        tableOrder.deleteRow();
+      }, "Delete Order"],
+      deleteKit: [e => {
+        if(isNaN(cycleBar.selectedCycle)) return;
+        tableKit.deleteRow();
+        kitProfile.clean();
+      }, "Delete Kit"],
+      deleteProduct: [e => {
+        if(isNaN(cycleBar.selectedCycle)) return;
+        tableProduct.deleteRow();
+        productProfile.clean();
+      }, "Delete Product"]
     });
 
 tableOrder.callbacks = {

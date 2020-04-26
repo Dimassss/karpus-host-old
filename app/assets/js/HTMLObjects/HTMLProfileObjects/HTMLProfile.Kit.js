@@ -109,29 +109,38 @@ class HTMLProfileKit extends HTMLProfile{
       _.kit = kit;
       // - code - set up all fields in the profile
       _.setKitProfile(kit, products);
-      /*Object.keys(_.profile).forEach(fieldName => {
-        if(fieldName == "products") _.profile[fieldName][1].call(_.profile[fieldName][0], [_.kit, products]);
-        else _.profile[fieldName][1].call(_.profile[fieldName][0], _.kit[fieldName]);
-        if(_.profile[fieldName][0].activate) _.profile[fieldName][0].activate();
-      });*/
     };
 
     this.clean();
 
-    if(!id) f(new KitModel(), {});
-    else this.db.load([id], kits => {
-      if(kits){
-        _.id = id;
-        (new ProductTableSQL()).select("`cycleID` = ?", [kits[0].cycleID], products => {
-          f(kits[0], products);
-        });
-      }
-    });
+    if(!id){
+      (new ProductTableSQL()).select("`cycleID` = ?", [_.cycleID], products => {
+        f(_.kit, products);
+      });
+    } else this.db.load([id], kits => {
+        if(kits){
+          _.id = id;
+          (new ProductTableSQL()).select("`cycleID` = ?", [kits[0].cycleID], products => {
+            f(kits[0], products);
+          });
+        }
+      });
   }
 
   clean(){
     // - code - clean all the fields in profile
-    this.kit = new KitModel();
+    let _ = this;
+    this.kit = new KitModel({
+      name: "",
+      price: 0,
+      type: "",
+      size: "",
+      dimensions: [0,0,0],
+      weight: 0,
+      description: "",
+      products: {},
+      cycleID: _.cycleID
+    });
   }
 
   onChange(){
