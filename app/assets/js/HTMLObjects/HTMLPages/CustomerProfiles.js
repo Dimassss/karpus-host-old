@@ -2,7 +2,7 @@ var mapper = {
   tables: {
     order: {
       selector: ".customerProfile table#customer_orders",
-      cols: ["customerName", "telephone", "kits", "adress", "summary", "billed", "pays", "payDates", "orderNotes", "socialMedia"],
+      cols: ["cycleID", "kits", "adress", "summary", "billed", "pays", "payDates", "orderNotes", "socialMedia"],
     },
     customer: {
       selector: ".customerProfile table#customers",

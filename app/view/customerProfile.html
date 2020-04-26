@@ -24,7 +24,7 @@
       }
       /*Orders table*/
       #customer_orders th:nth-child(1), #customer_orders td:nth-child(1){
-        width: 160px;
+        width: 100px;
       }
       #customer_orders th:nth-child(2), #customer_orders td:nth-child(2){
         width: 140px;
@@ -36,7 +36,7 @@
         width: 180px;
       }
       #customer_orders th:nth-child(5), #customer_orders td:nth-child(5){
-        width: 80px;
+        width: 100px;
       }
       #customer_orders th:nth-child(6), #customer_orders td:nth-child(6){
         width: 90px;
@@ -50,15 +50,15 @@
       #customer_orders th:nth-child(9), #customer_orders td:nth-child(9){
         width: 200px;
       }
-      #customer_orders th:nth-child(10), #customer_orders td:nth-child(10){
+      /*#customer_orders th:nth-child(10), #customer_orders td:nth-child(10){
         width: 170px;
-      }
+      }*/
     </style>
   </head>
   <body>
     <header>
       <div><a href="main" class="path">Customer Profile</a></div>
-      <div><span class="username">{{ @SESSION.username }}</span>: <a class="logout" href="functions/endSession">Logout</a></div>
+      <div><span class="username">{{ @username }}</span>: <a class="logout" href="functions/endSession">Logout</a></div>
       <div class="drop">
         <span tabindex="1" class="drop-btn">Menu</span>
         <div class="dropdown-content">
@@ -195,7 +195,6 @@
                             <tr>
                               <th>Cycle</th>
                               <th>Kit</th>
-                              <th>Products</th>
                               <th>Adress</th>
                               <th>Cost</th>
                               <th>Is Billed</th>
@@ -210,7 +209,6 @@
                           <tr>
                             <td>Cycle</td>
                             <td>Kit</td>
-                            <td>Products</td>
                             <td>Adress</td>
                             <td>Cost</td>
                             <td>Is Billed</td>
@@ -353,49 +351,24 @@
       </section>
     </main>
   </body>
-  <!--script src="https://code.jquery.com/jquery-3.4.1.min.js"></script-->
-  <!--script type="text/javascript" src="../app/assets/js/jquery.min.js"></script>
-  <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
-  <script type="text/javascript" src="../app/assets/js/EventHandlers/eventHandler.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Inputs/Input.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Inputs/customerProfile.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Outputs/Output.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Outputs/customerProfile.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/Model.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/CustomerModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/CycleModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/KitModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/OrderModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/ProductModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/websql.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/TableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/CustomerTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/CycleTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/KitTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/OrderTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/ProductTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/DAO/DAO.js"></script>
-  <script type="text/javascript" src="../app/assets/js/DAO/CustomerProfileDAO.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Controllers/CustomerProfileController.js"></script>
-  <script type="text/javascript" src="../app/assets/js/CustomerProfile.js"></script-->
-
-  <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
-
-  <script type="text/javascript" src="../app/assets/js/Model/Model.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/CustomerModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/CycleModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/KitModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/OrderModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/ProductModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/websql.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/TableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/CustomerTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/CycleTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/KitTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/OrderTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/ProductTableSQL.js"></script>
 
   <script type="text/javascript" src="../app/assets/js/jquery.min.js"></script>
+  <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
+
+  <script type="text/javascript" src="../app/assets/js/Model/Model.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/CustomerModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/CycleModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/KitModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/OrderModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/ProductModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/websql.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/TableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/CustomerTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/CycleTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/KitTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/OrderTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/ProductTableSQL.js"></script>
+
   <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLObject.js"></script>
   <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLArray.js"></script>
   <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLInput.js"></script>d

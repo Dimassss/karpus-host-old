@@ -12,7 +12,7 @@
   <body>
     <header>
       <div><a href="" class="path">Main</a></div>
-      <div><span class="username">{{ @SESSION.username }}</span>: <a class="logout" href="functions/endSession">Logout</a></div>
+      <div><span class="username">{{ @username }}</span>: <a class="logout" href="functions/endSession">Logout</a></div>
       <div class="drop">
         <span tabindex="1" class="drop-btn">Menu</span>
         <div class="dropdown-content">
@@ -30,10 +30,10 @@
           <img src="https://www.guttenberg.lib.ia.us/images/twitter%20icon/image" alt="tab-img"/>
           <h>Cycles</h>
         </a>
-        <div class="tab">
+        <a href="msg" class="tab">
           <img src="https://www.guttenberg.lib.ia.us/images/twitter%20icon/image" alt="tab-img"/>
           <h>Mailing</h>
-        </div>
+        </a>
         <div class="tab">
           <img src="https://www.guttenberg.lib.ia.us/images/twitter%20icon/image" alt="tab-img"/>
           <h>Payments</h>

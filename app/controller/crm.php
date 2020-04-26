@@ -53,6 +53,7 @@ class crm extends Controller{
   public function showPage(){
     $pageName = $this->f3->get("PARAMS.pageName");
     $fileName = "main.html";
+    $this->f3->set("username", $this->cache->get("username"));
 
     switch($pageName){
       case "customerProfile":
@@ -62,7 +63,7 @@ class crm extends Controller{
         $fileName = "cycles.html";
         break;
       case "msg":
-        $html = "<table><thead><tr>name<th>telephone</th><th>email</th><th>message</th><th>date</th></tr></thead><tbody>";
+        $html = "<table><thead><tr><th>name<th>telephone</th><th>email</th><th>message</th><th>date</th></tr></thead><tbody>";
 
         $msgs = (new Mail($this->db))->getBySelector("1=1");
 
