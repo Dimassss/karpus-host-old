@@ -99,7 +99,7 @@ class HTMLCyclesBar extends HTMLObject{
     let _ = this;
     let cycleName = this.html.querySelector(_.fields.newCycleInput).value.valueOf(); //get from html name of cycle
     if(cycleName == "")return;
-    else this.html.querySelector(_.fields.newCycleInput).value = "";console.log(cycleName,this.html.querySelector(_.fields.newCycleInput));
+    else this.html.querySelector(_.fields.newCycleInput).value = "";
     // save and add cycle element to the html
     this.dbCycle.save([new CycleModel({name: cycleName})], cycles => {
       _.html.querySelector(_.fields.cycles).insertAdjacentHTML("afterbegin", `<label for="cycle-${cycles[0].id}">${cycles[0].name}</label>`);

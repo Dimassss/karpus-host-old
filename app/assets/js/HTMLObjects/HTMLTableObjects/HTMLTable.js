@@ -47,10 +47,10 @@ class HTMLTable extends HTMLObject{
               _this.sqlMain + " "
               + (
                   (this.findInput && this.findInput.value)
-                  ?(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" OR ") + " AND "):""
+                  ?("AND ("+(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" OR ")+")")):""
               ) + (Object.keys(_this.body)[0]?("AND `id` NOT IN ("
               + Object.keys(_this.body).map(el => "?").join(",")
-              + ") "):"") + "ORDER BY ID DESC LIMIT 30",
+              + ")"):"") + " ORDER BY ID DESC LIMIT 30",
           [..._this.sqlData, ...Object.keys(this.body)],
           rows => {
             if(!rows) _this.tableIsFull = true;

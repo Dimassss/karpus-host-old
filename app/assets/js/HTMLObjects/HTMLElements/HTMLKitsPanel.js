@@ -9,6 +9,7 @@ class HTMLKitsPanel extends HTMLObject{
     this.kits = []; // HTMLKit array
     this.dbKit = new KitTableSQL;
     this.dbProduct = new ProductTableSQL;
+    this.dbCycle = new CycleTableSQL;
     this.callbacks = callbacks;
   }
 
@@ -37,24 +38,41 @@ class HTMLKitsPanel extends HTMLObject{
 
     let _ = this;
 
-    _.kits.forEach(kit => kit.deleteKitProductForm());
-    _.kits = [];
-    Array.apply(_.html.querySelectorAll(".kit.js-to-save")).forEach(kit => kit.outerHTML = "");
-    _.dbProduct.select("`cycleID` = ?", [cycleID], products => {
+    _.clean();
+
+    _.dbProduct.select("1=1", [], products => {
       _.products = products;
-      _.dbKit.select("`cycleID` = ?", [cycleID], kits => {
-        let idMap = {};
-        preparedKits.forEach(kit => idMap[kit.id] = kit);
-        kits = kits.map(kit => {
-          if(idMap[kit.id]) return new KitModel(idMap[kit.id]);
-          //kit.products = Object.fromEntries(kit.products.map(pr => [pr.id, pr]));
-          return kit;
+      _.dbCycle.load([cycleID], cycles => {
+        if(!cycles[0]) return;
+        products.forEach((pr, i) => {
+          if(cycles[0].products[pr.id]){
+            products[i] = {...pr, ...cycles[0].products[pr.id]};
+            products[i].__proto__ = ProductModel.prototype;
+          }
         });
+        _.dbKit.select("`cycleID` = ?", [cycleID], kits => {
+          let idMap = {};
+          preparedKits.forEach(kit => idMap[kit.id] = kit);
+          kits = kits.map(kit => {
+            if(idMap[kit.id]) return new KitModel(idMap[kit.id]);
+            //kit.products = Object.fromEntries(kit.products.map(pr => [pr.id, pr]));
+            return kit;
+          });
 
-        kits.forEach(kit => _.addKit(kit, products));
+          kits.forEach(kit => _.addKit(kit, products));
 
-        cb(kits, products);
+          cb(kits, products);
+        });
       });
     });
+  }
+
+  clean(){
+    let _ = this;
+
+    _.kits.forEach(kit => kit.deleteKitProductForm());
+    _.kits = [];
+
+    Array.apply(_.html.querySelectorAll(".kit.js-to-save")).forEach(kit => kit.outerHTML = "");
   }
 }

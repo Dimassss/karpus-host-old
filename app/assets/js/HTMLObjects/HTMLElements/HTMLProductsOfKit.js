@@ -45,7 +45,7 @@ class HTMLProductsOfKit extends HTMLObject{
     //generate html of products and paste it to the container
     let html = this.productsLIST.map(pr => {
                                           pr = _.products[pr.id]?_.products[pr.id]:pr;
-                                          return `<div data-product_id='${pr.id}' class="product columns" ${(pr.count>0 || true)?"":'style="display:none"'}>
+                                          return `<div data-product_id='${pr.id}' class="product columns" ${(pr.count>0)?"":'style="display:none"'}>
                                               <div class="col-5">${pr.name}</div>
                                               <div class="col-1">${pr.unit}</div>
                                               <div class="col-3">
@@ -92,6 +92,11 @@ class HTMLProductsOfKit extends HTMLObject{
         }));
       });
     });
+
+    _.html.addEventListener("contextmenu", e => {
+      e.preventDefault();
+      _.toggleProductsInForm();
+    })
   }
 
   addOrUpdateProduct(productID, selectedPrice, count, fromInp /*means that method calls from onChangeProduct method*/){
@@ -126,16 +131,14 @@ class HTMLProductsOfKit extends HTMLObject{
 
   }
 
-  hideProductInForm(productID){
-    if(this.products[productID]){
-      // - code - hide the current product in htm form
-    }
-  }
-
-  showProductInForm(productID){
-    if(this.products[productID]){
-      // - code - show the current product in htm form
-    }
+  toggleProductsInForm(){
+    //hide products which has count = 0
+    let _ = this;
+    Array.apply(null, _.html.querySelectorAll(".product")).forEach(pr => {
+      if(parseInt(pr.querySelector("input.count").value) <= 0){
+        pr.style.display = {flex: "none", none: "flex"}[pr.style.display];
+      }
+    });
   }
 
   deleteProductInForm(productID){

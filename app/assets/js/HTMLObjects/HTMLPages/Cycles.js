@@ -19,7 +19,7 @@ var mapper = {
     },
     product: {
       selector: ".w-products table#products",
-      cols: ["name", "unit", "price", "count", "dimensions", "weight", "description"]
+      cols: ["name", "unit", "count", "price", "dimensions", "weight", "description"]
     }
   },
   profiles: {
@@ -94,7 +94,11 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
       tableOrder.addOrUpdateRow(new OrderModel(order));
     }),
     cycleBar = new HTMLCyclesBar(mapper.cycleBar.selector, mapper.cycleBar.fields, {
-              selectCycle: [cycleID => tableOrder.loadOnCycleSelect(cycleID),
+              selectCycle: [
+                            cycleID => {
+                              productProfile.cycleID = cycleID;
+                            },
+                            cycleID => tableOrder.loadOnCycleSelect(cycleID),
                             cycleID => tableProduct.loadOnCycleSelect(cycleID),
                             cycleID => tableKit.loadOnCycleSelect(cycleID),
                             () => kitProfile.clean(),
@@ -120,13 +124,13 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
     contextMenu = new HTMLContextMenu(mapper.contextMenu.selector, {
       deleteCycle: [e => {
         cycleBar.deleteCycle();
-      }, "Delete Cycle"],
+      }, "Delete Cycle"],/*
       createProduct: [e => {
         if(isNaN(cycleBar.selectedCycle)) return;
         productProfile.open();
         productProfile.product.cycleID = cycleBar.selectedCycle;
         tableProduct.removeSelectionInTable();
-      }, "Create Product"],
+      }, "Create Product"],*/
       createKit: [e => {
         if(isNaN(cycleBar.selectedCycle)) return;
         kitProfile.cycleID = cycleBar.selectedCycle;
@@ -141,12 +145,12 @@ var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.ta
         if(isNaN(cycleBar.selectedCycle)) return;
         tableKit.deleteRow();
         kitProfile.clean();
-      }, "Delete Kit"],
+      }, "Delete Kit"]/*,
       deleteProduct: [e => {
         if(isNaN(cycleBar.selectedCycle)) return;
         tableProduct.deleteRow();
         productProfile.clean();
-      }, "Delete Product"]
+      }, "Delete Product"]*/
     });
 
 tableOrder.callbacks = {

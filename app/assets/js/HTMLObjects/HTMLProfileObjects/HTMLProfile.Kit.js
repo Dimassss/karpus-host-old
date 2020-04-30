@@ -114,14 +114,32 @@ class HTMLProfileKit extends HTMLProfile{
     this.clean();
 
     if(!id){
-      (new ProductTableSQL()).select("`cycleID` = ?", [_.cycleID], products => {
-        f(_.kit, products);
+      (new ProductTableSQL()).select("1=1", [], products => {
+        (new CycleTableSQL).select("`id` = ?", [_.cycleID], cycles => {
+          if(!cycles[0]) return;
+          products.forEach((pr, i) => {
+            if(cycles[0].products[pr.id]){
+              products[i] = {...pr, ...cycles[0].products[pr.id]};
+              products[i].__proto__ = ProductModel.prototype;
+            }
+          });
+          f(_.kit, products);
+        });
       });
     } else this.db.load([id], kits => {
         if(kits){
           _.id = id;
-          (new ProductTableSQL()).select("`cycleID` = ?", [kits[0].cycleID], products => {
-            f(kits[0], products);
+          (new ProductTableSQL()).select("1=1", [], products => {
+            (new CycleTableSQL).select("`id` = ?", [kits[0].cycleID], cycles => {
+              if(!cycles[0]) return;
+              products.forEach((pr, i) => {
+                if(cycles[0].products[pr.id]){
+                  products[i] = {...pr, ...cycles[0].products[pr.id]};
+                  products[i].__proto__ = ProductModel.prototype;
+                }
+              });
+              f(kits[0], products);
+            });
           });
         }
       });

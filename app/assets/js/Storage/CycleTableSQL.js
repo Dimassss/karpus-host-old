@@ -1,7 +1,7 @@
 class CycleTableSQL extends TableSQL{
   constructor(){
     if(g["Storage"]["CycleTableSQL"]) return g["Storage"]["CycleTableSQL"];
-    super("id", "CYCLES", {"id": '`id` INTEGER PRIMARY KEY', "name": '`name` VARCHAR(80) NOT NULL', "kitsID": '`kitsID` TEXT', "productsID": '`productsID` TEXT', "ordersID": '`ordersID` TEXT'});
+    super("id", "CYCLES", {"id": '`id` INTEGER PRIMARY KEY', "name": '`name` VARCHAR(80) NOT NULL', "productsID": '`productsID` TEXT'});
     return g["Storage"]["CycleTableSQL"] = this;
   }
 

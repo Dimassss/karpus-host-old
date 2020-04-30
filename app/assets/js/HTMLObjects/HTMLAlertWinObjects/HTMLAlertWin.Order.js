@@ -150,8 +150,8 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     _.dbCustomer.save([_.customer], () => {});
     _.dbOrder.save([_.order], orders => {
       let order = orders[0];
-      console.log(order,_.order);
       _.okCB(_.customer, order?order:_.order);
+      _.setOrder()
     });
   }
 
@@ -265,7 +265,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     //_.alert.anotherTelephone.value =  order.anotherTelephone;
     _.alert.isNotThis.value = order.isNotThis;
     _.alert.telephone.selected = order.telephone;
-    _.alert.socialMedia.value = order.socialMedia;
+    _.alert.socialMedia.selected = order.socialMedia;
     _.alert.orderNotes.value = order.orderNotes;
     _.alert.addresses.selected = order.adress;
     _.alert.summary.value = order.summary;
@@ -296,6 +296,9 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
 
       _.alert.sumPCText.text = sum + " uah";
     });
+    else{
+      _.alert.kits.clean();
+    }
   }
 
   setCustomer(customer){

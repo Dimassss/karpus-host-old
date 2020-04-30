@@ -135,18 +135,6 @@ class HTMLKitProductForm extends HTMLObject{
     //of it is possible to get that data, it writes it to this object
   }
 
-  hideZeroProductsInForm(productID){
-    if(this.products[productID]){
-      // - code - hide the current product in htm form
-    }
-  }
-
-  showProductsInForm(productID){
-    if(this.products[productID]){
-      // - code - show the current product in htm form
-    }
-  }
-
   get kit(){
     let _ = this;
     return new KitModel({

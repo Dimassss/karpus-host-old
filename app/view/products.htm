@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Customers</title>
+    <!--<link rel="stylesheet" href="assets/css/all.css"-->
+    <link rel="stylesheet" href="../app/assets/css/vendor.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/utilits.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/header.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/main-container.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/customerProfile.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/tabs.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/table.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/kit-selecting.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/alert-window.css">
+    <link rel="stylesheet" href="../app/assets/css/styles/form.css">
+    <style>
+    /*Product Table*/
+    #products {
+        min-width: 910px;
+    }
+
+    #products tbody{
+       height: calc(var(--table-t-body-height) - var(--header-height) - var(--utilits-scroll-width));
+    }
+
+    /*name*/
+    #products th:nth-child(1), #products td:nth-child(1){
+      width: 120px;
+    }
+    /*unit*/
+    #products th:nth-child(2), #products td:nth-child(2){
+      width: 70px;
+    }
+    /*price*/
+    #products th:nth-child(3), #products td:nth-child(3){
+      width: 70px;
+    }
+    #products th:nth-child(4), #products td:nth-child(4){
+      width: 70px;
+    }
+    #products th:nth-child(5), #products td:nth-child(5){
+      width: 70px;
+    }
+    #products th:nth-child(6), #products td:nth-child(6){
+      width: 70px;
+    }
+    /*dimensions*/
+    #products th:nth-child(7), #products td:nth-child(7){
+      width: 120px;
+    }
+    /*weight*/
+    #products th:nth-child(8), #products td:nth-child(8){
+      width: 120px;
+    }
+    /*description*/
+    #products th:nth-child(9), #products td:nth-child(9){
+      width: 200px;
+    }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div><a href="main" class="path">Products</a></div>
+      <div><span class="username">{{ @username }}</span>: <a class="logout" href="functions/endSession">Logout</a></div>
+      <div class="drop">
+        <span tabindex="1" class="drop-btn">Menu</span>
+        <div class="dropdown-content">
+          <a href="#">Create customer</a>
+          <a href="#">Delete Customer</a>
+          <a href="#">Delete order</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="unique-scroll customerProfile">
+      <div class="container">
+        <div class="columns">
+          <div class="col-7 col-xl-5">
+            <section class="table-container">
+              <input id="js-search-field-products" class="search" placeholder="Search" value="" type="text"/>
+              <div class="unique-scroll">
+                <table id="products">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Unit</th>
+                      <th title="Price for wholesale">p-wh</th>
+                      <th title="Price for shops">p-sh</th>
+                      <th title="Price for restaurants">p-rst</th>
+                      <th title="Price for kits">p-kt</th>
+                      <th>Dimensions</th>
+                      <th>Weight</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                  <tfoot>
+                    <tr>
+                      <td>Name</td>
+                      <td>Unit</td>
+                      <td title="Price for wholesale">p-wh</td>
+                      <td title="Price for shops">p-sh</td>
+                      <td title="Price for restaurants">p-rst</td>
+                      <td title="Price for kits">p-kt</td>
+                      <td>Dimensions</td>
+                      <td>Weight</td>
+                      <td>Description</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </section>
+          </div>
+          <div class="col-5 col-xl-7">
+            <section class="tabs-container">
+              <div class="tabs">
+                <label class="tab" for="win1">Profile</label>
+              </div>
+              <div class="windows">
+                <input type="radio" name="win" id="win1" autocomplete="off" checked/>
+                <div class="window unique-scroll w-products">
+                  <form action="#forms" class="form-horizontal content">
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-product-name">Product Name</label>
+                      </div>
+                      <div class="col-4 col-sm-12">
+                        <input class="form-input" type="text" id="js-product-name" placeholder="Product Name">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-product-unit">Unit</label>
+                      </div>
+                      <div class="col-4 col-sm-12">
+                        <select class="form-input" id="js-product-unit">
+                          <option selected value="p">Piece</option>
+                          <option value="kg">Kilogram</option>
+                          <option value="L">Liter</option>
+                          <option value="g">Gramm</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-product-price">Price</label>
+                      </div>
+                      <div class="col-9 col-sm-12">
+                        <table class="table-conatiner-fields" id="js-product-price-set">
+                          <tr>
+                            <td title="Price for wholesale">p-wh</td>
+                            <td title="Price for shops">p-sh</td>
+                            <td title="Price for restaurants">p-rst</td>
+                            <td title="Price for kits">p-kt</td>
+                          </tr>
+                          <tr>
+                            <td title="Price for wholesale"><input data-type="p-wh" class="form-input" value="0" type="number" min="0"/></td>
+                            <td title="Price for shops"><input data-type="p-sh" class="form-input" value="0" type="number" min="0"/></td>
+                            <td title="Price for restaurants"><input data-type="p-rst" class="form-input" value="0" type="number" min="0"/></td>
+                            <td title="Price for kits"><input data-type="p-kt" class="form-input" value="0" type="number" min="0"/></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-product-dimensions">Dimensions</label>
+                      </div>
+                      <div class="col-4 col-sm-12">
+                        <input class="form-input" type="text" id="js-product-dimensions" placeholder="Dimensions">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-product-weight">Weight</label>
+                      </div>
+                      <div class="col-4 col-sm-12">
+                        <input class="form-input" type="text" id="js-product-weight" placeholder="Weight">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-3 col-sm-12">
+                        <label class="form-label" for="js-product-description">Description</label>
+                      </div>
+                      <div class="col-9 col-sm-12">
+                        <textarea class="form-input" id="js-product-description" placeholder="Description" rows="3"></textarea>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+
+  <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
+
+  <script type="text/javascript" src="../app/assets/js/Model/Model.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/CustomerModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/CycleModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/KitModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/OrderModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Model/ProductModel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/websql.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/TableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/CustomerTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/CycleTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/KitTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/OrderTableSQL.js"></script>
+  <script type="text/javascript" src="../app/assets/js/Storage/ProductTableSQL.js"></script>
+
+  <script type="text/javascript" src="../app/assets/js/jquery.min.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLObject.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLArray.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLInput.js"></script>d
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLKitProductsForm.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLKitsPanel.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLList.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLProductsOfKit.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLTableInput.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLText.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLElements/HTMLTextfield.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLProfileObjects/HTMLProfile.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLProfileObjects/HTMLProfile.Kit.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLProfileObjects/HTMLProfile.Product.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.Kits.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.Orders.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLTableObjects/HTMLTable.Products.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLContextMenuObjects/HTMLContextMenu.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLAlertWinObjects/HTMLAlertWin.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLAlertWinObjects/HTMLAlertWin.Order.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLCyclesBarObjects/HTMLCyclesBar.js"></script>
+  <script type="text/javascript" src="../app/assets/js/HTMLObjects/HTMLPages/Products.js"></script>
+  <script type="text/javascript" src="../app/assets/js/FOR_DEBUG.js"></script>
+  <!--<script type="text/javascript" src="../app/assets/js/HTMLObjects/HTML"></script>-->
+</html>

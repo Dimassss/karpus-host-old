@@ -6,6 +6,7 @@ require_once(__ROOT__."../model/Cycle.php");
 require_once(__ROOT__."../model/Kit.php");
 require_once(__ROOT__."../model/Order.php");
 require_once(__ROOT__."../model/Product.php");
+require_once(__ROOT__."../model/Product.LIST.php");
 
 class crm extends Controller{
   protected $tables;
@@ -62,6 +63,9 @@ class crm extends Controller{
       case "cycles":
         $fileName = "cycles.html";
         break;
+      case "products":
+        $fileName = "products.htm";
+        break;
       case "msg":
         $html = "<table><thead><tr><th>name<th>telephone</th><th>email</th><th>message</th><th>date</th></tr></thead><tbody>";
 
@@ -100,7 +104,14 @@ class crm extends Controller{
     /*echo json_encode($this->f3->get("POST"));
     return;*/
     $selector = "";
-    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
+    $db = array(
+            "CUSTOMERS" => new Customer($this->db),
+            "CYCLES" => new Cycle($this->db),
+            "KITS" => new Kit($this->db),
+            "ORDERS" => new Order($this->db),
+            "PRODUCTS" => new Product($this->db),
+            //"PRODUCTS_LIST" => new ProductsList($this->db)
+          );
 
     foreach($keys as $p){
       $selector.="?,";
@@ -118,7 +129,14 @@ class crm extends Controller{
     $data = array_map('toNum', $this->f3->get("POST.data")?$this->f3->get("POST.data"):[]);
     $table = $this->f3->get("POST.table");
     $where = $this->f3->get("POST.where");
-    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
+    $db = array(
+            "CUSTOMERS" => new Customer($this->db),
+            "CYCLES" => new Cycle($this->db),
+            "KITS" => new Kit($this->db),
+            "ORDERS" => new Order($this->db),
+            "PRODUCTS" => new Product($this->db),
+            //"PRODUCTS_LIST" => new ProductsList($this->db)
+          );
 
     array_unshift($data, $where);
 
@@ -138,7 +156,14 @@ class crm extends Controller{
     $table = $this->f3->get("POST.table");
     $k = $this->f3->get("POST.k");
     $selector = "";
-    $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
+    $db = array(
+            "CUSTOMERS" => new Customer($this->db),
+            "CYCLES" => new Cycle($this->db),
+            "KITS" => new Kit($this->db),
+            "ORDERS" => new Order($this->db),
+            "PRODUCTS" => new Product($this->db),
+            //"PRODUCTS_LIST" => new ProductsList($this->db)
+          );
 
     foreach($keys as $k) $selector.="?,";
 
@@ -152,7 +177,14 @@ class crm extends Controller{
     $return = array();
 
     foreach($records as $rec){
-      $db = array("CUSTOMERS" => new Customer($this->db), "CYCLES" => new Cycle($this->db), "KITS" => new Kit($this->db), "ORDERS" => new Order($this->db), "PRODUCTS" => new Product($this->db));
+      $db = array(
+                "CUSTOMERS" => new Customer($this->db),
+                "CYCLES" => new Cycle($this->db),
+                "KITS" => new Kit($this->db),
+                "ORDERS" => new Order($this->db),
+                "PRODUCTS" => new Product($this->db),
+                //"PRODUCTS_LIST" => new ProductsList($this->db)
+              );
       if(isset($rec[$k])){
         $rec['id'] = (int) $rec['id'];
         $db[$table]->edit($rec, $rec['id']);
@@ -162,6 +194,44 @@ class crm extends Controller{
         $return[] = $rec;
       }
     }
+/*
+    if($table !== "PRODUCTS")
+      foreach($records as $rec){
+        $db = array(
+                  "CUSTOMERS" => new Customer($this->db),
+                  "CYCLES" => new Cycle($this->db),
+                  "KITS" => new Kit($this->db),
+                  "ORDERS" => new Order($this->db),
+                  "PRODUCTS" =>
+                );
+        if(isset($rec[$k])){
+          $rec['id'] = (int) $rec['id'];
+          $db[$table]->edit($rec, $rec['id']);
+          $return[] = $rec;
+        }else{
+          $rec["id"] = $db[$table]->create($rec);
+          $return[] = $rec;
+        }
+      }
+    else {
+      $db1 = new Product($this->db);
+      $db2 = new ProductsList($this->db);
+      foreach($records as $rec){
+        if(isset($rec['id'])){
+          if(isset($rec["productID"])){
+            $rec['id'] = (int) $rec['productID'];
+            $db1->edit($rec, $rec['productID']);
+            $return[] = $rec;
+          }else{
+            $rec["id"] = $db1->create($rec);
+            $return[] = $rec;
+          }
+        }else{
+          $rec["id"] = $db2->create($rec);
+          $return[] = $rec;
+        }
+      }
+    }*/
 
     echo json_encode($return);
   }
