@@ -44,6 +44,7 @@ class HTMLCyclesBar extends HTMLObject{
       _.cycles.forEach(cycle => {
         _.html.querySelector("div.cycles").insertAdjacentHTML("afterbegin", `<label for="cycle-${cycle.id}">${cycle.name}</label>`);
         _.html.querySelector("div.cycles label[for='cycle-" + cycle.id + "']").addEventListener("click", e => _.selectCycle.call(_, e));
+        _.html.querySelector("div.cycles label[for='cycle-" + cycle.id + "']").addEventListener("dblclick", e => _.editCycle(e));
       });
 
     });
@@ -61,9 +62,9 @@ class HTMLCyclesBar extends HTMLObject{
     // - code - scroll bar to the right side
   }
 
-  selectCycle(e){
+  selectCycle(e, cycleID){
     let _ = this;
-    let id = parseInt(e.target.getAttribute("for").split("-")[1]); //get id of selected cycle
+    let id = cycleID?cycleID:parseInt(e.target.getAttribute("for").split("-")[1]); //get id of selected cycle
 
     this.removeSelectionInBar();
     this.selectCycleInBar(id);
@@ -104,7 +105,31 @@ class HTMLCyclesBar extends HTMLObject{
     this.dbCycle.save([new CycleModel({name: cycleName})], cycles => {
       _.html.querySelector(_.fields.cycles).insertAdjacentHTML("afterbegin", `<label for="cycle-${cycles[0].id}">${cycles[0].name}</label>`);
       _.html.querySelector(_.fields.cycles + " label[for='cycle-" + cycles[0].id + "']").addEventListener("click", e => _.selectCycle(e));
+      _.html.querySelector(_.fields.cycles + " label[for='cycle-" + cycles[0].id + "']").addEventListener("dblclick", e => _.editCycle(e));
       _.selectCycleInBar(cycles[0].id);
+      _.selectCycle(null, cycles[0].id);
     });
+  }
+
+  editCycle(e){
+    //at the moment this function only rename cycle
+    //activates on double click on cycle-el in cycles-bar
+
+    let _ = this;
+    let id = parseInt(e.target.getAttribute("for").split("-")[1]); //get id of selected cycle
+    let db = new CycleTableSQL();
+
+    db.load([id], cycles => {
+      if(!cycles[0]) throw "WTF. Why this cycle isnt in DB?????!!";
+
+      let cycle = cycles[0];
+      
+      cycle.name = prompt("Give new name for cycle:", cycle.name);
+      e.target.innerText = cycle.name;
+
+      db.save([cycle]);
+
+    });
+
   }
 }

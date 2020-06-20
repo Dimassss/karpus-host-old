@@ -81,4 +81,6 @@ class HTMLTableProducts extends HTMLTable{
       }
     }
   }
+
+  deleteAllFromCycle(cycleID){}
 }

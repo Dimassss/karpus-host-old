@@ -140,7 +140,7 @@ class HTMLKitProductForm extends HTMLObject{
     return new KitModel({
       id: _.id,
       name: _.name,
-      count: _.count,
+      count: (+_.count)?(+_.count):0,
       products: _.products,
       price: _.price == _.pcPrice? 0 : _.price,
       weight: _.weight == _.pcWeight? 0 : _.weight,

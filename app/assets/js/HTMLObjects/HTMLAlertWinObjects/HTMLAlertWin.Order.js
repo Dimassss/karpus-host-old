@@ -133,7 +133,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
                           updateFormEvent: kits => {
                             //kits = {kitID: KitModel}
                             _.o.kits = kits;
-                            _.alert.sumPCText.text = Object.values(kits).map(kit => kit.count*(kit.price?kit.price:kit.pcPrice)).reduce((a, b) => a + b, 0);
+                            _.alert.sumPCText.text = Object.values(kits).map(kit => kit.count*(kit.price?kit.price:kit.pcPrice)).reduce((a, b) => a + b, 0) + " uah";
                           }
                         }),
     };

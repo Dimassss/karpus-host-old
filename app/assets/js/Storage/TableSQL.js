@@ -44,7 +44,7 @@ class TableSQL{
     let _this = this;
 
     $.post("/crm/save", {records: records.map(rec => rec.toDB()), table: _this.table, k: _this.k, v: _this.v}).done((data) => {
-      cb(Array.isArray(JSON.parse(data))
+      if(cb) cb(Array.isArray(JSON.parse(data))
             ?JSON.parse(data).map(rec => (new Model).fromDB(rec))
             :JSON.parse(data));
     });

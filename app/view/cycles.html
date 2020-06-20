@@ -15,13 +15,16 @@
     <link rel="stylesheet" href="../app/assets/css/styles/form.css">
     <link rel="stylesheet" href="../app/assets/css/styles/alert-window.css">
     <style>
+
       /*TO ADD*/
       .cycles .selected{
         background-color: #4a4a4a !important;
         color: #fa2 !important;
       }
 
-
+      header label.selectedWin{
+        color: #fa2 !important;
+      }
       /*TO ADD*/
 
       /*sub editings*/
@@ -174,9 +177,9 @@
     <header>
       <div>
         <a href="main" class="path">Cycles</a>:
-        <label for="win1">Orders</label>,
-        <label for="win2">Kits</label>,
-        <label for="win3">Products</label>
+        <label for="win1" class="selectedWin" onclick="this.parentNode.querySelector('.selectedWin').classList.remove('selectedWin');this.classList.add('selectedWin');">Orders</label>,
+        <label for="win2" onclick="this.parentNode.querySelector('.selectedWin').classList.remove('selectedWin');this.classList.add('selectedWin');">Kits</label>,
+        <label for="win3" onclick="this.parentNode.querySelector('.selectedWin').classList.remove('selectedWin');this.classList.add('selectedWin');">Products</label>
       </div>
       <div><span class="username">{{ @username }}</span>: <a class="logout" href="functions/endSession">Logout</a></div>
       <div class="drop">
@@ -633,31 +636,6 @@
       </section>
     </main>
   </body>
-  <!--script src="https://code.jquery.com/jquery-3.4.1.min.js"></script-->
-  <!--script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
-  <script type="text/javascript" src="../app/assets/js/EventHandlers/eventHandler.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Inputs/Input.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Inputs/cycles.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Outputs/Output.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Outputs/cycles.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/Model.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/CustomerModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/CycleModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/KitModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/OrderModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Model/ProductModel.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/websql.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/TableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/CustomerTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/CycleTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/KitTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/OrderTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Storage/ProductTableSQL.js"></script>
-  <script type="text/javascript" src="../app/assets/js/DAO/DAO.js"></script>
-  <script type="text/javascript" src="../app/assets/js/DAO/CyclesDAO.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Controllers/CycleController.js"></script>
-  <script type="text/javascript" src="../app/assets/js/Cycles.js"></script-->
 
   <script type="text/javascript" src="../app/assets/js/GlobalVariables.js"></script>
 

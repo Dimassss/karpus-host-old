@@ -117,7 +117,7 @@ class HTMLTable extends HTMLObject{
       searchingStr: cycleID,
       searchCols: {"cycleID":"number"},
       getCols: ["id"]
-    }, "`cycleID` = ?", [cycleID], records => _.db.del(records.map(rec => rec.id)));
+    }, records => _.db.del(records.map(rec => rec.id)));
   }
 
   selectRowEvent(e){
