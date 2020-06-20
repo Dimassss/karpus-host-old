@@ -12,6 +12,7 @@ class ProductModel extends Model{
 
   getCellOfRow(t){
     let _ = this;
+    let vals;
 
     switch (t) {
       case 'name':
@@ -21,10 +22,12 @@ class ProductModel extends Model{
         return _[t];
         break;
       case 'price':
-        return Object.values(this[t]).join("</td><td data-rowid='"+_.id+"'>");
+        vals = this[t]?this[t]:[0,0,0,0];
+        return Object.values(vals).join("</td><td data-rowid='"+_.id+"'>");
         break;
       case 'count':
-        return Object.values(this[t]).join("</td><td data-rowid='"+_.id+"'>");
+        vals = this[t]?this[t]:[0,0,0,0,0,0];
+        return Object.values(vals).join("</td><td data-rowid='"+_.id+"'>");
         break;
       case 'dimensions':
         return _[t].join(" ")

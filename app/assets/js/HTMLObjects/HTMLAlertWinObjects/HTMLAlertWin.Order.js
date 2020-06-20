@@ -151,7 +151,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     _.dbOrder.save([_.order], orders => {
       let order = orders[0];
       _.okCB(_.customer, order?order:_.order);
-      _.setOrder()
+      _.setOrder(order);
     });
   }
 
@@ -185,7 +185,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
       //prepare needed objects
       _.dbCustomer.load([customerID], customers => {
         if(!customers[0]) throw Exception;
-        _.dbCycle.select("1=1", [], cycles => {
+        _.dbCycle.select({}, cycles => {
           if(!cycles){
             alert("You cant create order because there is no cycles in database");
             return;
@@ -275,7 +275,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     if(order.cycleID) _.alert.kits.loadKits(order.cycleID, Object.values(order.kits), (kits, products) => {
       var sum = 0;
 
-      kits.filter(kit => kit.count > 0).forEach(kit => {
+      kits.filter(kit => kit.count && kit.count > 0).forEach(kit => {
         let price = kit.price
                         ?kit.price
                         :products.filter(pr => kit.products[pr.id])
@@ -292,6 +292,7 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
                               )
                             ).reduce((a, b) => a + b, 0);
         sum += price*kit.count;
+        console.log(kit.count, sum);
       });
 
       _.alert.sumPCText.text = sum + " uah";

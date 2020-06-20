@@ -29,8 +29,8 @@ class OrderTableSQL extends TableSQL{
     });
   }
 
-  select(where, data, cb){
-    this.sl(where, data, records => {
+  select(where, cb){
+    this.sl(where, records => {
       const orders = [];
       for(var i = 0; i < records.length; i++) orders[orders.length] = (new OrderModel()).fromDB(records[i]);
       cb(orders);

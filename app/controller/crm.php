@@ -101,8 +101,6 @@ class crm extends Controller{
     $table = $this->f3->get("POST.table");
     $k = $this->f3->get("POST.k");
 
-    /*echo json_encode($this->f3->get("POST"));
-    return;*/
     $selector = "";
     $db = array(
             "CUSTOMERS" => new Customer($this->db),
@@ -121,7 +119,7 @@ class crm extends Controller{
     else echo "[]";
   }
 
-  public function select(){
+  /*public function select(){
     function toNum($n){
       return (int)$n;
     }
@@ -140,12 +138,192 @@ class crm extends Controller{
 
     array_unshift($data, $where);
 
-    /*if($table == "ORDERS"){
-      echo json_encode($data);
-      return;
-    }*/
+    $pos = strpos($where, "`customerName`");
+    if($pos !== false){
+      $searchingStr = explode("%", $where)[1];
+      $where = str_replace("`customerName`", "", $where, 1);
+      $ids = [];
+      $customers = $db["CUSTOMERS"]->getBySelector(array("`fullName` = ?", $searchingStr));
+      for($customers as $cust) 
+        $ids[] = $cust->id;
+      
+      if(id !== []){
+        for($ids as $id) $wherePlus .= $id.", ";
+        $wherePlus = "`customerID` IN (".substr($where, 0, -1).")";
+      }
+    }
 
     if(array_key_exists($table, $db)) echo json_encode($db[$table]->getBySelector($data));
+  }*/
+
+  public function select(){
+    /* 
+      @where = {
+         sqlMain: string,
+          sqlData: array,
+          count: (int),
+          order: INC/DEC,
+          haveIDs: Array(),
+          searchingStr: String,
+          searchCols: arrayOfColsToSearch,
+          getCols: arrayOfColsToGet / "*",
+          otherTables:{
+            tableName: {
+              searchCols: arrayOfColsToSearch / "*",
+              getCol: ColToGet,
+              mapTo: "colNameImCurrentTable
+            }
+          }
+       }
+       @currentTableName = string
+    */
+
+    $db = array(
+      "CUSTOMERS" => new Customer($this->db),
+      "CYCLES" => new Cycle($this->db),
+      "KITS" => new Kit($this->db),
+      "ORDERS" => new Order($this->db),
+      "PRODUCTS" => new Product($this->db)
+      //"PRODUCTS_LIST" => new ProductsList($this->db)
+    );
+    $currentTableName = $this->f3->get("POST.currentTableName");
+    $where = $this->f3->get("POST.where");
+    
+    if(!array_key_exists($currentTableName, $db)) return;
+
+    $arr = [""];
+
+    if($where["sqlMain"] && $where["sqlMain"] !== ""){
+      $arr[0] .= $where["sqlMain"];
+      if($where["sqlData"]) $arr = array_merge($arr, $where["sqlData"]);
+    }else{
+      $arr[0] = "1=1";
+    }
+
+    if($where["haveIDs"]){
+      $arr[0] .= " AND ID NOT IN (".implode(",", $where["haveIDs"]).")";
+    }
+
+    if($where["searchingStr"] && $where["searchCols"]){
+      $searchArr = [];
+      foreach($where["searchCols"] as $col => $type){
+        switch($type){
+          case "number":
+            $searchArr[] = "`".$col."` = ?";
+            array_push($arr, $where["searchingStr"]);
+            break;
+          case "string":
+            $searchArr[] = "`".$col."` LIKE ?";
+            array_push($arr, "%".$where["searchingStr"]."%");
+            break;
+        }
+      }
+
+      $searchStrSQL = implode(" OR ", $searchArr);
+      $arr[0] .= (($searchStrSQL == "")?"":(" AND (".$searchStrSQL.")"));
+    }
+
+    if($where["order"]){
+      $arr[0] .= " ORDER BY ID ".(($where["order" == "ASC"])?"ASC":"DESC");
+    }
+
+    if($where["count"]){
+      $arr[0] .= " LIMIT ".$where["count"];
+    }
+
+    $records = [];
+    $r = $db[$currentTableName]->getBySelector($arr);
+    if($where["getCols"] && $where["getCols"] !== "*"){
+      foreach($r as $rec){
+        $records[] = [];
+        $len = count($records);
+        foreach($where["getCols"] as $col){
+          $records[$len - 1][$col] = $rec[$col];
+        }
+      }
+    }else{
+      $records = $r;
+    } 
+
+    if($where["otherTables"]){
+      $ids = [];
+      $arr = $records;
+      $count = -1;
+      
+      foreach($where["otherTables"] as $tableName => $options){
+        if(!$where["count"] || ($where["count"] && $where["count"] > count($records))){
+          foreach($arr as $rec){
+            $ids[] = $rec["id"];
+          }
+          $count = $where["count"] - count($ids);
+        }
+        
+        if(!($count == -1 || $count > 0)) break;
+
+        $arr = ["1=1"];
+
+        if(count($ids) > 0){
+          $arr[0] .= " AND ".$options["getCol"]." NOT IN (".implode(",", $ids).")";
+        }
+
+        if($where["searchingStr"] && $options["searchCols"]){
+          $searchArr = [];
+          foreach($options["searchCols"] as $col => $type){
+            switch($type){
+              case "number":
+                $searchArr[] = "`".$col."` = ?";
+                array_push($arr, $where["searchingStr"]);
+              break;
+              case "string":
+                $searchArr[] = "`".$col."` LIKE ?";
+                array_push($arr, "%".$where["searchingStr"]."%");
+              break;
+            }
+          }
+    
+          $searchStrSQL = implode(" OR ", $searchArr);
+          $arr[0] .= (($searchStrSQL == "")?"":(" AND (".$searchStrSQL.")"));
+        }
+
+        if($count > 0){
+          $arr[0] .= " LIMIT ".$count;
+        }
+
+        $recs = $db[$tableName]->getBySelector($arr);
+        $gettedCols = [];
+        $strArr = [];
+        foreach($recs as $rec){
+          $gettedCols[] = $rec[$options["getCol"]];
+          $strArr[] = "?";
+        }
+
+        $arr = [];
+        if($where["sqlMain"] && $where["sqlMain"] !== ""){
+          $arr[0] .= $where["sqlMain"];
+          if($where["sqlData"]) $arr = array_merge($arr, $where["sqlData"]);
+        }else{
+          $arr[0] = "1=1";
+        }
+        $arr[0] .= " AND ".$options["mapTo"]." IN (".implode(",", $strArr).")";
+        $arr = array_merge($arr, $gettedCols);
+
+        $recs = $db[$currentTableName]->getBySelector($arr);
+        
+        if($where["getCols"] !== "*"){
+          foreach($recs as $rec){
+            $records[] = [];
+            $len = count($records);
+            foreach($where["getCols"] as $col){
+              $records[$len - 1][$col] = $rec[$col];
+            }
+          }
+        }else{
+          $records = array_merge($records, $recs);
+        }
+      }
+    }
+    
+    echo json_encode($records);
   }
 
   public function del(){

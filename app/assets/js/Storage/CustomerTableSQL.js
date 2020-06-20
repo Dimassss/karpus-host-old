@@ -13,8 +13,8 @@ class CustomerTableSQL extends TableSQL{
     });
   }
 
-  select(where, data, cb){
-    this.sl(where, data, (records) => {
+  select(where, cb){
+    this.sl(where, (records) => {
       const customers = [];
       for(var i = 0; i < records.length; i++) customers[customers.length] = (new CustomerModel()).fromDB(records[i]);
       cb(customers);

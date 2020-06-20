@@ -40,7 +40,7 @@ class HTMLKitsPanel extends HTMLObject{
 
     _.clean();
 
-    _.dbProduct.select("1=1", [], products => {
+    _.dbProduct.select({}, products => {
       _.products = products;
       _.dbCycle.load([cycleID], cycles => {
         if(!cycles[0]) return;
@@ -50,7 +50,11 @@ class HTMLKitsPanel extends HTMLObject{
             products[i].__proto__ = ProductModel.prototype;
           }
         });
-        _.dbKit.select("`cycleID` = ?", [cycleID], kits => {
+        _.dbKit.select({
+          searchingStr: cycleID,
+          searchCols: {"cycleID": "number"},
+          getCols: "*"
+        }, kits => {
           let idMap = {};
           preparedKits.forEach(kit => idMap[kit.id] = kit);
           kits = kits.map(kit => {

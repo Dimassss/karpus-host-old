@@ -78,7 +78,7 @@ var mapper = {
   }
 }
 
-var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.tables.order.cols),
+var tableOrder = new HTMLTableOrders(mapper.tables.order.selector, {}, mapper.tables.order.cols, true),
     tableProduct = new HTMLTableProducts(mapper.tables.product.selector, {}, mapper.tables.product.cols),
     tableKit = new HTMLTableKits(mapper.tables.kit.selector, {}, mapper.tables.kit.cols),
     kitProfile = new HTMLProfileKit(mapper.profiles.kit.selector, mapper.profiles.kit.fields, kit => {

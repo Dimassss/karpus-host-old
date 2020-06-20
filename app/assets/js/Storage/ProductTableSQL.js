@@ -13,8 +13,8 @@ class ProductTableSQL extends TableSQL{
     });
   }
 
-  select(where, data, cb){
-    this.sl(where, data, records => {
+  select(where, cb){
+    this.sl(where, records => {
       const products = [];
       for(var i = 0; i < records.length; i++) products[products.length] = (new ProductModel()).fromDB(records[i]);
       cb(products);

@@ -44,21 +44,23 @@ class HTMLTable extends HTMLObject{
 
     if(!this.tableIsFull) if(forceLoad == "FL" || this.html.scrollHeight - this.html.scrollTop < 400)
       this.db.select(
-              _this.sqlMain + " "
-              + (
-                  (this.findInput && this.findInput.value)
-                  ?("AND ("+(_this.columns.map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" OR ")+")")):""
-              ) + (Object.keys(_this.body)[0]?("AND `id` NOT IN ("
-              + Object.keys(_this.body).map(el => "?").join(",")
-              + ")"):"") + " ORDER BY ID DESC LIMIT 30",
-          [..._this.sqlData, ...Object.keys(this.body)],
-          rows => {
-            if(!rows) _this.tableIsFull = true;
-            else{
-              rows.forEach(row => _this.addOrUpdateRow(row));
-            }
+        {
+          sqlMain: _this.sqlMain,
+          sqlData: _this.sqlData,
+          count: 30,
+          order: "DESC",
+          haveIDs: Object.keys(this.body),
+          searchingStr: (_this.findInput && _this.findInput.value)?_this.findInput.value:"",
+          searchCols: Object.fromEntries(_this.columns.filter(col => !["id"].includes(col)).map(col => [col, "string"])),
+          getCols: "*"
+        },
+        rows => {
+          if(!rows) _this.tableIsFull = true;
+          else{
+            rows.forEach(row => _this.addOrUpdateRow(row));
           }
-        );
+        }
+      );
   }
 
   addOrUpdateRow(row){
@@ -68,7 +70,7 @@ class HTMLTable extends HTMLObject{
     row is a Model object
     row = {id:23, data1:d1, ...}
     */
-
+   
     if(!row || (!row.id && row.id != 0)){
       console.assert(0, {text: "Row without id", class: this.valueOf(), row: row.valueOf()});
       return;
@@ -76,7 +78,7 @@ class HTMLTable extends HTMLObject{
 
     let rowHTML = "";
     this.columns.forEach(col => {
-      rowHTML += `<td data-rowID="${row.id}">${row.getCellOfRow?row.getCellOfRow(col):col}</td>`;
+      rowHTML += `<td data-rowID="${row.id}" data-col-name="${col}">${row.getCellOfRow(col)}</td>`;
     });
 
     const isNew = this.body[row.id]?false:true;
@@ -111,7 +113,11 @@ class HTMLTable extends HTMLObject{
 
   deleteAllFromCycle(cycleID){
     let _ = this;
-    _.db.select("`cycleID` = ?", [cycleID], records => _.db.del(records.map(rec => rec.id)));
+    _.db.select({
+      searchingStr: cycleID,
+      searchCols: {"cycleID":"number"},
+      getCols: ["id"]
+    }, "`cycleID` = ?", [cycleID], records => _.db.del(records.map(rec => rec.id)));
   }
 
   selectRowEvent(e){

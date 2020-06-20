@@ -38,25 +38,14 @@ class HTMLTableProducts extends HTMLTable{
         (new CycleTableSQL).load(_this.sqlData, cycles => {
           if(!cycles[0]) return;
           let cycle = cycles[0];
-          this.db.select(`1=1${
-            (this.findInput && this.findInput.value)
-                  ?(" AND ("
-                      +(
-                          _this.columns
-                                    .map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'")
-                                    .join(" OR ")
-                          +")"
-                        )
-                  ):""
-              }${
-                Object.keys(_this.body)[0]
-                      ?(
-                        " AND `id` NOT IN ("
-                        + Object.keys(_this.body).map(el => "?").join(",")
-                        + ")"
-                      ):""
-              } ORDER BY ID DESC`,
-              Object.keys(this.body),
+          this.db.select(
+              {
+                order: "DESC",
+                haveIDs: Object.keys(_this.body),
+                searchingStr: (this.findInput && this.findInput.value)?this.findInput.value:"",
+                searchCols: Object.fromEntries(_this.columns.filter(col => !["id", "count"].includes(col)).map(col => [col, "string"])),
+                getCols: "*"
+              },
               products => {
                 let ids = [];
                 products.forEach((pr, i) => {
@@ -75,25 +64,14 @@ class HTMLTableProducts extends HTMLTable{
               });
             });
       }else{
-        this.db.select(
-          `1=1${
-            (this.findInput && this.findInput.value)
-                  ?(" AND ("
-                      +(
-                          _this.columns
-                                    .map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'")
-                                    .join(" OR ")
-                          +")"
-                        )
-                  ):""
-              }${
-                Object.keys(_this.body)[0]
-                      ?(
-                        " AND `id` NOT IN ("
-                        + Object.keys(_this.body).map(el => "?").join(",")
-                        + ")"
-                      ):""
-              } ORDER BY ID DESC LIMIT 30`,[],
+        this.db.select({
+                count: 30,
+                order: "DESC",
+                haveIDs: Object.keys(_this.body),
+                searchingStr: (this.findInput && this.findInput.value)?this.findInput.value:"",
+                searchCols: Object.fromEntries(_this.columns.filter(col => !["id", "count"].includes(col)).map(col => [col, "string"])),
+                getCols: "*"  
+              },
           products => {
             if(!products) _this.tableIsFull = true;
             else{

@@ -168,7 +168,7 @@ class HTMLProfileProduct extends HTMLProfile{
       (new CycleTableSQL).load([_.cycleID], cycles => {
         if(!cycles[0]) return;
         let cycle = cycles[0];
-
+        
         _.db.load([_.product.id], products => {
           if(!products[0]) return;
           let pr = products[0];
@@ -178,6 +178,7 @@ class HTMLProfileProduct extends HTMLProfile{
                         );
           if(changed) cycle.products[_.product.id] = changed;
           else delete cycle.products[_.product.id];
+
           (new CycleTableSQL).save([cycle], () => {
             _.onchange(_.product);
           });

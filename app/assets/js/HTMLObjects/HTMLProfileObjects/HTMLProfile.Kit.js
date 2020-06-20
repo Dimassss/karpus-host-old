@@ -114,8 +114,12 @@ class HTMLProfileKit extends HTMLProfile{
     this.clean();
 
     if(!id){
-      (new ProductTableSQL()).select("1=1", [], products => {
-        (new CycleTableSQL).select("`id` = ?", [_.cycleID], cycles => {
+      (new ProductTableSQL()).select({}, products => {
+        (new CycleTableSQL).select({
+          searchingStr: _.cycleID,
+          searchCols: {"id": "number"},
+          getCols: "*",
+        }, cycles => {
           if(!cycles[0]) return;
           products.forEach((pr, i) => {
             if(cycles[0].products[pr.id]){
@@ -129,8 +133,12 @@ class HTMLProfileKit extends HTMLProfile{
     } else this.db.load([id], kits => {
         if(kits){
           _.id = id;
-          (new ProductTableSQL()).select("1=1", [], products => {
-            (new CycleTableSQL).select("`id` = ?", [kits[0].cycleID], cycles => {
+          (new ProductTableSQL()).select({}, products => {
+            (new CycleTableSQL).select({
+              searchingStr: kits[0].cycleID,
+              searchCols: {"id": "number"},
+              getCols: "*",
+            }, cycles => {
               if(!cycles[0]) return;
               products.forEach((pr, i) => {
                 if(cycles[0].products[pr.id]){

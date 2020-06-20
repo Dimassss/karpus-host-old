@@ -37,7 +37,7 @@ class HTMLCyclesBar extends HTMLObject{
 
     this.html.querySelector(_.fields.newCycleAdd).addEventListener("click", e => _.createCycle(e));
 
-    this.dbCycle.select("1=1", [], cycles => {
+    this.dbCycle.select({}, cycles => {
       _.cycles = cycles;
 
       //add cycles to the bar and add event listeners to the cycles

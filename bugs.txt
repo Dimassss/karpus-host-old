@@ -1,0 +1,19 @@
+Cycles:
+-orders:
+--searching
+--alert_win:
+---sum calculation: give NaN
+---kit bar: 
+----resizing bag
+----products left
+----info how many kits possible to order by products info
+-kits:
+--products bar:
+---sorting by count
+-searching
+-kit creating bar:
+--add column: count c-lft
+--resize: make bigger
+-cycle creating bag (products column default)
+-cycle rename
+-win selection for recognising

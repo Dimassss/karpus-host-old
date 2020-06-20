@@ -1,5 +1,5 @@
 class HTMLTableOrders extends HTMLTable{
-  constructor(selector, callbacks, cols){
+  constructor(selector, callbacks, cols, useCustomerNameForSearching){
     /*
     callbacks = {func1: [cb1, cb2, ...]}
     Every callback take current HTMLTableObject obj as a parametr
@@ -8,6 +8,7 @@ class HTMLTableOrders extends HTMLTable{
     super(new OrderTableSQL(), selector, cols);
 
     this.callbacks = callbacks;
+    this.useCustomerNameForSearching = useCustomerNameForSearching | false;
   }
 
   selectRow(){
@@ -29,17 +30,28 @@ class HTMLTableOrders extends HTMLTable{
 
   loadNewRowsEvent(forceLoad){
     let _this = this;
+    let options = {
+      sqlMain: _this.sqlMain,
+      sqlData: _this.sqlData,
+      count: 30,
+      order: "DESC",
+      haveIDs: Object.keys(_this.body),
+      searchingStr: (this.findInput && this.findInput.value)?this.findInput.value:"",
+      searchCols: Object.fromEntries(_this.columns.filter(col => !["id", "customerID", "customerName"].includes(col)).map(col => [col, "string"])),
+      getCols: "*"
+    };
+
+    if(_this.useCustomerNameForSearching) options.otherTables = {
+      "CUSTOMERS": {
+        searchCols: {"fullName":"string"},
+        getCol: "id",
+        mapTo: "customerID"
+      }
+    };
 
     if(!this.tableIsFull) if(forceLoad == "FL" || this.html.scrollHeight - this.html.scrollTop < 400)
-      this.db.select(
-              _this.sqlMain + " "
-              + (
-                  (this.findInput && this.findInput.value)
-                  ?("AND ("+_this.columns.filter(col => col !== "customerName").map(col => "`" + col + "` LIKE '%" + this.findInput.value + "%'").join(" OR ") + ")"):""
-              ) + (Object.keys(_this.body)[0]?("AND `id` NOT IN ("
-              + Object.keys(_this.body).map(el => "?").join(",")
-              + ") "):"") + "ORDER BY ID DESC LIMIT 30",
-          [..._this.sqlData, ...Object.keys(this.body)],
+        this.db.select(
+          options,
           orders => {
             if(!orders) _this.tableIsFull = true;
             else{
