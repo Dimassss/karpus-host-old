@@ -47,19 +47,22 @@ class HTMLTableProducts extends HTMLTable{
                 getCols: "*"
               },
               products => {
-                let ids = [];
-                products.forEach((pr, i) => {
-                  if(cycle.products[pr.id] && JSON.stringify(cycle.products[pr.id]) !== JSON.stringify({"c-st":0, "c-wh":0, "c-sh":0, "c-kt":0, "c-or":0, "c-lft":0})){
-                    pr = {...pr, ...cycle.products[pr.id]};
-                    pr.__proto__ = ProductModel.prototype;
-                    _this.addOrUpdateRow(pr);
-                  }else{
-                    ids[ids.length] = i;
-                    products[i].count = {"c-st":0, "c-wh":0, "c-sh":0, "c-kt":0, "c-or":0, "c-lft":0};
-                  }
-                });
-                ids.forEach(id => {
-                  _this.addOrUpdateRow(products[id]);
+                (new DBAccess()).getUsedOrderCountOfProducts(cycle.id, counts => {
+                  let ids = [];
+                  products.forEach((pr, i) => {
+                    if(cycle.products[pr.id] && JSON.stringify(cycle.products[pr.id].count) !== JSON.stringify({"c-st":0, "c-wh":0, "c-sh":0, "c-kt":0, "c-or":0, "c-lft":0})){
+                      pr = {...pr, ...cycle.products[pr.id]};
+                      pr.__proto__ = ProductModel.prototype;
+                      pr.count["c-or"] =  counts[pr.id]?counts[pr.id]:0;
+                      _this.addOrUpdateRow(pr);
+                    }else{
+                      ids[ids.length] = i;
+                      products[i].count = {"c-st":0, "c-wh":0, "c-sh":0, "c-kt":0, "c-or":counts[pr.id]?counts[pr.id]:0, "c-lft":0};
+                    }
+                  });
+                  ids.forEach(id => {
+                    _this.addOrUpdateRow(products[id]);
+                  });
                 });
               });
             });

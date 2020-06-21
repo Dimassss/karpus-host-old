@@ -16,7 +16,7 @@ class HTMLKitsPanel extends HTMLObject{
   addKit(kit, products){
     let _ = this;
 
-    _.html.insertAdjacentHTML("afterbegin", `<div class="kit js-to-save" data-kit-id="${kit.id}">`);
+    _.html.insertAdjacentHTML("afterbegin", `<div class="kit js-to-save" data-kit-id="${kit.id}"></div>`);
 
     let kitForm = new HTMLKitProductForm(_.selector + ` div[data-kit-id='${kit.id}']`, {
       updateFormEvent: () => {
@@ -24,6 +24,38 @@ class HTMLKitsPanel extends HTMLObject{
           let k = htmlKit.kit;
           return [k.id, k];
         })));
+      },
+      updateKitCount: () => {
+        (new DBAccess()).getLeftCountOfProductsNotInOrder(_.orderID, _.cycleID, counts => {
+          let c = {};
+
+          _.kits.forEach(kitHTML => {
+            kitHTML.productsLIST.forEach(pr => {
+              if(!c[pr.id]) c[pr.id] = 0;
+              c[pr.id] += (kitHTML.kit.count?kitHTML.kit.count:0)*(kitHTML.kit.products[pr.id].count);
+            });
+          });
+
+          _.kits.forEach(kitHTML => {
+            kitHTML.productsLIST.forEach(pr => {
+              kitHTML.updateLeftCountOfProduct(pr.id, (counts[pr.id]?counts[pr.id]:0)-(c[pr.id]?c[pr.id]:0));
+            });
+          });
+        });
+      },
+      updateProductCountEvent: prID => {
+        (new DBAccess()).getLeftCountOfProduct(prID, _.orderID, _.cycleID, count => {
+          let c = 0;
+
+          _.kits.forEach(kit => {
+            const l = kit.kit.products[prID].count*kit.kit.count;
+            c += l?l:0;
+          });
+
+          _.kits.forEach(kit => {
+            kit.updateLeftCountOfProduct(prID, count-c);
+          });
+        });
       }
     }, true);
     kitForm.fillKitForm(kit, products);
@@ -37,6 +69,7 @@ class HTMLKitsPanel extends HTMLObject{
     */
 
     let _ = this;
+    _.cycleID = cycleID;
 
     _.clean();
 
@@ -59,13 +92,18 @@ class HTMLKitsPanel extends HTMLObject{
           preparedKits.forEach(kit => idMap[kit.id] = kit);
           kits = kits.map(kit => {
             if(idMap[kit.id]) return new KitModel(idMap[kit.id]);
-            //kit.products = Object.fromEntries(kit.products.map(pr => [pr.id, pr]));
             return kit;
           });
 
-          kits.forEach(kit => _.addKit(kit, products));
+          (new DBAccess()).getLeftCountOfProducts(cycleID, counts => {
+            products.forEach((pr,i) => {
+              products[i].countLeft = counts[pr.id]?counts[pr.id]:0;
+            });
 
-          cb(kits, products);
+            kits.forEach(kit => _.addKit(kit, products));
+
+            cb(kits, products);
+          });
         });
       });
     });

@@ -46,7 +46,8 @@ class HTMLKitProductForm extends HTMLObject{
     this.maxVolume = maxVolume;
     this.maxWeight = maxWeight;
 
-    let html = `<h6 class="columns">
+    let html = `<h5 style='text-align:center;color:#284;'>${_.name}</h5>
+                <h6 class="columns">
                   ${_.fullMode
                     ?`<div class="col-3 pcWeight"></div>
                       <div class="col-3 pcPrice"></div>
@@ -81,6 +82,7 @@ class HTMLKitProductForm extends HTMLObject{
                             val => {
                               _.count = val;
                               _.callbacks.updateFormEvent();
+                              _.callbacks.updateKitCount();
                             }
                           );
       this.fields.pcPrice = new HTMLText(_.selector + " h6 .pcPrice", _.pcPrice.toFixed(2) + " uah");
@@ -118,9 +120,17 @@ class HTMLKitProductForm extends HTMLObject{
         }
 
         _.callbacks.updateFormEvent();
+      },
+      updateProductCountEvent: prID => {
+        _.callbacks.updateProductCountEvent(prID);
       }
     });
-    this.productsForm.fillForm(_.kit, _.productsLIST,);
+    
+    this.productsForm.fillForm(_.kit, _.productsLIST);
+  }
+
+  updateLeftCountOfProduct(prID, count){
+    this.productsForm.updateLeftCountOfProduct(prID, count);
   }
 
   deleteKitProductForm(){

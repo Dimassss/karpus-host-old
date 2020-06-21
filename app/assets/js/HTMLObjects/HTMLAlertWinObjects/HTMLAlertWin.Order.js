@@ -272,6 +272,9 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
     _.alert.billed.value = order.billed;
     _.alert.pays.array = order.payDates.map((pd, i) => [order.pays[i], pd]);
     _.alert.cycleID.selected = order.cycleID;
+
+    _.alert.kits.orderID = order.id;
+
     if(order.cycleID) _.alert.kits.loadKits(order.cycleID, Object.values(order.kits), (kits, products) => {
       var sum = 0;
 
@@ -292,7 +295,6 @@ class HTMLAlertWinOrder extends HTMLAlertWin{
                               )
                             ).reduce((a, b) => a + b, 0);
         sum += price*kit.count;
-        console.log(kit.count, sum);
       });
 
       _.alert.sumPCText.text = sum + " uah";

@@ -140,13 +140,17 @@ class HTMLProfileKit extends HTMLProfile{
               getCols: "*",
             }, cycles => {
               if(!cycles[0]) return;
-              products.forEach((pr, i) => {
-                if(cycles[0].products[pr.id]){
-                  products[i] = {...pr, ...cycles[0].products[pr.id]};
-                  products[i].__proto__ = ProductModel.prototype;
-                }
+
+              (new DBAccess()).getLeftCountOfProducts(cycles[0].id, counts => {
+                products.forEach((pr, i) => {
+                  if(cycles[0].products[pr.id]){
+                    products[i] = {...pr, ...cycles[0].products[pr.id]};
+                    products[i].__proto__ = ProductModel.prototype;
+                  }
+                  products[i].countLeft = counts[products[i].id]?counts[products[i].id]:0;
+                });
+                f(kits[0], products);
               });
-              f(kits[0], products);
             });
           });
         }

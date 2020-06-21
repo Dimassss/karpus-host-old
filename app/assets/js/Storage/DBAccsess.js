@@ -4,75 +4,27 @@ class DBAccess{
     return g["Storage"]["DBAccess"] = this;
   }
 
-  /*createTableIfNotExist(sql){
-    websql.process(sql);
+  getLeftCountOfProducts(cycleID, cb){
+    $.post("/crm/getLeftCountOfProducts", {cycleID:cycleID}).done((data) => {
+      cb(JSON.parse(data));
+    });
   }
 
-  load(processDATA, cb, records){
-    websql.process(processDATA, cb);
-
-    $.ajax({url:"example.php",
-            data: processDATA.})
-      .done(function(data) {
-        data = JSON.parse(data);
-        var sql = data.sql;
-        cb(data.response);
-        websql.process(sql,
-          () => {
-            $.ajax("allGood", );
-          },
-          (error, statement) => {
-            console.error("Error: " + error.message + " when processing " + statement);
-          });
-      })
-      .fail(function() {
-        websql.process(sql, () => {cb(records)});
-      });
+  getUsedOrderCountOfProducts(cycleID, cb){
+    $.post("/crm/getUsedOrderCountOfProducts", {cycleID:cycleID}).done((data) => {
+      cb(JSON.parse(data));
+    });
   }
 
-  save(processDATA, cb){
-    websql.process(processDATA, cb);
-
-    $.ajax( "example.php" )
-      .done(function() {
-        alert( "success" );
-      })
-      .fail(function() {
-        websql.process(sql);
-      })
-      .always(function() {
-        alert( "complete" );
-      });
+  getLeftCountOfProduct(prID, orderID, cycleID, cb){
+    $.post("/crm/getLeftCountOfProduct", {cycleID:cycleID, prID:prID, orderID:orderID}).done((data) => {
+      cb(JSON.parse(data));
+    });
   }
-
-  delete(processDATA){
-    websql.process(processDATA);
-
-    $.ajax( "example.php" )
-      .done(function() {
-        alert( "success" );
-      })
-      .fail(function() {
-        websql.process(sql);
-      })
-      .always(function() {
-        alert( "complete" );
-      });
-  }
-
-  select(processDATA){
-    websql.process(processDATA);
-
-    $.ajax( "example.php" )
-      .done(function() {
-        alert( "success" );
-      })
-      .fail(function() {
-        websql.process(sql);
-      })
-      .always(function() {
-        alert( "complete" );
-      });
-  }*/
   
+  getLeftCountOfProductsNotInOrder(orderID, cycleID, cb){
+    $.post("/crm/getLeftCountOfProductsNotInOrder", {cycleID:cycleID, orderID:orderID}).done((data) => {
+      cb(JSON.parse(data));
+    });
+  }
 }

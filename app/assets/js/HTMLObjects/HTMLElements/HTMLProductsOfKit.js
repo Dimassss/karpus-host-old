@@ -41,12 +41,12 @@ class HTMLProductsOfKit extends HTMLObject{
     this.price = kit.price ? kit.price : this.pcPrice;
     this.pcWeight = Object.keys(_.products).map(k => (_.products[k].weight?_.products[k].weight:0) * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
     this.weight = kit.weight ? kit.weight : this.pcPrice;
-
+    
     //generate html of products and paste it to the container
     let html = this.productsLIST.map(pr => {
                                           pr = _.products[pr.id]?_.products[pr.id]:pr;
                                           return `<div data-product_id='${pr.id}' class="product columns" ${(pr.count>0)?"":'style="display:none"'}>
-                                              <div class="col-5">${pr.name}</div>
+                                              <div class="col-5">${pr.name}: <span class='js-countLeft'>${pr.countLeft?pr.countLeft:0}</span></div>
                                               <div class="col-1">${pr.unit}</div>
                                               <div class="col-3">
                                                 <select class="form-select prices">
@@ -90,6 +90,8 @@ class HTMLProductsOfKit extends HTMLObject{
           weight: _.weight,
           pcWeight: _.pcWeight,
         }));
+
+        _.callbacks.updateProductCountEvent(prID);
       });
     });
 
@@ -97,6 +99,11 @@ class HTMLProductsOfKit extends HTMLObject{
       e.preventDefault();
       _.toggleProductsInForm();
     })
+  }
+
+  updateLeftCountOfProduct(prID, count){
+    let _ = this;
+    _.html.querySelector("div[data-product_id='"+prID+"'] .js-countLeft").innerHTML = count;
   }
 
   addOrUpdateProduct(productID, selectedPrice, count, fromInp /*means that method calls from onChangeProduct method*/){

@@ -132,11 +132,14 @@ class HTMLProfileProduct extends HTMLProfile{
       }else if(this.page == "cycles" && !isNaN(this.cycleID)){
         (new CycleTableSQL).load([this.cycleID], cycles => {
           if(!cycles[0]) return;
-          let changes = cycles[0].products[id]?cycles[0].products[id]:{};
-          if(!changes.count) changes.count = {"c-st":0,"c-wh":0,"c-sh":0,"c-kt":0,"c-or":0,"c-lft":0};
-          _.product = {..._.product, ...changes}
-          _.product.__proto__ = ProductModel.prototype;
-          _.setProduct(_.product);
+          (new DBAccess()).getUsedOrderCountOfProducts(cycles[0].id, counts => {
+            let changes = cycles[0].products[id]?cycles[0].products[id]:{};
+            if(!changes.count) changes.count = {"c-st":0,"c-wh":0,"c-sh":0,"c-kt":0,"c-or":0,"c-lft":0};
+            _.product = {..._.product, ...changes}
+            _.product.__proto__ = ProductModel.prototype;
+            _.product.count["c-or"] = counts[_.product.id]?counts[_.product.id]:0;
+            _.setProduct(_.product);
+          });
         });
       }
     });

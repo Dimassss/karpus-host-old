@@ -69,7 +69,7 @@ class crm extends Controller{
       case "msg":
         $html = "<table><thead><tr><th>name<th>telephone</th><th>email</th><th>message</th><th>date</th></tr></thead><tbody>";
 
-        $msgs = (new Mail($this->db))->getBySelector("1=1");
+        $msgs = (new Mail($this->db))->getBySelector("1");
 
         foreach($msgs as $msg){
           $html .= "<tr>";
@@ -372,46 +372,140 @@ class crm extends Controller{
         $return[] = $rec;
       }
     }
-/*
-    if($table !== "PRODUCTS")
-      foreach($records as $rec){
-        $db = array(
-                  "CUSTOMERS" => new Customer($this->db),
-                  "CYCLES" => new Cycle($this->db),
-                  "KITS" => new Kit($this->db),
-                  "ORDERS" => new Order($this->db),
-                  "PRODUCTS" =>
-                );
-        if(isset($rec[$k])){
-          $rec['id'] = (int) $rec['id'];
-          $db[$table]->edit($rec, $rec['id']);
-          $return[] = $rec;
-        }else{
-          $rec["id"] = $db[$table]->create($rec);
-          $return[] = $rec;
-        }
-      }
-    else {
-      $db1 = new Product($this->db);
-      $db2 = new ProductsList($this->db);
-      foreach($records as $rec){
-        if(isset($rec['id'])){
-          if(isset($rec["productID"])){
-            $rec['id'] = (int) $rec['productID'];
-            $db1->edit($rec, $rec['productID']);
-            $return[] = $rec;
-          }else{
-            $rec["id"] = $db1->create($rec);
-            $return[] = $rec;
-          }
-        }else{
-          $rec["id"] = $db2->create($rec);
-          $return[] = $rec;
-        }
-      }
-    }*/
 
     echo json_encode($return);
+  }
+
+  public function getLeftCountOfProducts(){
+    /*
+      @cycleID = int
+    */
+
+    $cycleID = intval($this->f3->get("POST.cycleID"));
+    $counts = ["used" => $this->getArrayOfCountOfOrderedProducts($cycleID), "left" => []];
+
+    $cycle = (new Cycle($this->db))->getBySelector(["`id` = ?", $cycleID])[0];
+    $products = json_decode($cycle["products"], true);
+    $productsList = (new Product($this->db))->getBySelector(["`id` > -1"]);
+    
+    foreach($productsList as $pr){
+      $id = $pr["id"];
+      if(!$counts["used"][$id]) $counts["used"][$id] = 0;
+      if(!$products[$id]){
+        $counts["left"][$id] = (-$counts["used"][$id]);
+      }else{
+        $counts["left"][$id] = $products[$id]["count"]["c-st"] - $products[$id]["count"]["c-wh"] - $products[$id]["count"]["c-sh"] - $counts["used"][$id];
+      }
+    }
+    
+    echo json_encode($counts["left"]);
+  }
+
+  private function getArrayOfCountOfOrderedProducts($cycleID){
+    /*
+      @cycleID = int
+    */
+    
+    $counts = [];
+
+    $orders = (new Order($this->db))->getBySelector(["`cycleID` = ?", $cycleID]);
+
+    foreach($orders as $order){
+      $kits = json_decode($order["kits"], true);
+      foreach($kits as $kit){
+        foreach($kit["products"] as $id => $pr){
+          if($pr["count"]*$kit["count"] == 0) continue;
+          if(!$counts[$id]) $counts[$id] = 0;
+          $counts[$id] += $pr["count"]*$kit["count"];
+        }
+      }
+    }
+    
+    return $counts;
+  }
+
+  public function getUsedOrderCountOfProducts(){
+    /*
+      @cycleID = int
+    */
+
+    echo json_encode($this->getArrayOfCountOfOrderedProducts(intval($this->f3->get("POST.cycleID"))));
+  }
+
+  public function getLeftCountOfProduct(){
+    /*
+      @cycleID
+      @prID
+      @orderID
+    */
+
+    $cycleID = intval($this->f3->get("POST.cycleID"));
+    $prID = intval($this->f3->get("POST.prID"));
+    $orderID = intval($this->f3->get("POST.orderID"));
+
+    $cycle = (new Cycle($this->db))->getBySelector(['`id` = ?', $cycleID])[0];
+    $productCountInCycle = json_decode($cycle["products"], true)[$prID]["count"];
+    $orders = (new Order($this->db))->getBySelector(["`id` != ? AND `cycleID` = ?", $orderID, $cycleID]);
+    $countInOrders = 0;
+
+    foreach($orders as $order){
+      $kits = json_decode($order["kits"], true);
+      foreach($kits as $kit){
+        $c = $kit["count"]*$kit["products"][$prID]["count"];
+        $countInOrders += $c?$c:0;
+      }
+    }
+    
+    echo $productCountInCycle["c-st"] - $productCountInCycle["c-wh"] - $productCountInCycle["c-sh"] - $countInOrders;
+  }
+
+  private function getArrayOfCountOfOrderedProductsNotInOrder($cycleID, $orderID){
+    /*
+      @cycleID = int
+    */
+    
+    $counts = [];
+
+    $orders = (new Order($this->db))->getBySelector(["`cycleID` = ? AND `id` != ?", $cycleID, $orderID]);
+
+    foreach($orders as $order){
+      $kits = json_decode($order["kits"], true);
+      foreach($kits as $kit){
+        foreach($kit["products"] as $id => $pr){
+          if($pr["count"]*$kit["count"] == 0) continue;
+          if(!$counts[$id]) $counts[$id] = 0;
+          $counts[$id] += $pr["count"]*$kit["count"];
+        }
+      }
+    }
+    
+    return $counts;
+  }
+
+  public function getLeftCountOfProductsNotInOrder(){
+    /*
+      @cycleID = int
+      @orderID = int
+    */
+
+    $cycleID = intval($this->f3->get("POST.cycleID"));
+    $orderID = intval($this->f3->get("POST.orderID"));
+    $counts = ["used" => $this->getArrayOfCountOfOrderedProductsNotInOrder($cycleID, $orderID), "left" => []];
+
+    $cycle = (new Cycle($this->db))->getBySelector(["`id` = ?", $cycleID])[0];
+    $products = json_decode($cycle["products"], true);
+    $productsList = (new Product($this->db))->getBySelector(["`id` > -1"]);
+
+    foreach($productsList as $pr){
+      if(!$counts["used"][$pr["id"]]) $counts["used"][$pr["id"]] = 0;
+      if(!$products[$pr["id"]]){
+        $counts["left"][$pr["id"]] = (-$counts["used"][$pr["id"]]);
+      }else{
+        $counts["left"][$pr["id"]] = $products[$pr["id"]]["count"]["c-st"] - $products[$pr["id"]]["count"]["c-wh"] - $products[$pr["id"]]["count"]["c-sh"] - $counts["used"][$id];
+      }
+    }
+
+    echo json_encode($counts["left"]);
   }
 }
 
