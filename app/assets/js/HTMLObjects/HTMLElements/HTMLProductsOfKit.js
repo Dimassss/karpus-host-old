@@ -45,8 +45,14 @@ class HTMLProductsOfKit extends HTMLObject{
     //generate html of products and paste it to the container
     let html = this.productsLIST.map(pr => {
                                           pr = _.products[pr.id]?_.products[pr.id]:pr;
-                                          return `<div data-product_id='${pr.id}' class="product columns" ${(pr.count>0)?"":'style="display:none"'}>
-                                              <div class="col-5">${pr.name}: <span class='js-countLeft'>${pr.countLeft?pr.countLeft:0}</span></div>
+                                          return `<div data-product_id='${pr.id}' 
+                                                        class="product columns" style="${(pr.count>0)?"order:1;":`display:none;order:2;`}">
+                                              <div class="col-5">
+                                                ${pr.name}: 
+                                                <span class='js-countLeft${((pr.countLeft?pr.countLeft:0)>0)?'':" js-numHasNegativeValue"}'>
+                                                  ${pr.countLeft?pr.countLeft:0}
+                                                </span>
+                                              </div>
                                               <div class="col-1">${pr.unit}</div>
                                               <div class="col-3">
                                                 <select class="form-select prices">
@@ -92,10 +98,12 @@ class HTMLProductsOfKit extends HTMLObject{
         }));
 
         _.callbacks.updateProductCountEvent(prID);
+
+        e.target.parentNode.parentNode.style.order = (_.products[prID].count >0)?1:2;
       });
     });
 
-    _.html.addEventListener("contextmenu", e => {
+    _.html.parentNode.addEventListener("contextmenu", e => {
       e.preventDefault();
       _.toggleProductsInForm();
     })
@@ -103,7 +111,10 @@ class HTMLProductsOfKit extends HTMLObject{
 
   updateLeftCountOfProduct(prID, count){
     let _ = this;
-    _.html.querySelector("div[data-product_id='"+prID+"'] .js-countLeft").innerHTML = count;
+    let h = _.html.querySelector("div[data-product_id='"+prID+"'] .js-countLeft");
+    h.innerHTML = count;
+    if(count < 0) h.classList.add("js-numHasNegativeValue");
+    else h.classList.remove("js-numHasNegativeValue");
   }
 
   addOrUpdateProduct(productID, selectedPrice, count, fromInp /*means that method calls from onChangeProduct method*/){

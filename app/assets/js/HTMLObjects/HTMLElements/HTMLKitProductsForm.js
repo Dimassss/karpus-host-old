@@ -58,7 +58,7 @@ class HTMLKitProductForm extends HTMLObject{
                   <progress class="progress col-12" value="${600/maxVolume}" min="0" max="100"></progress>
                   <progress class="progress col-12" value="${(_.weight/maxWeight)*100}" min="0" max="100"></progress>
                 </h6>
-                <div class="products-container unique-scroll"></div>`;
+                <div class="products-container unique-scroll"><div style='display: flex;flex-direction: column;'></div></div>`;
 
     this.html.innerHTML = html;
 
@@ -96,7 +96,7 @@ class HTMLKitProductForm extends HTMLObject{
       _.fields.count.value = _.count;
     }
 
-    this.productsForm = new HTMLProductsOfKit(_.selector + " .products-container", maxWeight, maxVolume, {
+    this.productsForm = new HTMLProductsOfKit(_.selector + " .products-container > div", maxWeight, maxVolume, {
       addOrUpdateProductEvent: kit => {
         _.products = kit.products;
         _.pcPrice = Object.keys(_.products).map(k => _.products[k].price[(_.products[k].price.selected)?(_.products[k].price.selected):("p-kt")] * (_.products[k].count?_.products[k].count:0)).reduce((a, b) => a + b, 0);
